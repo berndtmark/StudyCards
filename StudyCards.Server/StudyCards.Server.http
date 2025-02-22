@@ -1,0 +1,6 @@
+@StudyCards.Server_HostAddress = http://localhost:5102
+
+GET {{StudyCards.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
