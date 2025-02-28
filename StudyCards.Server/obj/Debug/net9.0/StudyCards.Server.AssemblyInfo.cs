@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StudyCards.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad11cf8073c16320ab54fc7189933efc16e849fd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4511f79560b0f7d6a504e23920e21b592550e3f8")]
 [assembly: System.Reflection.AssemblyProductAttribute("StudyCards.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StudyCards.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -6,9 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>b6759536-4985-41db-ac10-aa0b878b3ca9</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <SpaRoot>..\studycards.client</SpaRoot>
+    <!--<SpaRoot>..\studycards.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:56441</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://localhost:56441</SpaProxyServerUrl>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,12 +17,6 @@
       <Version>9.*-*</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\studycards.client\studycards.client.esproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
 
 </Project>

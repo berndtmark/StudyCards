@@ -20,11 +20,26 @@ FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["StudyCards.Server/StudyCards.Server.csproj", "StudyCards.Server/"]
-COPY ["studycards.client/studycards.client.esproj", "studycards.client/"]
 RUN dotnet restore "./StudyCards.Server/StudyCards.Server.csproj"
 COPY . .
 WORKDIR "/src/StudyCards.Server"
 RUN dotnet build "./StudyCards.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+###
+
+FROM with-node AS copyui
+WORKDIR /src
+COPY ["StudyCards.UI/studycardsui", "studycards.client/"]
+
+
+
+FROM copyui AS buildui
+WORKDIR /src/studycards.client/
+RUN npm install
+RUN npm run build
+
+###
+
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
@@ -35,4 +50,5 @@ RUN dotnet publish "./StudyCards.Server.csproj" -c $BUILD_CONFIGURATION -o /app/
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=buildui /src/studycards.client/dist/studycardsui/browser wwwroot/
 ENTRYPOINT ["dotnet", "StudyCards.Server.dll"]
