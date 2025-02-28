@@ -8,7 +8,18 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
+// Configure static files and default files
 app.UseDefaultFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        // Disable caching for all static files to ensure updates are immediately available
+        ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store";
+        ctx.Context.Response.Headers["Pragma"] = "no-cache";
+        ctx.Context.Response.Headers["Expires"] = "-1";
+    }
+});
 app.MapStaticAssets();
 
 // Configure the HTTP request pipeline.
