@@ -1,4 +1,6 @@
-﻿namespace StudyCards.Data.Entities;
+﻿using StudyCards.Data.Enums;
+
+namespace StudyCards.Data.Entities;
 
 public class Card
 {
@@ -6,4 +8,12 @@ public class Card
     public string UserEmail { get; set; } = string.Empty;
     public string CardFront { get; set; } = string.Empty;
     public string CardBack { get; set; } = string.Empty;
+    public IEnumerable<CardReview> CardReviews { get; set; } = Array.Empty<CardReview>();
+}
+
+public class CardReview
+{
+    public Guid CardReviewId { get; set; }
+    public CardDifficulty CardDifficulty { get; set; }
+    public DateTime ReviewDate { get; set; }
 }

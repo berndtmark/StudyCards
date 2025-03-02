@@ -18,4 +18,12 @@ public class CardRepository(Context.DataBaseContext dbContext) : ICardRepository
         dbContext.Add(card);
         await dbContext.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Card>> GetByEmail(string email)
+    {
+        return await dbContext.Cards
+            .Where(c => c.UserEmail == email)
+            .ToListAsync();
+    }
 }
+

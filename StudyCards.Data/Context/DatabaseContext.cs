@@ -15,8 +15,8 @@ public class DataBaseContext : DbContext
         modelBuilder.HasDefaultContainer("Cards");
 
         modelBuilder.Entity<Card>()
-         .HasNoDiscriminator()
-         .HasPartitionKey(x => x.UserEmail)
-         .HasKey(x => x.CardId);
+            .HasNoDiscriminator()
+            .HasPartitionKey(x => x.UserEmail)
+            .HasKey(x => x.CardId);
     }
 }
