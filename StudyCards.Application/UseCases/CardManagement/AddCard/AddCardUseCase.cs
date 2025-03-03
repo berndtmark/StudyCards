@@ -3,15 +3,14 @@ using StudyCards.Application.Interfaces.Repositories;
 
 namespace StudyCards.Application.UseCases.CardManagement.AddCard;
 
-public class AddCardUseCase(ICardRepository cardRepository) : IUseCase<AddCardRequest, string>
+public class AddCardRequest
 {
-    public Task<string> Handle()
+}
+
+public class AddCardUseCase(ICardRepository cardRepository) : IUseCase<AddCardRequest, bool>
+{
+    public Task<bool> Handle(AddCardRequest request)
     {
         throw new NotImplementedException();
     }
-}
-
-// todo move
-public class AddCardRequest
-{
 }

@@ -2,5 +2,5 @@
 
 public interface IUseCaseFactory
 {
-    IUseCase<TRequest, TResponse> Create<TRequest, TResponse>(TRequest request);
+    IUseCase<TRequest, TResponse> Create<TRequest, TResponse>();
 }

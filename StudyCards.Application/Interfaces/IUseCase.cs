@@ -2,5 +2,5 @@
 
 public interface IUseCase<TRequest, TResponse>
 {
-    public Task<TResponse> Handle();
+    public Task<TResponse> Handle(TRequest request);
 }
