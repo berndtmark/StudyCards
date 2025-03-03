@@ -1,5 +1,5 @@
 ﻿using StudyCards.Application.Interfaces;
-using StudyCards.Data.Interfaces;
+using StudyCards.Application.Interfaces.Repositories;
 
 namespace StudyCards.Application.UseCases.CardManagement.AddCard;
 

@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StudyCards.Data.Entities;
-using StudyCards.Data.Interfaces;
+using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Domain.Entities;
+using StudyCards.Infrastructure.Database.Context;
 
-namespace StudyCards.Data.Repositories;
+namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class CardRepository(Context.DataBaseContext dbContext) : ICardRepository
+public class CardRepository(DataBaseContext dbContext) : ICardRepository
 {
     public async Task<Card?> Get(Guid id)
     {

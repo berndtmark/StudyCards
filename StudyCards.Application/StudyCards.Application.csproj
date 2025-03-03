@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StudyCards.Data\StudyCards.Data.csproj" />
+    <ProjectReference Include="..\StudyCards.Domain\StudyCards.Domain.csproj" />
   </ItemGroup>
 
 </Project>

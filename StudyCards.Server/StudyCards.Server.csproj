@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StudyCards.Application\StudyCards.Application.csproj" />
+    <ProjectReference Include="..\StudyCards.Data\StudyCards.Infrastructure.Database.csproj" />
   </ItemGroup>
 
 </Project>

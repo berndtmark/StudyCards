@@ -1,6 +1,6 @@
-﻿using StudyCards.Data.Entities;
+﻿using StudyCards.Domain.Entities;
 
-namespace StudyCards.Data.Interfaces;
+namespace StudyCards.Application.Interfaces.Repositories;
 
 public interface ICardRepository
 {

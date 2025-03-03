@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Data.Enums;
+﻿namespace StudyCards.Domain.Enums;
 
 public enum CardDifficulty
 {

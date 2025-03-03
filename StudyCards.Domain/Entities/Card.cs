@@ -1,6 +1,6 @@
-﻿using StudyCards.Data.Enums;
+﻿using StudyCards.Domain.Enums;
 
-namespace StudyCards.Data.Entities;
+namespace StudyCards.Domain.Entities;
 
 public class Card
 {

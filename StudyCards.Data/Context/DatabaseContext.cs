@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StudyCards.Data.Entities;
+using StudyCards.Domain.Entities;
 
-namespace StudyCards.Data.Context;
+namespace StudyCards.Infrastructure.Database.Context;
 
 public class DataBaseContext : DbContext
 {

@@ -1,4 +1,5 @@
 using StudyCards.Application;
+using StudyCards.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddMemoryCache();
 
 builder.Services.ConfigureApplicationServices(builder.Configuration);
+builder.Services.ConfigureInfrastructureDatabaseServices();
 
 var app = builder.Build();
 
