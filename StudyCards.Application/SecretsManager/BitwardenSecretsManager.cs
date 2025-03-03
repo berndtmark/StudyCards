@@ -23,7 +23,9 @@ public class BitwardenSecretsManager(IOptions<SecretOptions> options, IMemoryCac
             IdentityUrl = options.Value.IdentityUrl
         });
 
-        bitwardenClient.Auth.LoginAccessToken(options.Value.ApiKey);
+        var apikey = !string.IsNullOrEmpty(options.Value.ApiKey) ? options.Value.ApiKey : EnvironmentVariable.SecretsApiKey ?? throw new Exception("No Key for Secrets Manager");
+
+        bitwardenClient.Auth.LoginAccessToken(apikey);
         var allSecrets = bitwardenClient.Secrets.List(new Guid(options.Value.OrganizationId)).Data;
         var foundSecret = allSecrets.Where(x => x.Key == key).FirstOrDefault();
 
@@ -34,6 +36,4 @@ public class BitwardenSecretsManager(IOptions<SecretOptions> options, IMemoryCac
 
         return bitwardenClient.Secrets.Get(foundSecret.Id).Value;
     }
-
-
 }
