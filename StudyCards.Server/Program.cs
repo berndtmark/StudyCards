@@ -1,10 +1,18 @@
+using StudyCards.Application;
+using StudyCards.Infrastructure.Database;
+using StudyCards.Server.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+builder.Host.ConfigureLogging();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddMemoryCache();
+
+builder.Services.ConfigureApplicationServices(builder.Configuration);
+builder.Services.ConfigureInfrastructureDatabaseServices();
 
 var app = builder.Build();
 
