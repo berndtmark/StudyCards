@@ -29,4 +29,11 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
+    [HttpGet]
+    [Route("getallenv")]
+    public IActionResult GetAllEnv()
+    {
+        return Ok(Environment.GetEnvironmentVariables());
+    }
 }
