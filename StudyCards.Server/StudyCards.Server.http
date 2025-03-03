@@ -1,6 +1,17 @@
 @StudyCards.Server_HostAddress = http://localhost:5102
 
-GET {{StudyCards.Server_HostAddress}}/weatherforecast/
+GET {{StudyCards.Server_HostAddress}}/api/weatherforecast/
 Accept: application/json
 
-###
+### Get Cards ###
+GET {{StudyCards.Server_HostAddress}}/api/card/getcards?emailAddress=test@gmail.com
+
+### Update Card ###
+PUT {{StudyCards.Server_HostAddress}}/api/card/updatecard
+Content-Type: application/json
+Accept: application/json
+{
+  "CardId": "65f1a377-c7f2-4269-3ea5-08dd599042c8",
+  "CardFront": "What is the capital of France?",
+  "CardBack": "Paris 1"
+}

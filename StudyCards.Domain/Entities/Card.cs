@@ -2,7 +2,7 @@
 
 namespace StudyCards.Domain.Entities;
 
-public class Card
+public record Card
 {
     public Guid CardId { get; set; }
     public string UserEmail { get; set; } = string.Empty;
@@ -11,7 +11,7 @@ public class Card
     public IEnumerable<CardReview> CardReviews { get; set; } = Array.Empty<CardReview>();
 }
 
-public class CardReview
+public record CardReview
 {
     public Guid CardReviewId { get; set; }
     public CardDifficulty CardDifficulty { get; set; }
