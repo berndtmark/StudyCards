@@ -1,8 +1,10 @@
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
+using StudyCards.Server.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.ConfigureLogging();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
