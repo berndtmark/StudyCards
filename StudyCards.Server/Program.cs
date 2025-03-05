@@ -6,13 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureLogging();
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
 builder.Services.AddMemoryCache();
 
+builder.Services.AddSecretsConfiguration(builder.Configuration);
+builder.Services.AddSecurityConfiguration(builder.Configuration);
+
 builder.Services.ConfigureApplicationServices(builder.Configuration);
-builder.Services.ConfigureInfrastructureDatabaseServices();
+builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -38,6 +39,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Add Authentication middleware before Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -2,7 +2,7 @@
 
 namespace StudyCards.Server.Configuration;
 
-public static class LoggingExtensions
+public static class LoggingConfiguration
 {
     public static void ConfigureLogging(this IHostBuilder host)
     {
