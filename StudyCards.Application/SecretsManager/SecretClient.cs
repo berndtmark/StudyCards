@@ -1,21 +1,13 @@
 ﻿using Bitwarden.Sdk;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using StudyCards.Application.Configuration;
 using StudyCards.Application.Interfaces;
 
 namespace StudyCards.Application.SecretsManager;
 
-public class BitwardenSecretsManager(IOptions<SecretOptions> options, IMemoryCache memoryCache) : ISecretsManager
+public class SecretsClient(IOptions<SecretOptions> options) : ISecretClient
 {
-    public string GetSecret(string key)
-    {
-        return memoryCache.GetOrCreate(key, _ => 
-            Get(key), 
-            new MemoryCacheEntryOptions { SlidingExpiration = new TimeSpan(1, 0, 0) }) ?? string.Empty;
-    }
-
-    private string Get(string key)
+    public SecretsResponse Get(params string[] keys)
     {
         using var bitwardenClient = new BitwardenClient(new BitwardenSettings
         {
@@ -27,13 +19,14 @@ public class BitwardenSecretsManager(IOptions<SecretOptions> options, IMemoryCac
 
         bitwardenClient.Auth.LoginAccessToken(apikey);
         var allSecrets = bitwardenClient.Secrets.List(new Guid(options.Value.OrganizationId)).Data;
-        var foundSecret = allSecrets.Where(x => x.Key == key).FirstOrDefault();
+        var foundSecrets = allSecrets.Where(x => keys.Contains(x.Key)).ToList();
 
-        if (foundSecret == null)
+        if (!foundSecrets.Any())
         {
-            throw new Exception($"Secret with key {key} not found");
+            throw new Exception($"No secrets found for the provided keys: {string.Join(", ", keys)}");
         }
 
-        return bitwardenClient.Secrets.Get(foundSecret.Id).Value;
+        var secretIds = foundSecrets.Select(x => x.Id).ToArray();
+        return bitwardenClient.Secrets.GetByIds(secretIds);
     }
 }
