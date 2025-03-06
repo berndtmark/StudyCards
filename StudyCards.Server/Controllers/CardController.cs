@@ -14,10 +14,10 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
     [Authorize]
     [HttpGet]
     [Route("getcards")]
-    public async Task<IActionResult> Get(string emailAddress)
+    public async Task<IActionResult> Get(Guid deckId)
     {
         var useCase = useCaseFactory.Create<GetCardsRequest, IEnumerable<Card>>();
-        var result = await useCase.Handle(new GetCardsRequest { EmailAddress = emailAddress });
+        var result = await useCase.Handle(new GetCardsRequest { DeckId = deckId });
 
         return Ok(result);
     }

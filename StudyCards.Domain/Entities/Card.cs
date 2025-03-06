@@ -4,16 +4,16 @@ namespace StudyCards.Domain.Entities;
 
 public record Card
 {
-    public Guid CardId { get; set; }
-    public string UserEmail { get; set; } = string.Empty;
-    public string CardFront { get; set; } = string.Empty;
-    public string CardBack { get; set; } = string.Empty;
-    public IEnumerable<CardReview> CardReviews { get; set; } = Array.Empty<CardReview>();
+    public Guid CardId { get; init; }
+    public Guid DeckId { get; init; }
+    public string CardFront { get; init; } = string.Empty;
+    public string CardBack { get; init; } = string.Empty;
+    public IEnumerable<CardReview> CardReviews { get; init; } = Array.Empty<CardReview>();
 }
 
 public record CardReview
 {
-    public Guid CardReviewId { get; set; }
-    public CardDifficulty CardDifficulty { get; set; }
-    public DateTime ReviewDate { get; set; }
+    public Guid CardReviewId { get; init; }
+    public CardDifficulty CardDifficulty { get; init; }
+    public DateTime ReviewDate { get; init; }
 }

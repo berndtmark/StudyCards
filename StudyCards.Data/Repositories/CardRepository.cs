@@ -14,10 +14,10 @@ public class CardRepository(DataBaseContext dbContext) : ICardRepository
             .FindAsync(id);
     }
 
-    public async Task<IEnumerable<Card>> GetByEmail(string email)
+    public async Task<IEnumerable<Card>> GetByDeck(Guid deckId)
     {
         return await dbContext.Cards
-            .Where(c => c.UserEmail == email)
+            .Where(c => c.DeckId == deckId)
             .ToListAsync();
     }
 

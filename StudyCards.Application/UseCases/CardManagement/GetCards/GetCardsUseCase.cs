@@ -6,13 +6,13 @@ namespace StudyCards.Application.UseCases.CardManagement.GetCards;
 
 public class GetCardsRequest
 {
-    public string EmailAddress { get; set; } = string.Empty;
+    public Guid DeckId { get; set; }
 }
 
 public class GetCardsUseCase(ICardRepository cardRepository) : IUseCase<GetCardsRequest, IEnumerable<Card>>
 {
     public async Task<IEnumerable<Card>> Handle(GetCardsRequest request)
     {
-        return await cardRepository.GetByEmail(request.EmailAddress);
+        return await cardRepository.GetByDeck(request.DeckId);
     }
 }

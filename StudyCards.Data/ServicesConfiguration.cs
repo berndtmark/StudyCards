@@ -19,6 +19,7 @@ public static class ServicesConfiguration
     .           UseCosmos(dbConnectionString, databaseName: "StudyCards"));
 
         services.AddTransient<ICardRepository, CardRepository>();
+        services.AddTransient<IDeckRepository, DeckRepository>();
 
         return services;
     }
