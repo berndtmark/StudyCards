@@ -10,13 +10,13 @@ public class CardRepository(DataBaseContext dbContext) : ICardRepository
     public async Task<Card?> Get(Guid id)
     {
         return await dbContext
-            .Cards
+            .Card
             .FindAsync(id);
     }
 
     public async Task<IEnumerable<Card>> GetByDeck(Guid deckId)
     {
-        return await dbContext.Cards
+        return await dbContext.Card
             .Where(c => c.DeckId == deckId)
             .ToListAsync();
     }
@@ -29,7 +29,7 @@ public class CardRepository(DataBaseContext dbContext) : ICardRepository
 
     public async Task Update(Card card)
     {
-        var existingCard = await dbContext.Cards.FindAsync(card.CardId);
+        var existingCard = await dbContext.Card.FindAsync(card.CardId);
         if (existingCard == null)
         {
             throw new Exception($"Card not found to update {card.CardId}");
