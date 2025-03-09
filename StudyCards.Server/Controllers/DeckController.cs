@@ -16,6 +16,7 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
     [Authorize]
     [HttpGet]
     [Route("getdecks")]
+    [ProducesResponseType(typeof(IEnumerable<Deck>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
         var email = httpContextAccessor.GetEmail();

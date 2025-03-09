@@ -1,8 +1,7 @@
 ﻿namespace StudyCards.Domain.Entities;
 
-public record Deck
+public record Deck : EntityBase
 {
-    public Guid DeckId { get; init; }
     public string DeckName { get; init; } = string.Empty;
     public string UserEmail { get; init; } = string.Empty;
     public DeckSettings DeckSettings { get; init; } = new();

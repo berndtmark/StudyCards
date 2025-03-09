@@ -17,12 +17,12 @@ public class DataBaseContext : DbContext
         modelBuilder.Entity<Card>()
             .HasNoDiscriminator()
             .HasPartitionKey(x => x.DeckId)
-            .HasKey(x => x.CardId);
+            .HasKey(x => x.Id);
 
         modelBuilder.Entity<Deck>()
             .ToContainer("Deck")
             .HasNoDiscriminator()
             .HasPartitionKey(x => x.UserEmail)
-            .HasKey(x => x.DeckId);
+            .HasKey(x => x.Id);
     }
 }

@@ -2,9 +2,8 @@
 
 namespace StudyCards.Domain.Entities;
 
-public record Card
+public record Card : EntityBase
 {
-    public Guid CardId { get; init; }
     public Guid DeckId { get; init; }
     public string CardFront { get; init; } = string.Empty;
     public string CardBack { get; init; } = string.Empty;

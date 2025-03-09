@@ -16,7 +16,7 @@ public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCa
     {
         var deck = new Deck
         {
-            DeckId = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             DeckName = request.DeckName,
             UserEmail = request.EmailAddress
         };
