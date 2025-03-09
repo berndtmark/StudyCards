@@ -18,7 +18,7 @@ public class AddCardUseCase(ICardRepository cardRepository, ILogger<AddCardUseCa
     {
         var card = new Card
         {
-            CardId = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             DeckId = request.DeckId,
             CardFront = request.CardFront,
             CardBack = request.CardBack

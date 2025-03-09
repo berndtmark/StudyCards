@@ -137,3 +137,4 @@ _NCrunch*
 # =========================
 .vs/
 StudyCards.Server/obj
+StudyCards.UI/studycardsui/src/app/@api
