@@ -38,8 +38,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-// Add Authentication middleware before Authorization
+app.UseCookiePolicy();
 app.UseAuthentication();
 app.UseAuthorization();
 
