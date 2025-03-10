@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.HttpOverrides;
 using StudyCards.Server.Configuration.Options;
 
 namespace StudyCards.Server.Configuration;
@@ -21,6 +22,14 @@ public static class SecurityConfiguration
             options.LogoutPath = "/api/auth/logout";
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.HttpOnly = true;
+            options.Events = new CookieAuthenticationEvents()
+            {
+                OnRedirectToLogin = (context) =>
+                {
+                    context.HttpContext.Response.Redirect(context.RedirectUri.Replace("http://", "https://"));
+                    return Task.CompletedTask;
+                }
+            };
         })
         .AddGoogle(options =>
         {
@@ -31,10 +40,11 @@ public static class SecurityConfiguration
             options.AccessDeniedPath = "/todo";
         });
 
-        services.AddHttpsRedirection(options =>
+        services.Configure<ForwardedHeadersOptions>(options =>
         {
-            options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-            options.HttpsPort = 443;
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
         });
 
         return services;
