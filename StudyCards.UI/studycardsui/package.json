@@ -8,6 +8,7 @@
     "build:prod": "npm run generate-api && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:ci": "npm run generate-api && npm run test -- --no-watch --no-progress --browsers=ChromeHeadless",
     "generate-api": "npx ng-openapi-gen --input openapidoc.json --output src/app/@api"
   },
   "private": true,

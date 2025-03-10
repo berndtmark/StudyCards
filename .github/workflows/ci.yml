@@ -43,4 +43,4 @@ jobs:
       
     - name: Run Angular tests
       working-directory: ./StudyCards.UI/studycardsui
-      run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless
+      run: npm run test:ci
