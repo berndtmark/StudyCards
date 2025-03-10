@@ -31,6 +31,12 @@ public static class SecurityConfiguration
             options.AccessDeniedPath = "/todo";
         });
 
+        services.AddHttpsRedirection(options =>
+        {
+            options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+            options.HttpsPort = 443;
+        });
+
         return services;
     }
 }
