@@ -20,6 +20,7 @@ public static class SecurityConfiguration
             options.LoginPath = "/api/auth/login";
             options.LogoutPath = "/api/auth/logout";
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.HttpOnly = true;
         })
         .AddGoogle(options =>
         {
