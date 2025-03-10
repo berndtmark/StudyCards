@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.HttpOverrides;
 using StudyCards.Server.Configuration.Options;
 
 namespace StudyCards.Server.Configuration;
@@ -23,6 +20,7 @@ public static class SecurityConfiguration
             options.LogoutPath = "/api/auth/logout";
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.HttpOnly = true;
+            options.Cookie.SameSite = SameSiteMode.None;
         })
         .AddGoogle(options =>
         {
@@ -31,6 +29,18 @@ public static class SecurityConfiguration
             options.ClientId = googleAuthConfig.ClientId;
             options.ClientSecret = googleAuthConfig.ClientSecret;
             options.AccessDeniedPath = "/todo";
+        });
+
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder
+                    .WithOrigins("https://studycards-cfg6fsb2g5h6eme8.westeurope-01.azurewebsites.net")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
         });
 
         return services;
