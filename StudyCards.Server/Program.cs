@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
 using StudyCards.Server.Configuration;
@@ -16,6 +17,11 @@ builder.Services.ConfigureApplicationServices(builder.Configuration);
 builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 // Configure static files and default files
 app.UseDefaultFiles();
