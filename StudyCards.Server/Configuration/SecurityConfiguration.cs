@@ -22,14 +22,14 @@ public static class SecurityConfiguration
             options.LogoutPath = "/api/auth/logout";
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.HttpOnly = true;
-            options.Events = new CookieAuthenticationEvents()
-            {
-                OnRedirectToLogin = (context) =>
-                {
-                    context.HttpContext.Response.Redirect(context.RedirectUri.Replace("http://", "https://"));
-                    return Task.CompletedTask;
-                }
-            };
+            //options.Events = new CookieAuthenticationEvents()
+            //{
+            //    OnRedirectToLogin = (context) =>
+            //    {
+            //        context.HttpContext.Response.Redirect(context.RedirectUri.Replace("http://", "https://"));
+            //        return Task.CompletedTask;
+            //    }
+            //};
         })
         .AddGoogle(options =>
         {
