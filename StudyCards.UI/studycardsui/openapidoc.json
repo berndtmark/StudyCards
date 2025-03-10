@@ -77,6 +77,18 @@
               }
           }
       },
+      "/api/Auth/isloggedin": {
+          "get": {
+              "tags": [
+                  "Auth"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "OK"
+                  }
+              }
+          }
+      },
       "/api/Card/getcards": {
           "get": {
               "tags": [

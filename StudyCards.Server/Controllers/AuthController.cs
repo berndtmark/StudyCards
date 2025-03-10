@@ -54,4 +54,17 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
         var claims = HttpContext?.User.Claims.Select(c => new { c.Type, c.Value });
         return Ok(claims);
     }
+
+    [AllowAnonymous]
+    [HttpGet]
+    [Route("isloggedin")]
+    public IActionResult IsLoggedIn()
+    {
+        if (!HttpContext?.User?.Identity?.IsAuthenticated ?? true)
+        {
+            return Unauthorized();
+        }
+
+        return Ok();
+    }
 }
