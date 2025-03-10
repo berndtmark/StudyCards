@@ -13,7 +13,7 @@ public static class SecurityConfiguration
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            // options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
         })
         .AddCookie(options =>
         {
@@ -27,7 +27,6 @@ public static class SecurityConfiguration
 
             options.ClientId = googleAuthConfig.ClientId;
             options.ClientSecret = googleAuthConfig.ClientSecret;
-            options.CallbackPath = "/api/auth/callback";
             options.AccessDeniedPath = "/todo";
         });
 

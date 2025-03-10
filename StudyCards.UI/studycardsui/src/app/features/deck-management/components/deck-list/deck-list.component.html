@@ -1,0 +1,13 @@
+<div class="deck-grid">
+    <app-add-deck></app-add-deck>
+    @for (deck of store.decks(); track deck.id) {
+      <div class="deck-card" (click)="onDeckSelected(deck.id)">
+        <h3>{{ deck.name }}</h3>
+        <p>{{ deck.description }}</p>
+        <div class="deck-meta">
+          <span>Cards: {{ deck.cardCount }}</span>
+          <span>Modified: {{ deck.lastModified | date: 'd/M/yy, h:mm a' }}</span>
+        </div>
+      </div>
+    }
+</div>

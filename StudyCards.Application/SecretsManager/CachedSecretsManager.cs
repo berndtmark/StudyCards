@@ -1,7 +1,4 @@
-﻿using Bitwarden.Sdk;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using StudyCards.Application.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
 using StudyCards.Application.Interfaces;
 using System.Text.Json;
 
@@ -24,7 +21,6 @@ public class CachedSecretsManager(ISecretClient secretClient, IMemoryCache memor
         return JsonSerializer.Deserialize<T>(result) ?? throw new InvalidOperationException($"Failed to deserialize secret with key {key} to type {typeof(T).Name}");
     }
 
-    // write tests for this
     public override IDictionary<string, string> GetSecrets(params string[] keys)
     {
         var result = new Dictionary<string, string>();

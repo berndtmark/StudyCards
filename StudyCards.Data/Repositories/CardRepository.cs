@@ -1,42 +1,44 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class CardRepository(DataBaseContext dbContext) : ICardRepository
+public class CardRepository : BaseRepository<Card>, ICardRepository
 {
+    private readonly DataBaseContext _dbContext;
+
+    public CardRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
+    {
+        _dbContext = dbContext;
+    }
+
     public async Task<Card?> Get(Guid id)
     {
-        return await dbContext
-            .Cards
+        return await _dbContext
+            .Card
             .FindAsync(id);
     }
 
-    public async Task<IEnumerable<Card>> GetByEmail(string email)
+    public async Task<IEnumerable<Card>> GetByDeck(Guid deckId)
     {
-        return await dbContext.Cards
-            .Where(c => c.UserEmail == email)
+        return await _dbContext.Card
+            .Where(c => c.DeckId == deckId)
             .ToListAsync();
     }
 
     public async Task Add(Card card)
     {
-        dbContext.Add(card);
-        await dbContext.SaveChangesAsync();
+        await AddEntity(card);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task Update(Card card)
     {
-        var existingCard = await dbContext.Cards.FindAsync(card.CardId);
-        if (existingCard == null)
-        {
-            throw new Exception($"Card not found to update {card.CardId}");
-        }
-
-        dbContext.Entry(existingCard).CurrentValues.SetValues(card);
-        await dbContext.SaveChangesAsync();
+        await UpdateEntity(card);
+        await _dbContext.SaveChangesAsync();
     }
 }
 

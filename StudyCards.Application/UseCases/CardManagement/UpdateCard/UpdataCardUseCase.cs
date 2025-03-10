@@ -4,16 +4,16 @@ using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.CardManagement.UpdateCard;
 
-public class UpdateCardRequest
+public class UpdateCardUseCaseRequest
 {
     public Guid CardId { get; set; }
     public string CardFront { get; set; } = string.Empty;
     public string CardBack { get; set; } = string.Empty;
 }
 
-public class UpdataCardUseCase(ICardRepository cardRepository) : IUseCase<UpdateCardRequest, Card>
+public class UpdataCardUseCase(ICardRepository cardRepository) : IUseCase<UpdateCardUseCaseRequest, Card>
 {
-    public async Task<Card> Handle(UpdateCardRequest request)
+    public async Task<Card> Handle(UpdateCardUseCaseRequest request)
     {
         var currentCard = await cardRepository.Get(request.CardId);
 
