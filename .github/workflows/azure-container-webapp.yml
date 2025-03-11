@@ -31,7 +31,7 @@ env:
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "berndtmark-patch-2" ]
   workflow_dispatch:
 
 permissions:
