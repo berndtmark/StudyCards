@@ -65,8 +65,7 @@ jobs:
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           file: ./StudyCards.Server/Dockerfile
 
-      # Clean up package versions
-      - name: Delete Package Versions
+      - name: Clean Up Old Package Versions
         uses: actions/delete-package-versions@v5.0.0
         with:
           package-name: 'studycards'
