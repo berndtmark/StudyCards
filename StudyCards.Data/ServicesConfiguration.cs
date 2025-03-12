@@ -23,4 +23,15 @@ public static class ServicesConfiguration
 
         return services;
     }
+
+    public static async Task CreateDatabaseForLocal(this IServiceProvider serviceProvider, IConfiguration configuration)
+    {
+        if (configuration.GetConnectionString("CosmosDb")!.Contains("localhost"))
+        {
+            using var scope = serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
+
+            await dbContext.Database.EnsureCreatedAsync();
+        }
+    }
 }
