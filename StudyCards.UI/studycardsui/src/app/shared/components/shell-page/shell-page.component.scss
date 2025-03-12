@@ -1,0 +1,21 @@
+// @use '@theming/_colour.scss' as colour;
+@use '../../../theming/colour' as colour;
+
+.shell-page-header {
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: colour.$blue-100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.shell-page-content {
+    padding-top: 60px; /* Same height as the header */
+}
