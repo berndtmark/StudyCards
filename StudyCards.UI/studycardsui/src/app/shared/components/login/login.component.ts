@@ -1,14 +1,19 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import { AuthorizeService } from 'app/shared/services/authorize.service';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [MatButtonModule, MatIcon],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
+  private authService = inject(AuthorizeService);
+
   signInWithGoogle() {
-    window.location.href = '/api/auth/login';
+    this.authService.login();
   }
 }
