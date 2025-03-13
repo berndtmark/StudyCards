@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DeckStore } from '../../store/deck.store';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-add-deck',
-  imports: [],
+  imports: [MatIcon],
   templateUrl: './add-deck.component.html',
   styleUrl: './add-deck.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
