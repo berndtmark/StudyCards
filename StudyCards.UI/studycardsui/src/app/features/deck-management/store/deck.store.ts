@@ -5,6 +5,7 @@ import { DeckService } from '../services/deck.service';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LoadingState } from 'app/shared/models/loading-state';
+import { SnackbarService } from 'app/shared/services/snackbar.service';
 
 type DeckState = {
     loadingState: LoadingState
@@ -22,6 +23,7 @@ export const DeckStore = signalStore(
         deckCount: computed(() => decks().length)
     })),
     withMethods((store, 
+        snackBar = inject(SnackbarService),
         deckService = inject(DeckService)) => ({
             loadDecks: rxMethod<void>(
                 pipe(
@@ -41,6 +43,7 @@ export const DeckStore = signalStore(
                 )
             ),
             addDeck(deck: Deck): void {
+                snackBar.open("Saved");
                 patchState(store, (state) => ({ 
                     decks: [...state.decks, deck]
                 }));
