@@ -6,7 +6,6 @@ import { AddDeckComponent } from "../add-deck/add-deck.component";
 @Component({
   selector: 'app-deck-list',
   imports: [CommonModule, AddDeckComponent],
-  providers: [DeckStore],
   templateUrl: './deck-list.component.html',
   styleUrl: './deck-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

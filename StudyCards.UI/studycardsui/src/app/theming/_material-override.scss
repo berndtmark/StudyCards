@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+@use './colour' as colour;
+
+:root {
+    @include mat.form-field-overrides((
+      filled-container-color: colour.$white-off,
+    ));
+}

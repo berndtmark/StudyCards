@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { DeckStore } from '../../store/deck.store';
 import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-deck',
@@ -10,16 +10,9 @@ import { MatIcon } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddDeckComponent {
-  readonly store = inject(DeckStore);
+  router = inject(Router);
 
   addDeck(): void {
-    // just a sample
-    this.store.addDeck({
-      id: '3',
-      name: 'My New Deck Item',
-      description: 'Fundamental concepts of Life',
-      cardCount: 0,
-      lastModified: new Date()
-    });
+    this.router.navigate(['/decks/add']);
   }
 }
