@@ -2,14 +2,17 @@ import { patchState, signalStore, withComputed, withMethods, withState, withHook
 import { Deck } from '../models/deck.model';
 import { computed, inject } from '@angular/core';
 import { DeckService } from '../services/deck.service';
-import { pipe, switchMap, tap } from 'rxjs';
+import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { LoadingState } from 'app/shared/models/loading-state';
 
 type DeckState = {
+    loadingState: LoadingState
     decks: Deck[];
 };
 
 const initialState: DeckState = {
+    loadingState: LoadingState.Initial,
     decks: []
 };
 
@@ -22,9 +25,21 @@ export const DeckStore = signalStore(
         deckService = inject(DeckService)) => ({
             loadDecks: rxMethod<void>(
                 pipe(
-                    switchMap(() => deckService.getDecks()),
-                    tap((decks) => patchState(store, { decks }))
-            )),
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap(() => deckService.getDecks().pipe(
+                        tap((decks) => {
+                            patchState(store, { 
+                                decks,
+                                loadingState: LoadingState.Success 
+                            });
+                        }),
+                        catchError(() => {
+                            patchState(store, { loadingState: LoadingState.Error });
+                            return of([]);
+                        })
+                    ))
+                )
+            ),
             addDeck(deck: Deck): void {
                 patchState(store, (state) => ({ 
                     decks: [...state.decks, deck]
