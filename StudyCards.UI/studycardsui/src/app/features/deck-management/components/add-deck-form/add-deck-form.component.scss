@@ -1,3 +1,5 @@
+@use '../../../../theming/responsive' as responsive;
+
 .container {
     padding: 30px;
 }
@@ -7,11 +9,30 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-width: 400px;
+    max-width: 500px;
 
-    .sub-section {
-        display: flex;
-        flex-direction: row;
-        gap: 1rem;
+    @include responsive.responsive('tablet') {
+        max-width: 100%;
+    }
+}
+
+.sub-section {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    @include responsive.responsive('tablet') {
+        flex-direction: column;
+        width: 100%;
+
+        mat-form-field {
+            width: 100%;
+        }
+    }
+}
+
+mat-form-field {
+    @include responsive.responsive('tablet') {
+        width: 100%;
     }
 }

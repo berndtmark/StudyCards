@@ -1,0 +1,17 @@
+@use "sass:map";
+
+$breakpoints: (
+    mobile: 500px,
+    tablet: 1024px,
+    desktop: 1920px
+);
+
+@mixin responsive($breakpoint) {
+    @if map.has-key($breakpoints, $breakpoint) {
+        @media screen and (max-width: map.get($breakpoints, $breakpoint)) {
+            @content;
+        }
+    } @else {
+        @error "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+    }
+}
