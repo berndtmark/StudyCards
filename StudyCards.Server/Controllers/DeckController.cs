@@ -4,6 +4,7 @@ using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.UseCases.DeckManagement.AddDeck;
 using StudyCards.Application.UseCases.DeckManagement.GetDeck;
+using StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
 using StudyCards.Domain.Entities;
 using StudyCards.Server.Models.Request;
 
@@ -41,6 +42,18 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
             EmailAddress = email,
             DeckName = request.DeckName
         });
+
+        return Ok(result);
+    }
+
+    [Authorize]
+    [HttpDelete]
+    [Route("removedeck/{deckId}")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Remove(string deckId)
+    {
+        var useCase = useCaseFactory.Create<RemoveDeckUseCaseRequest, bool>();
+        var result = await useCase.Handle(new RemoveDeckUseCaseRequest { DeckId = new Guid(deckId) });
 
         return Ok(result);
     }
