@@ -35,7 +35,7 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
     {
         var email = httpContextAccessor.GetEmail();
 
-        var useCase = useCaseFactory.Create<AddDeckUseCaseRequest, bool>();
+        var useCase = useCaseFactory.Create<AddDeckUseCaseRequest, Deck>();
         var result = await useCase.Handle(new AddDeckUseCaseRequest
         {
             EmailAddress = email,

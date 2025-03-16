@@ -29,9 +29,11 @@ public class DeckRepository : BaseRepository<Deck>, IDeckRepository
             .ToListAsync();
     }
 
-    public async Task Add(Deck deck)
+    public async Task<Deck> Add(Deck deck)
     {
-        await AddEntity(deck);
+        var entity = await AddEntity(deck);
         await _dbContext.SaveChangesAsync();
+
+        return entity;
     }
 }

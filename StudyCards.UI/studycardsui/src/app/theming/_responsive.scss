@@ -12,6 +12,6 @@ $breakpoints: (
             @content;
         }
     } @else {
-        @error "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+        @error "Invalid breakpoint: #{$breakpoint}. Available breakpoints are: #{map.keys($breakpoints)}";
     }
 }

@@ -45,7 +45,7 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
     [Route("addcard")]
     public async Task<IActionResult> Add(AddCardRequest request)
     {
-        var useCase = useCaseFactory.Create<AddCardUseCaseRequest, bool>();
+        var useCase = useCaseFactory.Create<AddCardUseCaseRequest, Card>();
         var result = await useCase.Handle(new AddCardUseCaseRequest
         {
             DeckId = request.DeckId,

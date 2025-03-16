@@ -28,7 +28,7 @@ public class UpdataCardUseCase(ICardRepository cardRepository) : IUseCase<Update
             CardBack = request.CardBack
         };
 
-        await cardRepository.Update(newCard);
-        return newCard;
+        var result = await cardRepository.Update(newCard);
+        return result;
     }
 }
