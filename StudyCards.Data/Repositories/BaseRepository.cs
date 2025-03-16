@@ -7,7 +7,7 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) where TEntity : EntityBase
 {
-    protected virtual async Task UpdateEntity(TEntity entity)
+    protected virtual async Task<TEntity> UpdateEntity(TEntity entity)
     {
         var existingCard = await dbContext.FindAsync<TEntity>(entity.Id);
         if (existingCard == null)
@@ -23,9 +23,10 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpCo
         };
 
         dbContext.Entry(existingCard).CurrentValues.SetValues(updateEntity);
+        return updateEntity;
     }
 
-    protected virtual async Task AddEntity(TEntity entity)
+    protected virtual async Task<TEntity> AddEntity(TEntity entity)
     {
         var newEntity = entity with
         {
@@ -33,5 +34,14 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpCo
         };
 
         await dbContext.AddAsync(newEntity);
+        return newEntity;
+    }
+
+    protected virtual async Task RemoveEntity(Guid entityId)
+    {
+        var entity = await dbContext.FindAsync<TEntity>(entityId) ?? 
+            throw new Exception($"{typeof(TEntity).FullName} not found to remove with Id:{entityId}");
+
+        dbContext.Remove(entity);
     }
 }

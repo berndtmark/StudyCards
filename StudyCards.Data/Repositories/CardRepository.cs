@@ -29,16 +29,20 @@ public class CardRepository : BaseRepository<Card>, ICardRepository
             .ToListAsync();
     }
 
-    public async Task Add(Card card)
+    public async Task<Card> Add(Card card)
     {
-        await AddEntity(card);
+        var entity = await AddEntity(card);
         await _dbContext.SaveChangesAsync();
+
+        return entity;
     }
 
-    public async Task Update(Card card)
+    public async Task<Card> Update(Card card)
     {
-        await UpdateEntity(card);
+        var entity = await UpdateEntity(card);
         await _dbContext.SaveChangesAsync();
+
+        return entity;
     }
 }
 

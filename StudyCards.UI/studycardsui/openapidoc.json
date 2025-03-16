@@ -1,427 +1,482 @@
 {
-  "openapi": "3.0.1",
-  "info": {
+    "openapi": "3.0.1",
+    "info": {
       "title": "StudyCards.Server | v1",
       "version": "1.0.0"
-  },
-  "servers": [
+    },
+    "servers": [
       {
-          "url": "https://localhost:5102"
+        "url": "https://localhost:5102"
       }
-  ],
-  "paths": {
+    ],
+    "paths": {
       "/api/Auth/login": {
-          "get": {
-              "tags": [
-                  "Auth"
-              ],
-              "parameters": [
-                  {
-                      "name": "returnUrl",
-                      "in": "query",
-                      "schema": {
-                          "type": "string",
-                          "default": "/"
-                      }
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
+        "get": {
+          "tags": [
+            "Auth"
+          ],
+          "parameters": [
+            {
+              "name": "returnUrl",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "default": "/"
               }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
           }
+        }
       },
       "/api/Auth/callback": {
-          "get": {
-              "tags": [
-                  "Auth"
-              ],
-              "parameters": [
-                  {
-                      "name": "returnUrl",
-                      "in": "query",
-                      "schema": {
-                          "type": "string"
-                      }
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
+        "get": {
+          "tags": [
+            "Auth"
+          ],
+          "parameters": [
+            {
+              "name": "returnUrl",
+              "in": "query",
+              "schema": {
+                "type": "string"
               }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
           }
+        }
       },
       "/api/Auth/logout": {
-          "post": {
-              "tags": [
-                  "Auth"
-              ],
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
-              }
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
           }
+        }
       },
       "/api/Auth/me": {
-          "get": {
-              "tags": [
-                  "Auth"
-              ],
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
-              }
+        "get": {
+          "tags": [
+            "Auth"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
           }
+        }
       },
       "/api/Auth/isloggedin": {
-          "get": {
-              "tags": [
-                  "Auth"
-              ],
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
-              }
+        "get": {
+          "tags": [
+            "Auth"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
           }
+        }
       },
       "/api/Card/getcards": {
-          "get": {
-              "tags": [
-                  "Card"
-              ],
-              "parameters": [
-                  {
-                      "name": "deckId",
-                      "in": "query",
-                      "schema": {
-                          "type": "string",
-                          "format": "uuid"
-                      }
-                  }
-              ],
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
+        "get": {
+          "tags": [
+            "Card"
+          ],
+          "parameters": [
+            {
+              "name": "deckId",
+              "in": "query",
+              "schema": {
+                "type": "string",
+                "format": "uuid"
               }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Card"
+                    }
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Card"
+                    }
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Card"
+                    }
+                  }
+                }
+              }
+            }
           }
+        }
       },
       "/api/Card/updatecard": {
-          "put": {
-              "tags": [
-                  "Card"
-              ],
-              "requestBody": {
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UpdateCardRequest"
-                          }
-                      },
-                      "text/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UpdateCardRequest"
-                          }
-                      },
-                      "application/*+json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/UpdateCardRequest"
-                          }
-                      }
-                  },
-                  "required": true
+        "put": {
+          "tags": [
+            "Card"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCardRequest"
+                }
               },
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCardRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCardRequest"
+                }
               }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                }
+              }
+            }
           }
+        }
       },
       "/api/Card/addcard": {
-          "post": {
-              "tags": [
-                  "Card"
-              ],
-              "requestBody": {
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/AddCardRequest"
-                          }
-                      },
-                      "text/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/AddCardRequest"
-                          }
-                      },
-                      "application/*+json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/AddCardRequest"
-                          }
-                      }
-                  },
-                  "required": true
+        "post": {
+          "tags": [
+            "Card"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCardRequest"
+                }
               },
-              "responses": {
-                  "200": {
-                      "description": "OK"
-                  }
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCardRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCardRequest"
+                }
               }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Card"
+                  }
+                }
+              }
+            }
           }
+        }
       },
       "/api/Deck/getdecks": {
-          "get": {
-              "tags": [
-                  "Deck"
-              ],
-              "responses": {
-                  "200": {
-                      "description": "OK",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "type": "array",
-                                  "items": {
-                                      "$ref": "#/components/schemas/Deck"
-                                  }
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "type": "array",
-                                  "items": {
-                                      "$ref": "#/components/schemas/Deck"
-                                  }
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "type": "array",
-                                  "items": {
-                                      "$ref": "#/components/schemas/Deck"
-                                  }
-                              }
-                          }
-                      }
+        "get": {
+          "tags": [
+            "Deck"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
                   }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Deck"
+                    }
+                  }
+                }
               }
+            }
           }
+        }
       },
       "/api/Deck/adddeck": {
-          "post": {
-              "tags": [
-                  "Deck"
-              ],
-              "requestBody": {
-                  "content": {
-                      "application/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/AddDeckRequest"
-                          }
-                      },
-                      "text/json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/AddDeckRequest"
-                          }
-                      },
-                      "application/*+json": {
-                          "schema": {
-                              "$ref": "#/components/schemas/AddDeckRequest"
-                          }
-                      }
-                  },
-                  "required": true
+        "post": {
+          "tags": [
+            "Deck"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddDeckRequest"
+                }
               },
-              "responses": {
-                  "200": {
-                      "description": "OK",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "type": "boolean"
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "type": "boolean"
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "type": "boolean"
-                              }
-                          }
-                      }
-                  }
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddDeckRequest"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddDeckRequest"
+                }
               }
-          }
-      },
-      "/api/WeatherForecast": {
-          "get": {
-              "tags": [
-                  "WeatherForecast"
-              ],
-              "operationId": "GetWeatherForecast",
-              "responses": {
-                  "200": {
-                      "description": "OK",
-                      "content": {
-                          "text/plain": {
-                              "schema": {
-                                  "type": "array",
-                                  "items": {
-                                      "$ref": "#/components/schemas/WeatherForecast"
-                                  }
-                              }
-                          },
-                          "application/json": {
-                              "schema": {
-                                  "type": "array",
-                                  "items": {
-                                      "$ref": "#/components/schemas/WeatherForecast"
-                                  }
-                              }
-                          },
-                          "text/json": {
-                              "schema": {
-                                  "type": "array",
-                                  "items": {
-                                      "$ref": "#/components/schemas/WeatherForecast"
-                                  }
-                              }
-                          }
-                      }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Deck"
                   }
+                },
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Deck"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Deck"
+                  }
+                }
               }
+            }
           }
+        }
       }
-  },
-  "components": {
+    },
+    "components": {
       "schemas": {
-          "AddCardRequest": {
-              "type": "object",
-              "properties": {
-                  "deckId": {
-                      "type": "string",
-                      "format": "uuid"
-                  },
-                  "cardFront": {
-                      "type": "string"
-                  },
-                  "cardBack": {
-                      "type": "string"
-                  }
-              }
-          },
-          "AddDeckRequest": {
-              "type": "object",
-              "properties": {
-                  "deckName": {
-                      "type": "string"
-                  }
-              }
-          },
-          "Deck": {
-              "type": "object",
-              "properties": {
-                  "deckName": {
-                      "type": "string"
-                  },
-                  "userEmail": {
-                      "type": "string"
-                  },
-                  "deckSettings": {
-                      "$ref": "#/components/schemas/DeckSettings"
-                  },
-                  "id": {
-                      "type": "string",
-                      "format": "uuid"
-                  },
-                  "createdDate": {
-                      "type": "string",
-                      "format": "date-time"
-                  },
-                  "updatedDate": {
-                      "type": "string",
-                      "format": "date-time"
-                  },
-                  "createdBy": {
-                      "type": "string"
-                  },
-                  "updatedBy": {
-                      "type": "string"
-                  }
-              }
-          },
-          "DeckSettings": {
-              "type": "object",
-              "properties": {
-                  "reviewsPerDay": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "newCardsPerDay": {
-                      "type": "integer",
-                      "format": "int32"
-                  }
-              }
-          },
-          "UpdateCardRequest": {
-              "type": "object",
-              "properties": {
-                  "cardId": {
-                      "type": "string",
-                      "format": "uuid"
-                  },
-                  "cardFront": {
-                      "type": "string"
-                  },
-                  "cardBack": {
-                      "type": "string"
-                  }
-              }
-          },
-          "WeatherForecast": {
-              "type": "object",
-              "properties": {
-                  "date": {
-                      "type": "string",
-                      "format": "date"
-                  },
-                  "temperatureC": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "temperatureF": {
-                      "type": "integer",
-                      "format": "int32"
-                  },
-                  "summary": {
-                      "type": "string",
-                      "nullable": true
-                  }
-              }
+        "AddCardRequest": {
+          "type": "object",
+          "properties": {
+            "deckId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "cardFront": {
+              "type": "string"
+            },
+            "cardBack": {
+              "type": "string"
+            }
           }
+        },
+        "AddDeckRequest": {
+          "type": "object",
+          "properties": {
+            "deckName": {
+              "type": "string"
+            }
+          }
+        },
+        "Card": {
+          "type": "object",
+          "properties": {
+            "deckId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "cardFront": {
+              "type": "string"
+            },
+            "cardBack": {
+              "type": "string"
+            },
+            "cardReviews": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CardReview"
+              }
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "createdDate": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedDate": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "updatedBy": {
+              "type": "string"
+            }
+          }
+        },
+        "CardDifficulty": {
+          "type": "integer"
+        },
+        "CardReview": {
+          "type": "object",
+          "properties": {
+            "cardReviewId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "cardDifficulty": {
+              "$ref": "#/components/schemas/CardDifficulty"
+            },
+            "reviewDate": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "Deck": {
+          "type": "object",
+          "properties": {
+            "deckName": {
+              "type": "string"
+            },
+            "userEmail": {
+              "type": "string"
+            },
+            "deckSettings": {
+              "$ref": "#/components/schemas/DeckSettings"
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "createdDate": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedDate": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "updatedBy": {
+              "type": "string"
+            }
+          }
+        },
+        "DeckSettings": {
+          "type": "object",
+          "properties": {
+            "reviewsPerDay": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "newCardsPerDay": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "UpdateCardRequest": {
+          "type": "object",
+          "properties": {
+            "cardId": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "cardFront": {
+              "type": "string"
+            },
+            "cardBack": {
+              "type": "string"
+            }
+          }
+        }
       }
-  },
-  "tags": [
+    },
+    "tags": [
       {
-          "name": "Auth"
+        "name": "Auth"
       },
       {
-          "name": "Card"
+        "name": "Card"
       },
       {
-          "name": "Deck"
-      },
-      {
-          "name": "WeatherForecast"
+        "name": "Deck"
       }
-  ]
-}
+    ]
+  }

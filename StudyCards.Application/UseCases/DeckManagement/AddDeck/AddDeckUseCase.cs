@@ -10,9 +10,9 @@ public class AddDeckUseCaseRequest
     public string DeckName { get; set; } = string.Empty;
     public string EmailAddress { get; set; } = string.Empty;
 }
-public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCase> logger) : IUseCase<AddDeckUseCaseRequest, bool>
+public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCase> logger) : IUseCase<AddDeckUseCaseRequest, Deck>
 {
-    public async Task<bool> Handle(AddDeckUseCaseRequest request)
+    public async Task<Deck> Handle(AddDeckUseCaseRequest request)
     {
         var deck = new Deck
         {
@@ -23,13 +23,13 @@ public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCa
 
         try
         {
-            await deckRepository.Add(deck);
-            return true;
+            var result = await deckRepository.Add(deck);
+            return result;
         }
         catch (Exception)
         {
             logger.LogError("Failed to add deck {DeckName}", request.DeckName);
-            return false;
+            return default!;
         }
     }
 }
