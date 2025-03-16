@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-deck',
@@ -10,9 +9,5 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddDeckComponent {
-  router = inject(Router);
-
-  addDeck(): void {
-    this.router.navigate(['/decks/add']);
-  }
+  @Output() addDeck: EventEmitter<void> = new EventEmitter<void>();
 }

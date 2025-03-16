@@ -14,6 +14,6 @@ export class DeckService {
   }
 
   addDeck(deck: Deck): Observable<Deck> {
-    return this.deckServiceApi.apiDeckAdddeckPost$Json({ body: { deckName: deck.deckName } })
+    return this.deckServiceApi.apiDeckAdddeckPost$Json({ body: deck })
   }
 }

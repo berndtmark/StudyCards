@@ -1,6 +1,6 @@
 <mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
 <div class="deck-grid">
-    <app-add-deck></app-add-deck>
+    <app-add-deck (addDeck)="addDeck()"></app-add-deck>
     @for (deck of store.decks(); track deck.id) {
       <div class="deck-card" (click)="onDeckSelected(deck.id!)">
         <h3>{{ deck.deckName }}</h3>

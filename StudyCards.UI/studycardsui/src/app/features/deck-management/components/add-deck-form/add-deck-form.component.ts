@@ -32,7 +32,6 @@ export class AddDeckFormComponent {
       const deckForm = this.deckForm.value;
 
       this.store.addDeck({
-        id: '3',
         deckName: deckForm.name,
         deckSettings: {
           reviewsPerDay: deckForm.maxReviews,
