@@ -5,10 +5,11 @@ import { AddDeckComponent } from "../add-deck/add-deck.component";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { Router } from '@angular/router';
+import { DeckActionsComponent } from "../deck-actions/deck-actions.component";
 
 @Component({
   selector: 'app-deck-list',
-  imports: [CommonModule, AddDeckComponent, MatProgressBarModule],
+  imports: [CommonModule, AddDeckComponent, MatProgressBarModule, DeckActionsComponent],
   templateUrl: './deck-list.component.html',
   styleUrl: './deck-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -25,5 +26,13 @@ export class DeckListComponent {
 
   addDeck(): void {
     this.router.navigate(['/decks/add']);
+  }
+
+  editDeck(id: string): void {
+    console.log(`Deck edited: ${id}`);
+  }
+
+  removeDeck(id: string): void {
+    console.log(`Deck removed: ${id}`);
   }
 }

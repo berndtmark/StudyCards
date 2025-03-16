@@ -33,6 +33,7 @@ export class AddDeckFormComponent {
 
       this.store.addDeck({
         deckName: deckForm.name,
+        description: deckForm.description,
         deckSettings: {
           reviewsPerDay: deckForm.maxReviews,
           newCardsPerDay: deckForm.newCardsPerDay
