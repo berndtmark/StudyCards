@@ -30,7 +30,7 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
     [Authorize]
     [HttpPost]
     [Route("adddeck")]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
     public async Task<IActionResult> Add(AddDeckRequest request)
     {
         var email = httpContextAccessor.GetEmail();

@@ -33,10 +33,11 @@ export class AddDeckFormComponent {
 
       this.store.addDeck({
         id: '3',
-        name: deckForm.name,
-        description: deckForm.description,
-        cardCount: deckForm.maxReviews,
-        lastModified: new Date()
+        deckName: deckForm.name,
+        deckSettings: {
+          reviewsPerDay: deckForm.maxReviews,
+          newCardsPerDay: deckForm.newCardsPerDay
+        }
       });
       
       this.deckForm.reset();

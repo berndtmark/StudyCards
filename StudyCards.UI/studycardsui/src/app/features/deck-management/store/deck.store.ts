@@ -1,11 +1,11 @@
 import { patchState, signalStore, withComputed, withMethods, withState, withHooks } from '@ngrx/signals';
-import { Deck } from '../models/deck.model';
 import { computed, inject } from '@angular/core';
 import { DeckService } from '../services/deck.service';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
+import { Deck } from 'app/@api/models/deck';
 
 type DeckState = {
     loadingState: LoadingState
@@ -42,12 +42,25 @@ export const DeckStore = signalStore(
                     ))
                 )
             ),
-            addDeck(deck: Deck): void {
-                snackBar.open("Saved");
-                patchState(store, (state) => ({ 
-                    decks: [...state.decks, deck]
-                }));
-            }
+            addDeck: rxMethod<Deck>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap((deck) => deckService.addDeck(deck).pipe(
+                        tap((newDeck) => {
+                            patchState(store, (state) => ({ 
+                                decks: [...state.decks, newDeck],
+                                loadingState: LoadingState.Success 
+                            }));
+                            snackBar.open("Deck added successfully");
+                        }),
+                        catchError(() => {
+                            patchState(store, { loadingState: LoadingState.Error });
+                            snackBar.open("Failed to add deck");
+                            return of(null);
+                        })
+                    ))
+                )
+            )
         }),
     ),
     withHooks({
