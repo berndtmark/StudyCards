@@ -35,6 +35,7 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
         var result = await useCase.Handle(new UpdateCardUseCaseRequest
         {
             CardId = request.CardId,
+            DeckId = request.DeckId,
             CardFront = request.CardFront,
             CardBack = request.CardBack
         });

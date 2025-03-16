@@ -20,7 +20,7 @@ public class RemoveDeckUseCase(IDeckRepository deckRepository, ILogger<RemoveDec
         }
         catch (Exception)
         {
-            logger.LogError("Failed to remove deck {DeckId}", request);
+            logger.LogError("Failed to remove deck {DeckId}", request.DeckId);
             return false;
         }
     }

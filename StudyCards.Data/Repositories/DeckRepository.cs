@@ -19,12 +19,15 @@ public class DeckRepository : BaseRepository<Deck>, IDeckRepository
     {
         return await _dbContext
             .Deck
-            .FindAsync(id);
+            .WithPartitionKey(EmailAddress)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(d => d.Id == id);
     }
 
     public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress)
     {
         return await _dbContext.Deck
+            .AsNoTracking()
             .Where(c => c.UserEmail == emailAddress)
             .ToListAsync();
     }
