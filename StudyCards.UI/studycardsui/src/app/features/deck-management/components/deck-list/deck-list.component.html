@@ -3,18 +3,6 @@
     <app-add-deck (addDeck)="addDeck()"></app-add-deck>
 
     @for (deck of store.decks(); track deck.id) {
-      <div class="deck-card" (click)="onDeckSelected(deck.id!)">
-        <h3>{{ deck.deckName }}</h3>
-        <p>{{ deck.description ?? '' || 'No Description' }}</p>
-
-        <div class="deck-meta">
-          <span>Modified: {{ deck.updatedDate | date: 'd/M/yy, h:mm a' }}</span>
-          <app-deck-actions 
-            (click)="$event.stopPropagation(); $event.preventDefault();" 
-            (edit)="editDeck(deck.id!);" 
-            (remove)="removeDeck(deck.id!)">
-          </app-deck-actions>
-        </div>
-      </div>
+      <app-deck-item [deck]="deck"></app-deck-item>
     }
 </div>
