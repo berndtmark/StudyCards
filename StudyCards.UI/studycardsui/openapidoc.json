@@ -322,6 +322,55 @@
         }
       }
     },
+    "/api/Deck/updatedeck": {
+      "put": {
+        "tags": [
+          "Deck"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeckRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeckRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeckRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Deck"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Deck/removedeck/{deckId}": {
       "delete": {
         "tags": [
@@ -384,6 +433,17 @@
         "properties": {
           "deckName": {
             "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "reviewsPerDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "newCardsPerDay": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
@@ -500,11 +560,38 @@
             "type": "string",
             "format": "uuid"
           },
+          "deckId": {
+            "type": "string",
+            "format": "uuid"
+          },
           "cardFront": {
             "type": "string"
           },
           "cardBack": {
             "type": "string"
+          }
+        }
+      },
+      "UpdateDeckRequest": {
+        "type": "object",
+        "properties": {
+          "deckId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "deckName": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "reviewsPerDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "newCardsPerDay": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }

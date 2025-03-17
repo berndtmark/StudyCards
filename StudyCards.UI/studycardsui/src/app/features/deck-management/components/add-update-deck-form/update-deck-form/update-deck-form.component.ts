@@ -19,19 +19,21 @@ export class UpdateDeckFormComponent extends AddUpdateDeckBaseComponent {
   readonly store = inject(DeckStore);
 
   saveButtonName = "Update Deck";
+  private deckId?: string;
 
   constructor() {
     super();
 
+    this.deckId = this.route.snapshot.paramMap.get('deckid') || '';
     effect(() => {
-      const deckId = this.route.snapshot.paramMap.get('deckid') || '';
-      this.patchFormValues(deckId);
+      this.patchFormValues(this.deckId!);
     });
   }
 
   onSubmit(): void {
     if (this.deckForm.valid) {
-      this.store.updateDeck();
+      const result = this.formToDeck();
+      this.store.updateDeck(result);
       
       this.deckForm.reset();
       this.goBackToDeckList();

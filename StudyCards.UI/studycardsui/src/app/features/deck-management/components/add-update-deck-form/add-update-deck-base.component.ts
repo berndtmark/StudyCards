@@ -10,6 +10,7 @@ export class AddUpdateDeckBaseComponent {
 
     constructor() {
         this.deckForm = this.fb.group({
+            id: [''],
             name: ['', Validators.required],
             description: [''],
             maxReviews: [10, Validators.min(1)],
@@ -25,17 +26,19 @@ export class AddUpdateDeckBaseComponent {
         const deckForm = this.deckForm.value;
 
         return {
-          deckName: deckForm.name,
-          description: deckForm.description,
-          deckSettings: {
-            reviewsPerDay: deckForm.maxReviews,
-            newCardsPerDay: deckForm.newCardsPerDay
-          }
+            id: deckForm.id,
+            deckName: deckForm.name,
+            description: deckForm.description,
+            deckSettings: {
+                reviewsPerDay: deckForm.maxReviews,
+                newCardsPerDay: deckForm.maxNew
+            }
         }
     }
 
     protected deckToForm(deck: Deck) {
         return {
+            id: deck.id,
             name: deck?.deckName,
             description: deck.description,
             maxReviews: deck.deckSettings?.reviewsPerDay,

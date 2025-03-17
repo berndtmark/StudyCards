@@ -61,9 +61,31 @@ export const DeckStore = signalStore(
                     ))
                 )
             ),
-            updateDeck(): void {
-                snackBar.open("todo update deck")
-            },
+            updateDeck: rxMethod<Deck>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap((deck) => deckService.updateDeck(deck).pipe(
+                        tap((updatedDeck) => {
+                            patchState(store, (state) => {
+                                const updatedDecks = state.decks.map((deck) =>
+                                    deck.id === updatedDeck.id ? updatedDeck : deck
+                                );
+                                return {
+                                    ...state,
+                                    decks: updatedDecks,
+                                    loadingState: LoadingState.Success
+                                };
+                            });
+                            snackBar.open("Deck updated successfully");
+                        }),
+                        catchError(() => {
+                            patchState(store, { loadingState: LoadingState.Error });
+                            snackBar.open("Failed to update deck");
+                            return of(null);
+                        })
+                    ))
+                )
+            ),
             getDeckById: (id: string) => {
                 return store.decks().find(deck => deck.id === id) || null;
             }

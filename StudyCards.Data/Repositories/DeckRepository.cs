@@ -15,11 +15,11 @@ public class DeckRepository : BaseRepository<Deck>, IDeckRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Deck?> Get(Guid id)
+    public async Task<Deck?> Get(Guid id, string emailAddress)
     {
         return await _dbContext
             .Deck
-            .WithPartitionKey(EmailAddress)
+            .WithPartitionKey(emailAddress)
             .AsNoTracking()
             .SingleOrDefaultAsync(d => d.Id == id);
     }

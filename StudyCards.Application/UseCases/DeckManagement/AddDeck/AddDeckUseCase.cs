@@ -9,6 +9,9 @@ public class AddDeckUseCaseRequest
 {
     public string DeckName { get; set; } = string.Empty;
     public string EmailAddress { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public int ReviewsPerDay { get; set; }
+    public int NewCardsPerDay { get; set; }
 }
 public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCase> logger) : IUseCase<AddDeckUseCaseRequest, Deck>
 {
@@ -18,7 +21,13 @@ public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCa
         {
             Id = Guid.NewGuid(),
             DeckName = request.DeckName,
-            UserEmail = request.EmailAddress
+            Description = request.Description,
+            UserEmail = request.EmailAddress,
+            DeckSettings = new DeckSettings
+            {
+                NewCardsPerDay = request.NewCardsPerDay,
+                ReviewsPerDay = request.ReviewsPerDay,
+            }
         };
 
         try
