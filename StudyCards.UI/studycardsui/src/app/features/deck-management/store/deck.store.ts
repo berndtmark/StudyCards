@@ -86,6 +86,29 @@ export const DeckStore = signalStore(
                     ))
                 )
             ),
+            removeDeck: rxMethod<string>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap((deckId) => deckService.removeDeck(deckId).pipe(
+                        tap(() => {
+                            patchState(store, (state) => {
+                                const updatedDecks = state.decks.filter(deck => deck.id !== deckId);
+                                return {
+                                    ...state,
+                                    decks: updatedDecks,
+                                    loadingState: LoadingState.Success
+                                };
+                            });
+                            snackBar.open("Deck removed successfully");
+                        }),
+                        catchError(() => {
+                            patchState(store, { loadingState: LoadingState.Error });
+                            snackBar.open("Failed to remove deck");
+                            return of(null);
+                        })
+                    ))
+                )
+            ),
             getDeckById: (id: string) => {
                 return store.decks().find(deck => deck.id === id) || null;
             }
