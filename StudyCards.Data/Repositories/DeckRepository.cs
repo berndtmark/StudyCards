@@ -15,23 +15,42 @@ public class DeckRepository : BaseRepository<Deck>, IDeckRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Deck?> Get(Guid id)
+    public async Task<Deck?> Get(Guid id, string emailAddress)
     {
         return await _dbContext
             .Deck
-            .FindAsync(id);
+            .WithPartitionKey(emailAddress)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(d => d.Id == id);
     }
 
     public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress)
     {
         return await _dbContext.Deck
+            .AsNoTracking()
             .Where(c => c.UserEmail == emailAddress)
             .ToListAsync();
     }
 
-    public async Task Add(Deck deck)
+    public async Task<Deck> Add(Deck deck)
     {
-        await AddEntity(deck);
+        var entity = await AddEntity(deck);
+        await _dbContext.SaveChangesAsync();
+
+        return entity;
+    }
+
+    public async Task<Deck> Update(Deck deck)
+    {
+        var entity = await UpdateEntity(deck);
+        await _dbContext.SaveChangesAsync();
+
+        return entity;
+    }
+
+    public async Task Remove(Guid deckId)
+    {
+        await RemoveEntity(deckId);
         await _dbContext.SaveChangesAsync();
     }
 }

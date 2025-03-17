@@ -16,6 +16,7 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
     [Authorize]
     [HttpGet]
     [Route("getcards")]
+    [ProducesResponseType(typeof(IEnumerable<Card>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid deckId)
     {
         var useCase = useCaseFactory.Create<GetCardsUseCaseRequest, IEnumerable<Card>>();
@@ -27,12 +28,14 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
     [Authorize]
     [HttpPut]
     [Route("updatecard")]
+    [ProducesResponseType(typeof(Card), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(UpdateCardRequest request)
     {
         var useCase = useCaseFactory.Create<UpdateCardUseCaseRequest, Card>();
         var result = await useCase.Handle(new UpdateCardUseCaseRequest
         {
             CardId = request.CardId,
+            DeckId = request.DeckId,
             CardFront = request.CardFront,
             CardBack = request.CardBack
         });
@@ -43,9 +46,10 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
     [Authorize]
     [HttpPost]
     [Route("addcard")]
+    [ProducesResponseType(typeof(Card), StatusCodes.Status200OK)]
     public async Task<IActionResult> Add(AddCardRequest request)
     {
-        var useCase = useCaseFactory.Create<AddCardUseCaseRequest, bool>();
+        var useCase = useCaseFactory.Create<AddCardUseCaseRequest, Card>();
         var result = await useCase.Handle(new AddCardUseCaseRequest
         {
             DeckId = request.DeckId,

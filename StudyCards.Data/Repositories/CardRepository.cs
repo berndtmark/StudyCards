@@ -15,30 +15,37 @@ public class CardRepository : BaseRepository<Card>, ICardRepository
         _dbContext = dbContext;
     }
 
-    public async Task<Card?> Get(Guid id)
+    public async Task<Card?> Get(Guid id, Guid deckId)
     {
         return await _dbContext
             .Card
-            .FindAsync(id);
+            .WithPartitionKey(deckId)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(d => d.Id == id);
     }
 
     public async Task<IEnumerable<Card>> GetByDeck(Guid deckId)
     {
         return await _dbContext.Card
+            .AsNoTracking()
             .Where(c => c.DeckId == deckId)
             .ToListAsync();
     }
 
-    public async Task Add(Card card)
+    public async Task<Card> Add(Card card)
     {
-        await AddEntity(card);
+        var entity = await AddEntity(card);
         await _dbContext.SaveChangesAsync();
+
+        return entity;
     }
 
-    public async Task Update(Card card)
+    public async Task<Card> Update(Card card)
     {
-        await UpdateEntity(card);
+        var entity = await UpdateEntity(card);
         await _dbContext.SaveChangesAsync();
+
+        return entity;
     }
 }
 
