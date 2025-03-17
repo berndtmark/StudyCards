@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, of, pipe } from 'rxjs';
-import { Deck } from '../models/deck.model';
+import { Observable } from 'rxjs';
 import { DeckService as DeckServiceApi } from '../../../@api/services';
+import { Deck } from 'app/@api/models/deck';
+import { UpdateDeckRequest } from 'app/@api/models/update-deck-request';
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +11,33 @@ export class DeckService {
   deckServiceApi = inject(DeckServiceApi);
 
   getDecks(): Observable<Deck[]> {
-    // todo: this is mostly a placeholder implementation
-    const decks = this.deckServiceApi.apiDeckGetdecksGet$Json()
-    .pipe(
-      map((decks) =>
-        decks.map((deck) => ({
-          id: deck.id,
-          name: deck.deckName,
-          description: 'No Description',
-          cardCount: 25,
-          lastModified: new Date(deck.updatedDate!)
-        }) as Deck)
-      )
-    );
+    return this.deckServiceApi.apiDeckGetdecksGet$Json();
+  }
 
-    return decks;
+  addDeck(deck: Deck): Observable<Deck> {
+    const request: UpdateDeckRequest = { 
+      deckName: deck.deckName,
+      description: deck.description,
+      newCardsPerDay: deck.deckSettings?.newCardsPerDay,
+      reviewsPerDay: deck.deckSettings?.reviewsPerDay
+    }
+
+    return this.deckServiceApi.apiDeckAdddeckPost$Json({ body: request })
+  }
+
+  updateDeck(deck: Deck): Observable<Deck> {
+    const request: UpdateDeckRequest = { 
+      deckId: deck.id,
+      deckName: deck.deckName,
+      description: deck.description,
+      newCardsPerDay: deck.deckSettings?.newCardsPerDay,
+      reviewsPerDay: deck.deckSettings?.reviewsPerDay
+    }
+
+    return this.deckServiceApi.apiDeckUpdatedeckPut$Json({ body: request });
+  }
+
+  removeDeck(deckId: string): Observable<boolean> {
+    return this.deckServiceApi.apiDeckRemovedeckDeckIdDelete$Json({ deckId });
   }
 }

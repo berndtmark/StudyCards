@@ -1,0 +1,20 @@
+@use '../../../../theming/colour' as colour;
+
+.container {
+    display: flex;
+    gap: 7px;
+
+    .icon {
+        transition: transform 0.2s;
+
+        &.edit:hover {
+            color: colour.$orange-100;
+            transform: translateY(-3px);
+        }
+
+        &.remove:hover {
+            color: colour.$red-100;
+            transform: translateY(-3px);
+        }
+    }
+}

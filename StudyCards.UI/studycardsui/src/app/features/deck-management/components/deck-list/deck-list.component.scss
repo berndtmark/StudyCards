@@ -1,31 +1,6 @@
-// @use '@theming/_colour.scss' as colour;
-@use '../../../../theming/colour' as colour;
-
 .deck-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
     padding: 1.5rem;
-}
-
-.deck-card {
-    background: colour.$white;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.deck-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.deck-meta {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    color: colour.$gray-100;
 }

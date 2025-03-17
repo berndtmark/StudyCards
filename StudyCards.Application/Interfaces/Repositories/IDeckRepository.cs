@@ -4,7 +4,9 @@ namespace StudyCards.Application.Interfaces.Repositories;
 
 public interface IDeckRepository
 {
-    Task<Deck?> Get(Guid id);
+    Task<Deck?> Get(Guid id, string emailAddress);
     Task<IEnumerable<Deck>> GetByEmail(string emailAddress);
-    Task Add(Deck deck);
+    Task<Deck> Add(Deck deck);
+    Task<Deck> Update(Deck deck);
+    Task Remove(Guid deckId);
 }

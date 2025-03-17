@@ -7,6 +7,7 @@ namespace StudyCards.Application.UseCases.CardManagement.UpdateCard;
 public class UpdateCardUseCaseRequest
 {
     public Guid CardId { get; set; }
+    public Guid DeckId { get; set; }
     public string CardFront { get; set; } = string.Empty;
     public string CardBack { get; set; } = string.Empty;
 }
@@ -15,7 +16,7 @@ public class UpdataCardUseCase(ICardRepository cardRepository) : IUseCase<Update
 {
     public async Task<Card> Handle(UpdateCardUseCaseRequest request)
     {
-        var currentCard = await cardRepository.Get(request.CardId);
+        var currentCard = await cardRepository.Get(request.CardId, request.DeckId);
 
         if (currentCard == null)
         {
@@ -28,7 +29,7 @@ public class UpdataCardUseCase(ICardRepository cardRepository) : IUseCase<Update
             CardBack = request.CardBack
         };
 
-        await cardRepository.Update(newCard);
-        return newCard;
+        var result = await cardRepository.Update(newCard);
+        return result;
     }
 }
