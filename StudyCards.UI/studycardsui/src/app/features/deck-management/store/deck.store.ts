@@ -60,7 +60,13 @@ export const DeckStore = signalStore(
                         })
                     ))
                 )
-            )
+            ),
+            updateDeck(): void {
+                snackBar.open("todo update deck")
+            },
+            getDeckById: (id: string) => {
+                return store.decks().find(deck => deck.id === id) || null;
+            }
         }),
     ),
     withHooks({
