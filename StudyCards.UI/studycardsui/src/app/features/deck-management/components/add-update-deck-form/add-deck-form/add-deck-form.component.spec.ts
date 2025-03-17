@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddDeckFormComponent } from './add-deck-form.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { DeckStore } from 'app/features/deck-management/store/deck.store';
 
 describe('AddDeckFormComponent', () => {
   let component: AddDeckFormComponent;
@@ -8,7 +11,12 @@ describe('AddDeckFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddDeckFormComponent]
+      imports: [AddDeckFormComponent],
+      providers: [
+        DeckStore,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ]
     })
     .compileComponents();
 
