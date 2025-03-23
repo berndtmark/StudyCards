@@ -42,7 +42,7 @@ public class CardRepository : BaseRepository<Card>, ICardRepository
 
     public async Task<Card> Update(Card card)
     {
-        var entity = await UpdateEntity(card);
+        var entity = UpdateEntity(card);
         await _dbContext.SaveChangesAsync();
 
         return entity;

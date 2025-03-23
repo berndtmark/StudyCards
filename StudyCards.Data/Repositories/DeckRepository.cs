@@ -42,7 +42,7 @@ public class DeckRepository : BaseRepository<Deck>, IDeckRepository
 
     public async Task<Deck> Update(Deck deck)
     {
-        var entity = await UpdateEntity(deck);
+        var entity = UpdateEntity(deck);
         await _dbContext.SaveChangesAsync();
 
         return entity;

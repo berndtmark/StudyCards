@@ -10,14 +10,8 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpCo
 {
     protected string EmailAddress => httpContextAccessor.GetEmail();
 
-    protected virtual async Task<TEntity> UpdateEntity(TEntity entity)
+    protected virtual TEntity UpdateEntity(TEntity entity)
     {
-        var existingCard = await GetEntityById(entity.Id, entity.PartitionKey);
-        if (existingCard == null)
-        {
-            throw new Exception($"{typeof(TEntity).FullName} not found to update with Id:{entity.Id}");
-        }
-
         // Update Audit Fields
         var updateEntity = entity with
         {
@@ -25,7 +19,7 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpCo
             UpdatedBy = EmailAddress
         };
 
-        dbContext.Entry(existingCard).CurrentValues.SetValues(updateEntity);
+        dbContext.Update<TEntity>(updateEntity);
         return updateEntity;
     }
 
