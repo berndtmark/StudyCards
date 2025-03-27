@@ -2,7 +2,7 @@
     <h2>Study Cards</h2>
 
     <div class="right-hand-content">
-        <span *ngIf="store.userName().length > 0">Welcome {{ store.userName() }}</span>
+        <span class="welcome" *ngIf="store.userName()">Welcome {{ store.userName() }}</span>
 
         <button mat-raised-button (click)="logout()">
             <mat-icon>login</mat-icon>
