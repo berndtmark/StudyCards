@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardLandingComponent } from './card-landing.component';
+import { CardStore } from '../store/card.store';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { RouterModule } from '@angular/router';
 
 describe('CardLandingComponent', () => {
   let component: CardLandingComponent;
@@ -8,7 +12,15 @@ describe('CardLandingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardLandingComponent]
+      imports: [
+        CardLandingComponent,
+        RouterModule.forRoot([]),
+      ],
+      providers: [
+        CardStore,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
 
