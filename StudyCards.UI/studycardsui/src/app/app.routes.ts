@@ -18,6 +18,11 @@ export const routes: Routes = [
                 path: 'decks',
                 loadChildren: () => import('./features/deck-management/deck-management.routes')
                     .then(m => m.DECK_MANAGEMENT_ROUTES)
+            },
+            {
+                path: 'cards/:deckid',
+                loadChildren: () => import('./features/card-management/card-management.routes')
+                    .then(m => m.CARD_MANAGEMENT_ROUTES)
             }
         ]
     },
