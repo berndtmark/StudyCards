@@ -1,6 +1,6 @@
 import { Routes } from "@angular/router";
 import { CardStore } from "./store/card.store";
-import { CardListComponent } from "./components/card-list/card-list.component";
+import { CardLandingComponent } from "./card-landing/card-landing.component";
 
 export const CARD_MANAGEMENT_ROUTES: Routes = [
     {
@@ -9,7 +9,7 @@ export const CARD_MANAGEMENT_ROUTES: Routes = [
         children: [
             {
                 path: '',
-                component: CardListComponent
+                component: CardLandingComponent
             }
         ]
     }

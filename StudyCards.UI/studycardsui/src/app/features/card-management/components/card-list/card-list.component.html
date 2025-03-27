@@ -1,9 +1,8 @@
-<mat-form-field>
+<mat-form-field class="filter">
     <mat-label>Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" #input>
 </mat-form-field>
 
-<mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
 <table mat-table [dataSource]="dataSource" class="table">
 
     <!-- Card Front Column -->

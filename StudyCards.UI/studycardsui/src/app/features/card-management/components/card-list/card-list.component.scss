@@ -2,6 +2,9 @@
 
 .table {
     --mat-sys-surface: colour.$off-white;
-    padding-right: 20px;
-    padding-left: 20px;
+}
+
+.filter {
+    display: block;
+    margin-top: 20px;
 }
