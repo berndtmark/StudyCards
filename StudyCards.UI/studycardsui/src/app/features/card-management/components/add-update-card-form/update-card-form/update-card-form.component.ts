@@ -37,10 +37,11 @@ export class UpdateCardFormComponent extends AddUpdateCardBaseComponent implemen
     onSubmit(): void {
         if (this.cardForm.valid) {
             const form = this.cardForm.value;
-            // this.store.updateCard({ 
-            //     cardFront: form.front, 
-            //     cardBack: form.back,
-            // });
+            this.store.updateCard({ 
+                cardId: this.cardId!,
+                cardFront: form.front, 
+                cardBack: form.back,
+            });
             
             this.cardForm.reset();
             this.goBackToCardList();

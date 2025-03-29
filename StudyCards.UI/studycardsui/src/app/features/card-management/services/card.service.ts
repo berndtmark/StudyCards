@@ -16,4 +16,8 @@ export class CardService {
   addCard(deckId: string, cardFront: string, cardBack: string): Observable<Card> {
     return this.cardServiceApi.apiCardAddcardPost$Json({ body: { deckId, cardFront, cardBack } });
   }
+
+  updateCard(deckId: string, cardId: string, cardFront: string, cardBack: string): Observable<Card> {
+    return this.cardServiceApi.apiCardUpdatecardPut$Json({ body: { cardId, deckId, cardFront, cardBack } });
+  }
 }

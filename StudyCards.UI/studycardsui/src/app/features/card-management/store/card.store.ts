@@ -65,7 +65,32 @@ export const CardStore = signalStore(
                         })
                     ))
                 )
-            ),          
+            ),
+            updateCard: rxMethod<{ cardId: string, cardFront: string, cardBack: string }>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap((card) => cardService.updateCard(store.deckId(), card.cardId, card.cardFront, card.cardBack).pipe(
+                        tap((updatedCard) => {
+                            patchState(store, (state) => {
+                                const updatedCards = state.cards.map((card) =>
+                                    card.id === updatedCard.id ? updatedCard : card
+                                );
+                                return {
+                                    ...state,
+                                    cards: updatedCards,
+                                    loadingState: LoadingState.Success
+                                };
+                            });
+                            snackBar.open("Card updated successfully");
+                        }),
+                        catchError(() => {
+                            patchState(store, { loadingState: LoadingState.Error });
+                            snackBar.open("Failed to update card");
+                            return of(null);
+                        })
+                    ))
+                )
+            ),
             cardCountByDeckId: (deckId: string) =>  
                 store.cards().filter(card => card.deckId === deckId).length,
             getCardById: (id: string) => {
