@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddCardFormComponent } from './add-card-form.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { DeckStore } from 'app/features/deck-management/store/deck.store';
+import { RouterModule } from '@angular/router';
+import { CardStore } from 'app/features/card-management/store/card.store';
 
 describe('AddCardFormComponent', () => {
   let component: AddCardFormComponent;
@@ -11,9 +12,12 @@ describe('AddCardFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddCardFormComponent],
+      imports: [
+        AddCardFormComponent,
+        RouterModule.forRoot([])
+      ],
       providers: [
-        DeckStore,
+        CardStore,
         provideHttpClient(),
         provideHttpClientTesting(),
       ]
