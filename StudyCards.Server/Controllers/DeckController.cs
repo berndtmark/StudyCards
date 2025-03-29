@@ -12,11 +12,11 @@ using StudyCards.Server.Models.Request;
 
 namespace StudyCards.Server.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor httpContextAccessor) : ControllerBase
 {
-    [Authorize]
     [HttpGet]
     [Route("getdecks")]
     [ProducesResponseType(typeof(IEnumerable<Deck>), StatusCodes.Status200OK)]
@@ -30,7 +30,6 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
         return Ok(result);
     }
 
-    [Authorize]
     [HttpPost]
     [Route("adddeck")]
     [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
@@ -51,7 +50,6 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
         return Ok(result);
     }
 
-    [Authorize]
     [HttpPut]
     [Route("updatedeck")]
     [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
@@ -73,7 +71,6 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
         return Ok(result);
     }
 
-    [Authorize]
     [HttpDelete]
     [Route("removedeck/{deckId}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]

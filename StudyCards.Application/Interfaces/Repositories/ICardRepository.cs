@@ -8,4 +8,5 @@ public interface ICardRepository
     Task<IEnumerable<Card>> GetByDeck(Guid deckId);
     Task<Card> Add(Card card);
     Task<Card> Update(Card card);
+    Task Remove(Guid cardId);
 }

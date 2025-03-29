@@ -3,17 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.UseCases.CardManagement.AddCard;
 using StudyCards.Application.UseCases.CardManagement.GetCards;
+using StudyCards.Application.UseCases.CardManagement.RemoveCard;
 using StudyCards.Application.UseCases.CardManagement.UpdateCard;
 using StudyCards.Domain.Entities;
 using StudyCards.Server.Models.Request;
 
 namespace StudyCards.Server.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
 {
-    [Authorize]
     [HttpGet]
     [Route("getcards")]
     [ProducesResponseType(typeof(IEnumerable<Card>), StatusCodes.Status200OK)]
@@ -25,7 +26,6 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize]
     [HttpPut]
     [Route("updatecard")]
     [ProducesResponseType(typeof(Card), StatusCodes.Status200OK)]
@@ -43,7 +43,6 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
         return Ok(result);
     }
 
-    [Authorize]
     [HttpPost]
     [Route("addcard")]
     [ProducesResponseType(typeof(Card), StatusCodes.Status200OK)]
@@ -56,6 +55,17 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
             CardFront = request.CardFront,
             CardBack = request.CardBack
         });
+
+        return Ok(result);
+    }
+
+    [HttpDelete]
+    [Route("removecard/{cardId}")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Remove(string cardId)
+    {
+        var useCase = useCaseFactory.Create<RemoveCardUseCaseRequest, bool>();
+        var result = await useCase.Handle(new RemoveCardUseCaseRequest { CardId = new Guid(cardId) });
 
         return Ok(result);
     }
