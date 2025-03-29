@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
+using StudyCards.Domain.Entities;
 
 namespace StudyCards.Server.Controllers;
 
@@ -44,6 +45,7 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
     [Authorize]
     [HttpGet]
     [Route("me")]
+    [ProducesResponseType(typeof(IDictionary<string, string>), StatusCodes.Status200OK)]
     public IActionResult Me()
     {
         if (!HttpContext?.User?.Identity?.IsAuthenticated ?? true)
@@ -51,7 +53,7 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
             return Unauthorized();
         }
 
-        var claims = HttpContext?.User.Claims.Select(c => new { c.Type, c.Value });
+        var claims = HttpContext?.User.Claims.ToDictionary(c => c.Type, c => c.Value);
         return Ok(claims);
     }
 

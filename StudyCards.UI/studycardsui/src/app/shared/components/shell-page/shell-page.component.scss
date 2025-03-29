@@ -1,5 +1,6 @@
 // @use '@theming/_colour.scss' as colour;
 @use '../../../theming/colour' as colour;
+@use '../../../theming/_responsive.scss' as responsive;
 
 .shell-page-header {
     height: 60px;
@@ -14,6 +15,18 @@
     padding: 0 20px;
     box-sizing: border-box;
     z-index: 2;
+
+    .welcome {
+        font-size: 15px;
+        font-weight: 200;
+        margin-right: 15px;
+    }
+
+    @include responsive.responsive('mobile') {
+        .welcome {
+            display: none;
+        }
+    }
 }
 
 .shell-page-content {

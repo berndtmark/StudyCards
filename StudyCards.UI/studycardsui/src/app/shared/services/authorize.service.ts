@@ -1,7 +1,7 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/@api/services';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +33,12 @@ export class AuthorizeService implements OnDestroy {
         tap(() => this.router.navigate(['/login']))
       )
       .subscribe();
+  }
+
+  claims(): Observable<Map<string, string>> {
+    return this.authServiceApi.apiAuthMeGet$Json()
+        .pipe(
+            map(claim => new Map(Object.entries(claim)))
+        );
   }
 }

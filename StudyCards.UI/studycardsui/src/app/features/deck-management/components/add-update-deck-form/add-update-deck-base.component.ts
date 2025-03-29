@@ -6,9 +6,9 @@ import { Deck } from "app/@api/models/deck";
 export class AddUpdateDeckBaseComponent {
     private router = inject(Router);
     private fb = inject(FormBuilder)
-    deckForm: FormGroup;
+    deckForm!: FormGroup;
 
-    constructor() {
+    protected initForm() {
         this.deckForm = this.fb.group({
             id: [''],
             name: ['', Validators.required],

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +14,7 @@ import { AddUpdateDeckBaseComponent } from '../add-update-deck-base.component';
   styleUrl: '../add-update-deck-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UpdateDeckFormComponent extends AddUpdateDeckBaseComponent {
+export class UpdateDeckFormComponent extends AddUpdateDeckBaseComponent implements OnInit {
   private route = inject(ActivatedRoute);
   readonly store = inject(DeckStore);
 
@@ -28,6 +28,10 @@ export class UpdateDeckFormComponent extends AddUpdateDeckBaseComponent {
     effect(() => {
       this.patchFormValues(this.deckId!);
     });
+  }
+
+  ngOnInit(): void {
+    this.initForm();
   }
 
   onSubmit(): void {
