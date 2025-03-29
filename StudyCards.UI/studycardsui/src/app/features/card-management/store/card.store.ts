@@ -91,6 +91,29 @@ export const CardStore = signalStore(
                     ))
                 )
             ),
+            removeCard: rxMethod<string>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap((cardId) => cardService.removeCard(store.deckId(), cardId).pipe(
+                        tap(() => {
+                            patchState(store, (state) => {
+                                const updatedCards = state.cards.filter(card => card.id !== cardId);
+                                return {
+                                    ...state,
+                                    cards: updatedCards,
+                                    loadingState: LoadingState.Success
+                                };
+                            });
+                            snackBar.open("Card removed successfully");
+                        }),
+                        catchError(() => {
+                            patchState(store, { loadingState: LoadingState.Error });
+                            snackBar.open("Failed to remove card");
+                            return of(null);
+                        })
+                    ))
+                )
+            ),
             cardCountByDeckId: (deckId: string) =>  
                 store.cards().filter(card => card.deckId === deckId).length,
             getCardById: (id: string) => {

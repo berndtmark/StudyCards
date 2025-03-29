@@ -13,5 +13,6 @@
         </mat-form-field>
     
         <button mat-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">{{saveButtonName}}</button>
+        <button mat-raised-button color="primary" type="button" *ngIf="includeRemove" (click)="removeCard()">Remove Card</button>
     </form>
 </div>

@@ -20,4 +20,8 @@ export class CardService {
   updateCard(deckId: string, cardId: string, cardFront: string, cardBack: string): Observable<Card> {
     return this.cardServiceApi.apiCardUpdatecardPut$Json({ body: { cardId, deckId, cardFront, cardBack } });
   }
+
+  removeCard(deckId: string, cardId: string): Observable<boolean> {
+    return this.cardServiceApi.removecard$Json({ deckId, cardId });
+  }
 }

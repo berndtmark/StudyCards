@@ -60,7 +60,7 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
     }
 
     [HttpDelete]
-    [Route("removecard/deck/{deckId}/card/{cardId}")]
+    [Route("removecard/deck/{deckId}/card/{cardId}", Name = "removecard")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remove(string deckId, string cardId)
     {
