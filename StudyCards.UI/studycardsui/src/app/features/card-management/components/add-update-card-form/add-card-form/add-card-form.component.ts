@@ -23,8 +23,11 @@ export class AddCardFormComponent extends AddUpdateCardBaseComponent implements 
 
     onSubmit(): void {
         if (this.cardForm.valid) {
-            const result = this.formToCard();
-            // this.store.addCard(result);
+            const form = this.cardForm.value;
+            this.store.addCard({ 
+                cardFront: form.front, 
+                cardBack: form.back,
+            });
             
             this.cardForm.reset();
             this.goBackToCardList();

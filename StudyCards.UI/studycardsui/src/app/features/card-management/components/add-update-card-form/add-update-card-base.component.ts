@@ -22,19 +22,10 @@ export class AddUpdateCardBaseComponent {
         });
     }
 
-    protected formToCard(): Card {
-        const cardForm = this.cardForm.value;
-
+    protected cardToForm(card: Card) {
         return {
-            cardFront: cardForm.front,
-            cardBack: cardForm.back
-        }
-    }
-
-    protected cardToForm(card: any) {
-        return {
-            front: card.front,
-            back: card.back
+            front: card.cardFront,
+            back: card.cardBack
         };
     }
 }

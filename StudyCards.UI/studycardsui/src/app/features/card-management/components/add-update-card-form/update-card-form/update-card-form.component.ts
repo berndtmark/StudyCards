@@ -36,7 +36,6 @@ export class UpdateCardFormComponent extends AddUpdateCardBaseComponent implemen
 
     onSubmit(): void {
         if (this.cardForm.valid) {
-            const result = this.formToCard();
             // this.store.updateCard(result);
             
             this.cardForm.reset();

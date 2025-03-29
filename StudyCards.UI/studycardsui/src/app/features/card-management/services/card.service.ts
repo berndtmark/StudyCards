@@ -12,4 +12,8 @@ export class CardService {
   getCards(deckId: string): Observable<Card[]> {
     return this.cardServiceApi.apiCardGetcardsGet$Json({ deckId });
   }
+
+  addCard(deckId: string, cardFront: string, cardBack: string): Observable<Card> {
+    return this.cardServiceApi.apiCardAddcardPost$Json({ body: { deckId, cardFront, cardBack } });
+  }
 }

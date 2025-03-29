@@ -5,15 +5,18 @@ import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { CardService } from '../services/card.service';
+import { SnackbarService } from 'app/shared/services/snackbar.service';
 
 type CardState = {
     loadingState: LoadingState
     cards: Card[];
+    deckId: string;
 };
 
 const initialState: CardState = {
     loadingState: LoadingState.Initial,
-    cards: []
+    cards: [],
+    deckId: ''
 };
 
 export const CardStore = signalStore(
@@ -22,7 +25,8 @@ export const CardStore = signalStore(
         cardCount: computed(() => cards().length)
     })),
     withMethods((store,
-        cardService = inject(CardService)) => ({
+        cardService = inject(CardService),
+        snackBar = inject(SnackbarService)) => ({
             loadCards: rxMethod<string>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
@@ -31,7 +35,8 @@ export const CardStore = signalStore(
                             tap((cards) => {
                                 patchState(store, {
                                     cards,
-                                    loadingState: LoadingState.Success
+                                    loadingState: LoadingState.Success,
+                                    deckId
                                 });
                             }),
                             catchError(() => {
@@ -41,7 +46,26 @@ export const CardStore = signalStore(
                         );
                     })
                 )
-            ),            
+            ),
+            addCard: rxMethod<{ cardFront: string, cardBack: string }>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap((card) => cardService.addCard(store.deckId(), card.cardFront, card.cardBack).pipe(
+                        tap((newCard) => {
+                            patchState(store, (state) => ({ 
+                                cards: [...state.cards, newCard],
+                                loadingState: LoadingState.Success 
+                            }));
+                            snackBar.open("Card added successfully");
+                        }),
+                        catchError(() => {
+                            patchState(store, { loadingState: LoadingState.Error });
+                            snackBar.open("Failed to add card");
+                            return of(null);
+                        })
+                    ))
+                )
+            ),          
             cardCountByDeckId: (deckId: string) =>  
                 store.cards().filter(card => card.deckId === deckId).length,
     })),
