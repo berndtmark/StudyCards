@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
@@ -15,6 +15,7 @@ export class CardListComponent {
   @Input() set cards(value: Card[]) {
     this.dataSource.data = value;
   }
+  @Output() updateCard = new EventEmitter<string>();
 
   displayedColumns: string[] = ['cardfront', 'cardback'];
   dataSource = new MatTableDataSource<Card>([]);

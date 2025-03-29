@@ -17,9 +17,8 @@ export class AddUpdateCardBaseComponent {
     }
 
     protected goBackToCardList(): void {
-        this.router.navigate(['..'], { 
-            relativeTo: this.activatedRoute 
-        });
+        const deckId = this.activatedRoute.snapshot.paramMap.get('deckid');
+        this.router.navigate(['/cards', deckId]);
     }
 
     protected cardToForm(card: Card) {

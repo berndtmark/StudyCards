@@ -6,5 +6,5 @@
         <button mat-raised-button color="primary" (click)="addCard()">Add Card</button>
     </div>
 
-    <app-card-list [cards]="store.cards()"></app-card-list>
+    <app-card-list [cards]="store.cards()" (updateCard)="updateCard($event)"></app-card-list>
 </div>

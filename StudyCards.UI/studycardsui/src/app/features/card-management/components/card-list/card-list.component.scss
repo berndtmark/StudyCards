@@ -2,6 +2,13 @@
 
 .table {
     --mat-sys-surface: colour.$off-white;
+
+    .mat-mdc-row {
+        &:hover {
+            background-color: colour.$white-100;
+            cursor: pointer;
+        }
+    }
 }
 
 .filter {

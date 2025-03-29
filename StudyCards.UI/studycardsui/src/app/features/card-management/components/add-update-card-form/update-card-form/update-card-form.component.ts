@@ -36,7 +36,11 @@ export class UpdateCardFormComponent extends AddUpdateCardBaseComponent implemen
 
     onSubmit(): void {
         if (this.cardForm.valid) {
-            // this.store.updateCard(result);
+            const form = this.cardForm.value;
+            // this.store.updateCard({ 
+            //     cardFront: form.front, 
+            //     cardBack: form.back,
+            // });
             
             this.cardForm.reset();
             this.goBackToCardList();
@@ -44,11 +48,11 @@ export class UpdateCardFormComponent extends AddUpdateCardBaseComponent implemen
     }
 
     private patchFormValues(cardId: string): void {
-        // const card = this.store.getCardById(cardId);
+        const card = this.store.getCardById(cardId);
         
-        // if (card) {
-        //     const result = this.cardToForm(card);
-        //     this.cardForm.patchValue(result);
-        // }
+        if (card) {
+            const result = this.cardToForm(card);
+            this.cardForm.patchValue(result);
+        }
     }
 }

@@ -37,4 +37,10 @@ export class CardLandingComponent implements OnInit {
       relativeTo: this.activatedRoute 
     });
   }
+
+  updateCard(cardId: string): void {
+    this.router.navigate(['edit', cardId], { 
+      relativeTo: this.activatedRoute 
+    });
+  }
 }
