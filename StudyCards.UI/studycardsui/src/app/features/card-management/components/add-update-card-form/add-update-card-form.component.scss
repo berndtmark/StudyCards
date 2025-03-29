@@ -1,0 +1,23 @@
+@use '../../../../theming/responsive' as responsive;
+
+.container {
+    padding: 30px;
+}
+
+form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+
+    @include responsive.responsive('tablet') {
+        max-width: 100%;
+    }
+}
+
+mat-form-field {
+    @include responsive.responsive('tablet') {
+        width: 100%;
+    }
+}

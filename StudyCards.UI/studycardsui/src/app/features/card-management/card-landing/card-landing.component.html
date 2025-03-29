@@ -1,6 +1,0 @@
-<mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
-
-<div class="container">
-    <button mat-raised-button color="primary" (click)="goBack()">Back</button>
-    <app-card-list [cards]="store.cards()"></app-card-list>
-</div>

@@ -1,4 +1,4 @@
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { Card } from 'app/@api/models/card';
 import { computed, inject } from '@angular/core';
@@ -41,6 +41,8 @@ export const CardStore = signalStore(
                         );
                     })
                 )
-            ),
+            ),            
+            cardCountByDeckId: (deckId: string) =>  
+                store.cards().filter(card => card.deckId === deckId).length,
     })),
 );
