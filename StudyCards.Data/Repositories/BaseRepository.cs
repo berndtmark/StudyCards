@@ -34,9 +34,9 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpCo
         return newEntity;
     }
 
-    protected virtual async Task RemoveEntity(Guid entityId)
+    protected virtual async Task RemoveEntity(Guid entityId, object? partitionKey = null)
     {
-        var entity = await GetEntityById(entityId) ?? 
+        var entity = await GetEntityById(entityId, partitionKey) ?? 
             throw new Exception($"{typeof(TEntity).FullName} not found to remove with Id:{entityId}");
 
         dbContext.Remove(entity);

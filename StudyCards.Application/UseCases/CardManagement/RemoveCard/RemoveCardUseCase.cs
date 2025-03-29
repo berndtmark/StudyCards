@@ -7,6 +7,7 @@ namespace StudyCards.Application.UseCases.CardManagement.RemoveCard;
 public class RemoveCardUseCaseRequest
 {
     public Guid CardId { get; set; }
+    public Guid DeckId { get; set; }
 }
 
 public class RemoveCardUseCase(ICardRepository cardRepository, ILogger<RemoveCardUseCase> logger) : IUseCase<RemoveCardUseCaseRequest, bool>
@@ -15,7 +16,7 @@ public class RemoveCardUseCase(ICardRepository cardRepository, ILogger<RemoveCar
     {
         try
         {
-            await cardRepository.Remove(request.CardId);
+            await cardRepository.Remove(request.CardId, request.DeckId);
             return true;
         }
         catch (Exception)

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.UseCases.CardManagement.UpdateCard;
 using StudyCards.Application.UseCases.DeckManagement.AddDeck;
 using StudyCards.Application.UseCases.DeckManagement.GetDeck;
 using StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
@@ -76,8 +75,13 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remove(string deckId)
     {
+        var email = httpContextAccessor.GetEmail();
+
         var useCase = useCaseFactory.Create<RemoveDeckUseCaseRequest, bool>();
-        var result = await useCase.Handle(new RemoveDeckUseCaseRequest { DeckId = new Guid(deckId) });
+        var result = await useCase.Handle(new RemoveDeckUseCaseRequest { 
+            DeckId = new Guid(deckId),
+            EmailAddress = email
+        });
 
         return Ok(result);
     }
