@@ -18,21 +18,6 @@ form {
     }
 }
 
-.sub-section {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-
-    @include responsive.responsive('tablet') {
-        flex-direction: column;
-        width: 100%;
-
-        mat-form-field {
-            width: 100%;
-        }
-    }
-}
-
 mat-form-field {
     @include responsive.responsive('tablet') {
         width: 100%;

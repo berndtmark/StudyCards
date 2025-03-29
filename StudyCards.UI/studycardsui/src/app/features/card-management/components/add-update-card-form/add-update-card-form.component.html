@@ -1,0 +1,18 @@
+<div class="container">
+    <button mat-raised-button color="primary" (click)="goBackToCardList()">Back</button>
+
+    <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+        <mat-form-field>
+            <mat-label>Front</mat-label>
+            <input matInput formControlName="front" required>
+        </mat-form-field>
+    
+        <mat-form-field>
+            <mat-label>Back</mat-label>
+            <input matInput formControlName="back" required>
+        </mat-form-field>
+    
+        <button mat-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">{{saveButtonName}}</button>
+        <button mat-raised-button color="primary" type="button" *ngIf="includeRemove" (click)="removeCard()">Remove Card</button>
+    </form>
+</div>

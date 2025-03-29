@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,13 +13,13 @@ import { AddUpdateDeckBaseComponent } from '../add-update-deck-base.component';
   styleUrl: '../add-update-deck-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddDeckFormComponent extends AddUpdateDeckBaseComponent {
+export class AddDeckFormComponent extends AddUpdateDeckBaseComponent implements OnInit {
   readonly store = inject(DeckStore);
 
   saveButtonName = "Create Deck";
 
-  constructor() {
-    super()
+  ngOnInit(): void {
+    this.initForm();
   }
 
   onSubmit(): void {

@@ -47,5 +47,11 @@ public class CardRepository : BaseRepository<Card>, ICardRepository
 
         return entity;
     }
+
+    public async Task Remove(Guid id, Guid deckId)
+    {
+        await RemoveEntity(id, deckId);
+        await _dbContext.SaveChangesAsync();
+    }
 }
 

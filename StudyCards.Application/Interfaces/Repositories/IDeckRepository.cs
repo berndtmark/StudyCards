@@ -8,5 +8,5 @@ public interface IDeckRepository
     Task<IEnumerable<Deck>> GetByEmail(string emailAddress);
     Task<Deck> Add(Deck deck);
     Task<Deck> Update(Deck deck);
-    Task Remove(Guid deckId);
+    Task Remove(Guid id, string emailAddress);
 }

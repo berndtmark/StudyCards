@@ -1,9 +1,14 @@
 <div class="shell-page-header">
     <h2>Study Cards</h2>
-    <button mat-raised-button (click)="logout()">
-        <mat-icon>login</mat-icon>
-        Logout
-    </button>
+
+    <div class="right-hand-content">
+        <span class="welcome" *ngIf="store.userName()">Welcome {{ store.userName() }}</span>
+
+        <button mat-raised-button (click)="logout()">
+            <mat-icon>login</mat-icon>
+            Logout
+        </button>
+    </div>
 </div>
 
 <div class="shell-page-content">

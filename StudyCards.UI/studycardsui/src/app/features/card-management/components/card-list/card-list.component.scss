@@ -1,0 +1,17 @@
+@use '../../../../theming/colour' as colour;
+
+.table {
+    --mat-sys-surface: colour.$off-white;
+
+    .mat-mdc-row {
+        &:hover {
+            background-color: colour.$white-100;
+            cursor: pointer;
+        }
+    }
+}
+
+.filter {
+    display: block;
+    margin-top: 20px;
+}

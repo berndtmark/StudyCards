@@ -48,9 +48,9 @@ public class DeckRepository : BaseRepository<Deck>, IDeckRepository
         return entity;
     }
 
-    public async Task Remove(Guid deckId)
+    public async Task Remove(Guid deckId, string emailAddress)
     {
-        await RemoveEntity(deckId);
+        await RemoveEntity(deckId, emailAddress);
         await _dbContext.SaveChangesAsync();
     }
 }

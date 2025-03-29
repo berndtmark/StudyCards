@@ -29,7 +29,8 @@ export class DeckItemComponent implements OnDestroy {
   }
 
   onDeckSelected(id: string): void {
-    console.log(`Deck selected: ${id}`);
+    // todo: this will go to a landing page of study/manage
+    this.router.navigate(['/cards', id]);
   }
 
   editDeck(id: string): void {

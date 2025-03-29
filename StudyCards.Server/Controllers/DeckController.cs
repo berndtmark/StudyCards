@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.UseCases.CardManagement.UpdateCard;
 using StudyCards.Application.UseCases.DeckManagement.AddDeck;
 using StudyCards.Application.UseCases.DeckManagement.GetDeck;
 using StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
@@ -12,11 +11,11 @@ using StudyCards.Server.Models.Request;
 
 namespace StudyCards.Server.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor httpContextAccessor) : ControllerBase
 {
-    [Authorize]
     [HttpGet]
     [Route("getdecks")]
     [ProducesResponseType(typeof(IEnumerable<Deck>), StatusCodes.Status200OK)]
@@ -30,7 +29,6 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
         return Ok(result);
     }
 
-    [Authorize]
     [HttpPost]
     [Route("adddeck")]
     [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
@@ -51,7 +49,6 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
         return Ok(result);
     }
 
-    [Authorize]
     [HttpPut]
     [Route("updatedeck")]
     [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
@@ -73,14 +70,18 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
         return Ok(result);
     }
 
-    [Authorize]
     [HttpDelete]
     [Route("removedeck/{deckId}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remove(string deckId)
     {
+        var email = httpContextAccessor.GetEmail();
+
         var useCase = useCaseFactory.Create<RemoveDeckUseCaseRequest, bool>();
-        var result = await useCase.Handle(new RemoveDeckUseCaseRequest { DeckId = new Guid(deckId) });
+        var result = await useCase.Handle(new RemoveDeckUseCaseRequest { 
+            DeckId = new Guid(deckId),
+            EmailAddress = email
+        });
 
         return Ok(result);
     }
