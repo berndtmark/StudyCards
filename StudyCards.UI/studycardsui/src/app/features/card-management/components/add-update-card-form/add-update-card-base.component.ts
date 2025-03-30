@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Card } from 'app/@api/models/card';
 import { CardStore } from '../../store/card.store';
 import { DialogService } from 'app/shared/services/dialog.service';
+import { CardResponse } from 'app/@api/models/card-response';
 
 export abstract class AddUpdateCardBaseComponent {
     private router = inject(Router);
@@ -28,7 +28,7 @@ export abstract class AddUpdateCardBaseComponent {
         this.router.navigate(['/cards', deckId]);
     }
 
-    protected cardToForm(card: Card) {
+    protected cardToForm(card: CardResponse) {
         return {
             front: card.cardFront,
             back: card.cardBack
