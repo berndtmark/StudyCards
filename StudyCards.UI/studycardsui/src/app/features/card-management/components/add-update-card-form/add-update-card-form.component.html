@@ -1,5 +1,8 @@
 <div class="container">
-    <button mat-raised-button color="primary" (click)="goBackToCardList()">Back</button>
+    <button mat-raised-button color="primary" (click)="goBackToCardList()">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+    </button>
 
     <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
         <mat-form-field>

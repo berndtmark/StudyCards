@@ -1,6 +1,7 @@
 <mat-form-field class="filter">
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" #input>
+    <mat-label>Filter cards</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter..." #input>
+    <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 
 <table mat-table [dataSource]="dataSource" class="table">
@@ -22,6 +23,8 @@
 
     <!-- Row shown when there is no matching data. -->
     <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        <td class="no-data" [attr.colspan]="displayedColumns.length">
+            {{input.value ? 'No cards matching the filter' : 'No cards in this deck'}}
+        </td>
     </tr>
 </table>

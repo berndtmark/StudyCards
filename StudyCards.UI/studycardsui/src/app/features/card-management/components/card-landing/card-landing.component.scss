@@ -1,7 +1,14 @@
+@use '../../../../theming/colour' as colour;
+@use '../../../../theming/responsive' as responsive;
+
 .container {
-    padding-right: 20px;
-    padding-left: 20px;
-    margin-top: 20px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    
+    @include responsive.responsive('mobile') {
+        padding: 1rem;
+    }
 
     .button-container {
         display: flex;
