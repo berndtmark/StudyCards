@@ -6,12 +6,12 @@ namespace StudyCards.Application.Factory;
 
 public class CardSelectionStudyFactory : ICardSelectionStudyFactory
 {
-    public ICardStrategy CreateStudy(CardStudyMethodology studyMethodology)
+    public ICardStrategy Create(CardStudyMethodology studyMethodology)
     {
         return studyMethodology switch
         {
             CardStudyMethodology.Random => new RandomCardStrategy(),
-            _ => throw new ArgumentException("Invalid methodology ", nameof(studyMethodology))
+            _ => throw new ArgumentException("Methodology not yet supported ", nameof(studyMethodology))
         };
     }
 }

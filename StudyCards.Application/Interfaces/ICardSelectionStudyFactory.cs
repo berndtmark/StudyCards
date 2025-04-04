@@ -4,5 +4,5 @@ namespace StudyCards.Application.Interfaces;
 
 public interface ICardSelectionStudyFactory
 {
-    ICardStrategy CreateStudy(CardStudyMethodology studyMethodology);
+    ICardStrategy Create(CardStudyMethodology studyMethodology);
 }
