@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.UseCases.CardManagement.AddCard;
 
 namespace StudyCards.Application.Factory;
 
