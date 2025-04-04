@@ -25,6 +25,11 @@ export const routes: Routes = [
                 path: 'cards/:deckid',
                 loadChildren: () => import('./features/card-management/card-management.routes')
                     .then(m => m.CARD_MANAGEMENT_ROUTES)
+            },
+            {
+                path: 'study/:deckid',
+                loadChildren: () => import('./features/study/study.routes')
+                    .then(m => m.STUDY_ROUTES)
             }
         ]
     },

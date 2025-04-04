@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace StudyCards.Domain.Entities;
+﻿namespace StudyCards.Domain.Entities;
 
 public abstract record EntityBase
 {
@@ -9,7 +7,4 @@ public abstract record EntityBase
     public DateTime UpdatedDate { get; init; } = DateTime.UtcNow;
     public string CreatedBy { get; init; } = string.Empty;
     public string UpdatedBy { get; init; } = string.Empty;
-
-    [NotMapped]
-    public abstract object PartitionKey { get; }
 }
