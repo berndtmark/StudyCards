@@ -1,0 +1,14 @@
+<div class="card-container" (click)="flipCard()">
+  <div class="card" [class.flipped]="isFlipped">
+    <div class="card-face front">
+      <div class="content">
+        <p>{{ frontText }}</p>
+      </div>
+    </div>
+    <div class="card-face back">
+      <div class="content">
+        <p>{{ backText }}</p>
+      </div>
+    </div>
+  </div>
+</div>
