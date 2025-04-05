@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.UseCases.CardManagement.AddCard;
@@ -7,28 +8,30 @@ using StudyCards.Application.UseCases.CardManagement.RemoveCard;
 using StudyCards.Application.UseCases.CardManagement.UpdateCard;
 using StudyCards.Domain.Entities;
 using StudyCards.Server.Models.Request;
+using StudyCards.Server.Models.Response;
 
 namespace StudyCards.Server.Controllers;
 
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
+public class CardController(IUseCaseFactory useCaseFactory, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     [Route("getcards")]
-    [ProducesResponseType(typeof(IEnumerable<Card>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<CardResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid deckId)
     {
         var useCase = useCaseFactory.Create<GetCardsUseCaseRequest, IEnumerable<Card>>();
         var result = await useCase.Handle(new GetCardsUseCaseRequest { DeckId = deckId });
 
-        return Ok(result);
+        var response = mapper.Map<IEnumerable<CardResponse>>(result);
+        return Ok(response);
     }
 
     [HttpPut]
     [Route("updatecard")]
-    [ProducesResponseType(typeof(Card), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(UpdateCardRequest request)
     {
         var useCase = useCaseFactory.Create<UpdateCardUseCaseRequest, Card>();
@@ -40,12 +43,13 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
             CardBack = request.CardBack
         });
 
-        return Ok(result);
+        var response = mapper.Map<CardResponse>(result);
+        return Ok(response);
     }
 
     [HttpPost]
     [Route("addcard")]
-    [ProducesResponseType(typeof(Card), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Add(AddCardRequest request)
     {
         var useCase = useCaseFactory.Create<AddCardUseCaseRequest, Card>();
@@ -56,7 +60,8 @@ public class CardController(IUseCaseFactory useCaseFactory) : ControllerBase
             CardBack = request.CardBack
         });
 
-        return Ok(result);
+        var response = mapper.Map<CardResponse>(result);
+        return Ok(response);
     }
 
     [HttpDelete]

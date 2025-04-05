@@ -9,9 +9,6 @@ public record Deck : EntityBase
     public string? Description { get; init; } = string.Empty;
     public string UserEmail { get; init; } = string.Empty;
     public DeckSettings DeckSettings { get; init; } = new();
-
-    [JsonIgnore]
-    public override object PartitionKey => UserEmail;
 }
 
 public record DeckSettings

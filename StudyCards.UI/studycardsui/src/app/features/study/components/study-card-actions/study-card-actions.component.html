@@ -1,0 +1,14 @@
+<div class="container">
+    <button mat-flat-button class="repeat" (click)="reviewedCard.emit(cardDifficulty.Repeat)">
+        Repeat
+    </button>
+    <button mat-flat-button class="easy"(click)="reviewedCard.emit(cardDifficulty.Easy)">
+        Easy
+    </button>
+    <button mat-flat-button class="medium"(click)="reviewedCard.emit(cardDifficulty.Medium)">
+        Medium
+    </button>
+    <button mat-flat-button class="hard"(click)="reviewedCard.emit(cardDifficulty.Hard)">
+        Hard
+    </button>
+</div>

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { Card } from 'app/@api/models/card';
 import { Observable } from 'rxjs';
 import { CardService as CardServiceApi } from '../../../@api/services';
+import { CardResponse } from 'app/@api/models/card-response';
 
 @Injectable({
   providedIn: 'root'
@@ -9,15 +9,15 @@ import { CardService as CardServiceApi } from '../../../@api/services';
 export class CardService {
   cardServiceApi = inject(CardServiceApi);
 
-  getCards(deckId: string): Observable<Card[]> {
+  getCards(deckId: string): Observable<CardResponse[]> {
     return this.cardServiceApi.apiCardGetcardsGet$Json({ deckId });
   }
 
-  addCard(deckId: string, cardFront: string, cardBack: string): Observable<Card> {
+  addCard(deckId: string, cardFront: string, cardBack: string): Observable<CardResponse> {
     return this.cardServiceApi.apiCardAddcardPost$Json({ body: { deckId, cardFront, cardBack } });
   }
 
-  updateCard(deckId: string, cardId: string, cardFront: string, cardBack: string): Observable<Card> {
+  updateCard(deckId: string, cardId: string, cardFront: string, cardBack: string): Observable<CardResponse> {
     return this.cardServiceApi.apiCardUpdatecardPut$Json({ body: { cardId, deckId, cardFront, cardBack } });
   }
 

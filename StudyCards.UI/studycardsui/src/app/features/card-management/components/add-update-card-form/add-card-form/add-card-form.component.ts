@@ -5,10 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AddUpdateCardBaseComponent } from '../add-update-card-base.component';
 import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-add-card-form',
-    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, NgIf],
+    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, NgIf, MatIcon],
     templateUrl: '../add-update-card-form.component.html',
     styleUrl: '../add-update-card-form.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

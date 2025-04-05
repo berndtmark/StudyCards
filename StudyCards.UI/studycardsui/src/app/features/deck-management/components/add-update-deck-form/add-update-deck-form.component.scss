@@ -1,9 +1,11 @@
 @use '../../../../theming/responsive' as responsive;
 
 .container {
-    margin-top: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
+    padding: 2rem;
+
+    @include responsive.responsive('mobile') {
+        padding: 1rem;
+    }
 }
 
 form {

@@ -29,8 +29,7 @@ export class DeckItemComponent implements OnDestroy {
   }
 
   onDeckSelected(id: string): void {
-    // todo: this will go to a landing page of study/manage
-    this.router.navigate(['/cards', id]);
+    this.router.navigate(['/study', id]);
   }
 
   editDeck(id: string): void {
