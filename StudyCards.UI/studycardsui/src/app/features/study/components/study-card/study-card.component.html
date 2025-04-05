@@ -1,0 +1,16 @@
+<div class="card-container" (click)="flipCard()">
+  <div class="card" [class.flipped]="isFlipped" [class.no-animation]="noAnimation">
+    <div class="card-face front">
+      <div class="content">
+        <h4>{{ frontText }}</h4>
+      </div>
+    </div>
+    <div class="card-face back">
+      <div class="content">
+        <h4>{{ backText }}</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-study-card-actions *ngIf="isFlipped" (reviewedCard)="onCardCompleted($event)"></app-study-card-actions>

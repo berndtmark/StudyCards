@@ -9,9 +9,6 @@ public record Card : EntityBase
     public string CardFront { get; init; } = string.Empty;
     public string CardBack { get; init; } = string.Empty;
     public IEnumerable<CardReview> CardReviews { get; init; } = Array.Empty<CardReview>();
-
-    [JsonIgnore]
-    public override object PartitionKey => DeckId;
 }
 
 public record CardReview

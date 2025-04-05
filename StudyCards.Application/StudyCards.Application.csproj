@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\CardReview\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Bitwarden.Secrets.Sdk" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.2" />

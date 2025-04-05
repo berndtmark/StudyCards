@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StudyCards.Application.Factory;
 using StudyCards.Application.Interfaces;
+using StudyCards.Application.Strategy.CardStrategy;
 using System.Reflection;
 
 namespace StudyCards.Application;
@@ -12,6 +13,8 @@ public static class ServicesConfiguration
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddTransient<IUseCaseFactory, UseCaseFactory>();
+        services.AddTransient<ICardSelectionStudyFactory, CardSelectionStudyFactory>();
+        services.AddTransient<ICardStrategyContext, CardStrategyContext>();
         services.AddUseCases();
 
         return services;
