@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { StudyCardComponent } from '../study-card/study-card.component';
 import { StudyStore } from '../../store/study.store';
 import { ActivatedRoute } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-study-landing',
-  imports: [StudyCardComponent],
+  imports: [MatIcon],
   templateUrl: './study-landing.component.html',
   styleUrl: './study-landing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
