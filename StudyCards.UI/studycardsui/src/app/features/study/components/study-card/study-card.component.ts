@@ -11,6 +11,7 @@ import { CardDifficulty } from 'app/shared/models/card-difficulty';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudyCardComponent {
+  @Input() cardId!: string;
   @Input() frontText: string = '';
   @Input() backText: string = '';
   @Output() cardStudied = new EventEmitter<void>();
@@ -24,7 +25,7 @@ export class StudyCardComponent {
 
   onCardCompleted(cardDifficulty: CardDifficulty): void {
     this.reviewCard(cardDifficulty);
-    
+
     this.isFlipped = false;
     this.noAnimation = true;
     this.cardStudied.emit();
@@ -37,6 +38,6 @@ export class StudyCardComponent {
 
   reviewCard(cardDifficulty: CardDifficulty): void {
     // todo
-    console.log('Card reviewed with difficulty:', cardDifficulty);
+    console.log(`Card ${this.cardId} reviewed with difficulty:`, cardDifficulty);
   }
 }

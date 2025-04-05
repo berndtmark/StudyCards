@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StudySessionComponent } from './study-session.component';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { StudyStore } from '../../store/study.store';
+import { RouterModule } from '@angular/router';
 
 describe('StudySessionComponent', () => {
   let component: StudySessionComponent;
@@ -8,7 +12,15 @@ describe('StudySessionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StudySessionComponent]
+      imports: [
+        StudySessionComponent,
+        RouterModule.forRoot([]),
+      ],
+      providers: [
+        StudyStore,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
 
