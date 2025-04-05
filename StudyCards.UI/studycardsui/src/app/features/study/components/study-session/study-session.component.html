@@ -1,4 +1,11 @@
-<app-study-card
-  [frontText]="'What is Angular?'"
-  [backText]="'A TypeScript-based web application framework'">
-</app-study-card>
+<div class="container">
+    @if (store.cards().length > currentCardIndex) {
+        <app-study-card
+            [frontText]="store.cards()[currentCardIndex].cardFront!"
+            [backText]="store.cards()[currentCardIndex].cardBack!"
+            (cardStudied)="onCardStudied()">
+        </app-study-card>
+    } @else {
+        Completed!
+    }
+</div>
