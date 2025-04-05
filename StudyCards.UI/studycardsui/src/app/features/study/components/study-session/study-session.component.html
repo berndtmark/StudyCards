@@ -1,3 +1,5 @@
+<mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
+
 <div class="container">
     @if (store.cards().length > currentCardIndex) {
         <app-study-card

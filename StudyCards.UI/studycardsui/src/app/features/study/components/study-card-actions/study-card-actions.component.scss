@@ -1,0 +1,35 @@
+@use '../../../../theming/colour' as colour;
+@use '@angular/material' as mat;
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+@mixin button-color($color) {
+    @include mat.button-overrides((
+        filled-container-color: $color
+    ));
+}
+
+.repeat {
+    @include button-color(colour.$blue-300);
+}
+
+.easy {
+    @include button-color(colour.$green-300);
+}
+
+.medium {
+    @include button-color(colour.$orange-100);
+}
+
+.hard {
+    @include button-color(colour.$red-100);
+}

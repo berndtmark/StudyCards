@@ -1,9 +1,11 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { StudyCardActionsComponent } from "../study-card-actions/study-card-actions.component";
+import { CardDifficulty } from 'app/shared/models/card-difficulty';
 
 @Component({
   selector: 'app-study-card',
-  imports: [NgIf],
+  imports: [NgIf, StudyCardActionsComponent],
   templateUrl: './study-card.component.html',
   styleUrls: ['./study-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -20,7 +22,9 @@ export class StudyCardComponent {
     this.isFlipped = !this.isFlipped;
   }
 
-  onCardCompleted() {
+  onCardCompleted(cardDifficulty: CardDifficulty): void {
+    this.reviewCard(cardDifficulty);
+    
     this.isFlipped = false;
     this.noAnimation = true;
     this.cardStudied.emit();
@@ -29,5 +33,10 @@ export class StudyCardComponent {
     setTimeout(() => {
       this.noAnimation = false;
     }, 50);
+  }
+
+  reviewCard(cardDifficulty: CardDifficulty): void {
+    // todo
+    console.log('Card reviewed with difficulty:', cardDifficulty);
   }
 }

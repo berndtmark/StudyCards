@@ -13,6 +13,4 @@
   </div>
 </div>
 
-<div class="buttons" *ngIf="isFlipped">
-  <button (click)="onCardCompleted()">Complete</button>
-</div>
+<app-study-card-actions *ngIf="isFlipped" (reviewedCard)="onCardCompleted($event)"></app-study-card-actions>
