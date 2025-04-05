@@ -15,7 +15,7 @@ namespace StudyCards.Server.Controllers;
 public class StudyController(IUseCaseFactory useCaseFactory, IMapper mapper) : ControllerBase
 {
     [HttpGet]
-    [Route("getcardstostudy/deck/{deckId}/methodology/{methodology}")]
+    [Route("getcardstostudy/deck/{deckId}/methodology/{methodology}", Name = "getstudycard")]
     [ProducesResponseType(typeof(IEnumerable<CardResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid deckId, CardStudyMethodology methodology)
     {
