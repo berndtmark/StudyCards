@@ -23,16 +23,16 @@ export const StudyStore = signalStore(
     withState(initialState),
     withMethods((store,
         studyService = inject(StudyService)) => ({
-            init: (deckId: string) => patchState(store, { deckId }),
-            loadCards: rxMethod<{ methodology: StudyMethodology }>(
+            loadCards: rxMethod<{ deckId: string, methodology: StudyMethodology }>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((study) => {
-                        return studyService.getStudyCards(store.deckId(), study.methodology).pipe(
+                        return studyService.getStudyCards(study.deckId, study.methodology).pipe(
                             tap((cards) => {
                                 patchState(store, {
                                     cards,
                                     loadingState: LoadingState.Success,
+                                    deckId: study.deckId,
                                 });
                             }),
                             catchError(() => {

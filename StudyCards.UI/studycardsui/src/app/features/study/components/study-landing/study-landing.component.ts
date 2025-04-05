@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { StudyStore } from '../../store/study.store';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
+import { StudyMethodology } from 'app/shared/models/study-methodology';
 
 @Component({
   selector: 'app-study-landing',
@@ -11,13 +11,23 @@ import { MatIcon } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudyLandingComponent implements OnInit {
-  readonly store = inject(StudyStore);
   private activatedRoute = inject(ActivatedRoute)
+  private router = inject(Router);
+
+  deckId!: string | null;
+  methodology = StudyMethodology;
 
   ngOnInit(): void {
-    const deckId = this.activatedRoute.snapshot.paramMap.get('deckid');
-    
-    if (this.store.deckId() !== deckId)
-     this.store.init(deckId!);
+    this.deckId = this.activatedRoute.snapshot.paramMap.get('deckid');
+  }
+
+  manageCards(): void {
+    this.router.navigate(['/cards', this.deckId]);
+  }
+
+  studySession(methodology: StudyMethodology): void {
+    this.router.navigate(['session', methodology], { 
+      relativeTo: this.activatedRoute 
+    });
   }
 }
