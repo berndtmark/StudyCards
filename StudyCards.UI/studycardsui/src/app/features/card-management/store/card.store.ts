@@ -114,8 +114,7 @@ export const CardStore = signalStore(
                     ))
                 )
             ),
-            cardCountByDeckId: (deckId: string) =>  
-                store.cards().filter(card => card.deckId === deckId).length,
+            deckLoaded: (deckId: string) => store.deckId() === deckId,
             getCardById: (id: string) => {
                 return store.cards().find(card => card.id === id) || null;
             }
