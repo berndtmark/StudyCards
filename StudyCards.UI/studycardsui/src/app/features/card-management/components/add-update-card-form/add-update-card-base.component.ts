@@ -17,6 +17,10 @@ export abstract class AddUpdateCardBaseComponent {
     protected cardId?: string;
 
     protected initForm(): void {
+        const deckId = this.activatedRoute.snapshot.paramMap.get('deckid') || '';
+        if (!this.store.deckLoaded(deckId))
+            this.store.loadCards(deckId);
+
         this.cardForm = this.fb.group({
             front: ['', [Validators.required]],
             back: ['', [Validators.required]]

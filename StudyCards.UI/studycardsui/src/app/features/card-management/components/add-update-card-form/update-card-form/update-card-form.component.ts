@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute } from '@angular/router';
 import { AddUpdateCardBaseComponent } from '../add-update-card-base.component';
 import { NgIf } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -29,10 +28,6 @@ export class UpdateCardFormComponent extends AddUpdateCardBaseComponent implemen
     }
 
     ngOnInit(): void {
-        const deckId = this.activatedRoute.snapshot.paramMap.get('deckid') || '';
-        if (this.store.cardCountByDeckId(deckId) === 0)
-         this.store.loadCards(deckId);
-
         this.initForm();
     }
 

@@ -25,7 +25,7 @@ export class CardLandingComponent implements OnInit {
   ngOnInit(): void {
     const deckId = this.activatedRoute.snapshot.paramMap.get('deckid');
     
-    if (this.store.cardCountByDeckId(deckId!) === 0)
+    if (!this.store.deckLoaded(deckId!))
      this.store.loadCards(deckId!);
   }
 
