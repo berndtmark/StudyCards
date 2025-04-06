@@ -1,3 +1,5 @@
+@use '../../../../theming/responsive' as responsive;
+
 .container {
     display: flex;
     justify-content: center;
@@ -9,4 +11,8 @@
 .button-group {
     position: fixed;
     padding: 2rem;
+
+    @include responsive.responsive('mobile') {
+        padding: 1rem;
+    }
 }

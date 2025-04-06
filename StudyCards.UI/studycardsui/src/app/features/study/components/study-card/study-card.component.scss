@@ -5,6 +5,14 @@
   height: 400px;
   cursor: pointer;
 
+  @media screen and (max-height: 600px) {
+    height: 300px;
+  }
+
+  @media screen and (max-height: 400px) {
+    height: 200px;
+  }
+
   .card {
     position: relative;
     width: 100%;
