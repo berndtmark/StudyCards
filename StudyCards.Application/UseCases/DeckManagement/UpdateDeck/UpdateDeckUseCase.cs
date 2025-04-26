@@ -1,5 +1,5 @@
 ﻿using StudyCards.Application.Interfaces;
-using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.DeckManagement.UpdateDeck;
@@ -14,11 +14,11 @@ public class UpdateDeckUseCaseRequest
     public int NewCardsPerDay { get; set; }
 }
 
-public class UpdateDeckUseCase(IDeckRepository deckRepository) : IUseCase<UpdateDeckUseCaseRequest, Deck>
+public class UpdateDeckUseCase(IUnitOfWork unitOfWork) : IUseCase<UpdateDeckUseCaseRequest, Deck>
 {
     public async Task<Deck> Handle(UpdateDeckUseCaseRequest request)
     {
-        var currentDeck = await deckRepository.Get(request.DeckId, request.EmailAddress);
+        var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.EmailAddress);
 
         if (currentDeck == null)
         {
@@ -37,7 +37,9 @@ public class UpdateDeckUseCase(IDeckRepository deckRepository) : IUseCase<Update
             }
         };
 
-        var result = await deckRepository.Update(newDeck);
+        var result = unitOfWork.DeckRepository.Update(newDeck);
+        await unitOfWork.SaveChangesAsync();
+
         return result;
     }
 }

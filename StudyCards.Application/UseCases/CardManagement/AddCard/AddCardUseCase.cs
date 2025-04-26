@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.CardManagement.AddCard;
@@ -12,7 +12,7 @@ public class AddCardUseCaseRequest
     public string CardBack { get; set; } = string.Empty;
 }
 
-public class AddCardUseCase(ICardRepository cardRepository, ILogger<AddCardUseCase> logger) : IUseCase<AddCardUseCaseRequest, Card>
+public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logger) : IUseCase<AddCardUseCaseRequest, Card>
 {
     public async Task<Card> Handle(AddCardUseCaseRequest request)
     {
@@ -26,7 +26,9 @@ public class AddCardUseCase(ICardRepository cardRepository, ILogger<AddCardUseCa
 
         try
         {
-            var result = await cardRepository.Add(card);
+            var result = await unitOfWork.CardRepository.Add(card);
+            await unitOfWork.SaveChangesAsync();
+
             return result;
         }
         catch (Exception)
