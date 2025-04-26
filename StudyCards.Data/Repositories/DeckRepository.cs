@@ -6,14 +6,9 @@ using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class DeckRepository : BaseRepository<Deck>, IDeckRepository
+public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Deck>(dbContext, httpContextAccessor), IDeckRepository
 {
-    private readonly DataBaseContext _dbContext;
-
-    public DeckRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly DataBaseContext _dbContext = dbContext;
 
     public async Task<Deck?> Get(Guid id, string emailAddress)
     {
@@ -35,22 +30,17 @@ public class DeckRepository : BaseRepository<Deck>, IDeckRepository
     public async Task<Deck> Add(Deck deck)
     {
         var entity = await AddEntity(deck);
-        await _dbContext.SaveChangesAsync();
-
         return entity;
     }
 
-    public async Task<Deck> Update(Deck deck)
+    public Deck Update(Deck deck)
     {
         var entity = UpdateEntity(deck);
-        await _dbContext.SaveChangesAsync();
-
         return entity;
     }
 
     public async Task Remove(Guid deckId, string emailAddress)
     {
         await RemoveEntity(deckId, emailAddress);
-        await _dbContext.SaveChangesAsync();
     }
 }

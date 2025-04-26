@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.Interfaces.UnitOfWork;
 
 namespace StudyCards.Application.UseCases.CardManagement.RemoveCard;
 
@@ -10,13 +10,14 @@ public class RemoveCardUseCaseRequest
     public Guid DeckId { get; set; }
 }
 
-public class RemoveCardUseCase(ICardRepository cardRepository, ILogger<RemoveCardUseCase> logger) : IUseCase<RemoveCardUseCaseRequest, bool>
+public class RemoveCardUseCase(IUnitOfWork unitOfWork, ILogger<RemoveCardUseCase> logger) : IUseCase<RemoveCardUseCaseRequest, bool>
 {
     public async Task<bool> Handle(RemoveCardUseCaseRequest request)
     {
         try
         {
-            await cardRepository.Remove(request.CardId, request.DeckId);
+            await unitOfWork.CardRepository.Remove(request.CardId, request.DeckId);
+            await unitOfWork.SaveChangesAsync();
             return true;
         }
         catch (Exception)

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.DeckManagement.AddDeck;
@@ -13,7 +13,7 @@ public class AddDeckUseCaseRequest
     public int ReviewsPerDay { get; set; }
     public int NewCardsPerDay { get; set; }
 }
-public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCase> logger) : IUseCase<AddDeckUseCaseRequest, Deck>
+public class AddDeckUseCase(IUnitOfWork unitOfWork, ILogger<AddDeckUseCase> logger) : IUseCase<AddDeckUseCaseRequest, Deck>
 {
     public async Task<Deck> Handle(AddDeckUseCaseRequest request)
     {
@@ -32,7 +32,9 @@ public class AddDeckUseCase(IDeckRepository deckRepository, ILogger<AddDeckUseCa
 
         try
         {
-            var result = await deckRepository.Add(deck);
+            var result = await unitOfWork.DeckRepository.Add(deck);
+            await unitOfWork.SaveChangesAsync();
+
             return result;
         }
         catch (Exception)

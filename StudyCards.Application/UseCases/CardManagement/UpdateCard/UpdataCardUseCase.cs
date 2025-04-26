@@ -1,5 +1,5 @@
 ﻿using StudyCards.Application.Interfaces;
-using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.CardManagement.UpdateCard;
@@ -12,11 +12,11 @@ public class UpdateCardUseCaseRequest
     public string CardBack { get; set; } = string.Empty;
 }
 
-public class UpdataCardUseCase(ICardRepository cardRepository) : IUseCase<UpdateCardUseCaseRequest, Card>
+public class UpdataCardUseCase(IUnitOfWork unitOfWork) : IUseCase<UpdateCardUseCaseRequest, Card>
 {
     public async Task<Card> Handle(UpdateCardUseCaseRequest request)
     {
-        var currentCard = await cardRepository.Get(request.CardId, request.DeckId);
+        var currentCard = await unitOfWork.CardRepository.Get(request.CardId, request.DeckId);
 
         if (currentCard == null)
         {
@@ -29,7 +29,9 @@ public class UpdataCardUseCase(ICardRepository cardRepository) : IUseCase<Update
             CardBack = request.CardBack
         };
 
-        var result = await cardRepository.Update(newCard);
+        var result = unitOfWork.CardRepository.Update(newCard);
+        await unitOfWork.SaveChangesAsync();
+
         return result;
     }
 }

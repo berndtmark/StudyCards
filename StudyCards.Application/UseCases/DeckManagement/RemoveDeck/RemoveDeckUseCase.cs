@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.Interfaces.UnitOfWork;
 
 namespace StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
 
@@ -10,13 +11,15 @@ public class RemoveDeckUseCaseRequest
     public string EmailAddress { get; set; } = string.Empty;
 }
 
-public class RemoveDeckUseCase(IDeckRepository deckRepository, ILogger<RemoveDeckUseCase> logger) : IUseCase<RemoveDeckUseCaseRequest, bool>
+public class RemoveDeckUseCase(IUnitOfWork unitOfWork, ILogger<RemoveDeckUseCase> logger) : IUseCase<RemoveDeckUseCaseRequest, bool>
 {
     public async Task<bool> Handle(RemoveDeckUseCaseRequest request)
     {
         try
         {
-            await deckRepository.Remove(request.DeckId, request.EmailAddress);
+            await unitOfWork.DeckRepository.Remove(request.DeckId, request.EmailAddress);
+            await unitOfWork.SaveChangesAsync();
+
             return true;
         }
         catch (Exception)
