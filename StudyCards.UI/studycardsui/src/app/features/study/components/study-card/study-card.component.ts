@@ -14,7 +14,7 @@ export class StudyCardComponent {
   @Input() cardId!: string;
   @Input() frontText: string = '';
   @Input() backText: string = '';
-  @Output() cardStudied = new EventEmitter<void>();
+  @Output() cardStudied = new EventEmitter<[string, CardDifficulty]>();
   
   isFlipped: boolean = false;
   noAnimation: boolean = false;
@@ -28,7 +28,6 @@ export class StudyCardComponent {
 
     this.isFlipped = false;
     this.noAnimation = true;
-    this.cardStudied.emit();
 
     // Reset noAnimation after a brief delay to allow the state to update
     setTimeout(() => {
@@ -37,7 +36,6 @@ export class StudyCardComponent {
   }
 
   reviewCard(cardDifficulty: CardDifficulty): void {
-    // todo
-    console.log(`Card ${this.cardId} reviewed with difficulty:`, cardDifficulty);
+    this.cardStudied.emit([this.cardId, cardDifficulty]);
   }
 }

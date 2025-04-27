@@ -6,7 +6,6 @@ using StudyCards.Application.UseCases.CardManagement.AddCard;
 using StudyCards.Application.UseCases.CardManagement.GetCards;
 using StudyCards.Application.UseCases.CardManagement.RemoveCard;
 using StudyCards.Application.UseCases.CardManagement.UpdateCard;
-using StudyCards.Application.UseCases.CardStudy.Review;
 using StudyCards.Domain.Entities;
 using StudyCards.Server.Models.Request;
 using StudyCards.Server.Models.Response;
@@ -77,25 +76,5 @@ public class CardController(IUseCaseFactory useCaseFactory, IMapper mapper) : Co
         });
 
         return Ok(result);
-    }
-
-    [HttpPut]
-    [Route("reviewcards")]
-    [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ReviewedCard(ReviewCardsRequest request)
-    {
-        var useCase = useCaseFactory.Create<ReviewCardsUseCaseRequest, IList<Card>>();
-        var result = await useCase.Handle(new ReviewCardsUseCaseRequest
-        {
-            DeckId = request.DeckId,
-            CardReviews = [.. request.Cards.Select(cr => new ReviewCardsUseCaseRequest.CardReviewed
-            {
-                CardId = cr.CardId,
-                CardDifficulty = cr.CardDifficulty
-            })]
-        });
-
-        var response = mapper.Map<IList<CardResponseWithReviews>>(result);
-        return Ok(response);
     }
 }

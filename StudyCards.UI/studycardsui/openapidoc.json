@@ -541,6 +541,56 @@
                     }
                 }
             }
+        },
+        "/api/Study/reviewcards": {
+            "put": {
+                "tags": [
+                    "Study"
+                ],
+                "operationId": "reviewcards",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewCardsRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewCardsRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewCardsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -579,6 +629,9 @@
                         "format": "int32"
                     }
                 }
+            },
+            "CardDifficulty": {
+                "type": "integer"
             },
             "CardResponse": {
                 "type": "object",
@@ -653,6 +706,38 @@
                     "newCardsPerDay": {
                         "type": "integer",
                         "format": "int32"
+                    }
+                }
+            },
+            "ReviewCardRequest": {
+                "type": "object",
+                "properties": {
+                    "cardId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "cardDifficulty": {
+                        "$ref": "#/components/schemas/CardDifficulty"
+                    },
+                    "repeatCount": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    }
+                }
+            },
+            "ReviewCardsRequest": {
+                "type": "object",
+                "properties": {
+                    "deckId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "cards": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReviewCardRequest"
+                        }
                     }
                 }
             },

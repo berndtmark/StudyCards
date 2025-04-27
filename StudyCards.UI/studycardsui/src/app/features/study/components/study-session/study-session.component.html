@@ -8,14 +8,20 @@
 </div>
 
 <div class="container">
-    @if (store.cards().length > currentCardIndex) {
-        <app-study-card
-            [cardId]="store.cards()[currentCardIndex].id!"
-            [frontText]="store.cards()[currentCardIndex].cardFront!"
-            [backText]="store.cards()[currentCardIndex].cardBack!"
-            (cardStudied)="onCardStudied()">
-        </app-study-card>
+    @if (!isComplete()) {
+        <div>
+            <app-study-card
+                [cardId]="currentCard()!.id!"
+                [frontText]="currentCard()!.cardFront!"
+                [backText]="currentCard()!.cardBack!"
+                (cardStudied)="onCardStudied($event)">
+            </app-study-card>
+            <div class="cards-left">{{ cardsLeft() }}</div>
+        </div>
     } @else {
-        Completed!
+        <button mat-raised-button color="primary" (click)="completeStudy()">
+            <mat-icon>done</mat-icon>
+            Save & Complete
+        </button>
     }
 </div>

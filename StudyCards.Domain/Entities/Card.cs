@@ -14,5 +14,6 @@ public record CardReview
 {
     public Guid CardReviewId { get; init; }
     public CardDifficulty CardDifficulty { get; init; }
+    public int? RepeatCount { get; init; }
     public DateTime ReviewDate { get; init; }
 }

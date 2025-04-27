@@ -12,4 +12,5 @@ public class ReviewCardRequest
 {
     public Guid CardId { get; set; }
     public CardDifficulty CardDifficulty { get; set; }
+    public int? RepeatCount { get; set; }
 }

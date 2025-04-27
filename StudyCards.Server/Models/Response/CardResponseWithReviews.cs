@@ -15,5 +15,6 @@ public class CardReviewResponse
 {
     public Guid CardReviewId { get; init; }
     public string CardDifficulty { get; init; } = string.Empty;
+    public int RepeatCount { get; init; }
     public DateTime ReviewDate { get; init; } = DateTime.UtcNow;
 }

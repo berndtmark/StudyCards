@@ -14,6 +14,7 @@ public class ReviewCardsUseCaseRequest
     {   
         public Guid CardId { get; set; }
         public CardDifficulty CardDifficulty { get; set; }
+        public int? RepeatCount { get; set; }
     }
 }
 
@@ -35,6 +36,7 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
             {
                 CardReviewId = Guid.NewGuid(),
                 CardDifficulty = cardReview.CardDifficulty,
+                RepeatCount = cardReview.RepeatCount ?? 0,
                 ReviewDate = DateTime.UtcNow
             };
 

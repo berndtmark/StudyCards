@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Enums;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.UseCases.CardStudy.Get;
+using StudyCards.Application.UseCases.CardStudy.Review;
 using StudyCards.Domain.Entities;
+using StudyCards.Server.Models.Request;
 using StudyCards.Server.Models.Response;
 
 namespace StudyCards.Server.Controllers;
@@ -26,6 +28,27 @@ public class StudyController(IUseCaseFactory useCaseFactory, IMapper mapper) : C
         });
 
         var response = mapper.Map<IEnumerable<CardResponse>>(result);
+        return Ok(response);
+    }
+
+    [HttpPut]
+    [Route("reviewcards", Name = "reviewcards")]
+    [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ReviewedCard(ReviewCardsRequest request)
+    {
+        var useCase = useCaseFactory.Create<ReviewCardsUseCaseRequest, IList<Card>>();
+        var result = await useCase.Handle(new ReviewCardsUseCaseRequest
+        {
+            DeckId = request.DeckId,
+            CardReviews = [.. request.Cards.Select(cr => new ReviewCardsUseCaseRequest.CardReviewed
+            {
+                CardId = cr.CardId,
+                CardDifficulty = cr.CardDifficulty,
+                RepeatCount = cr.RepeatCount
+            })]
+        });
+
+        var response = mapper.Map<IList<CardResponseWithReviews>>(result);
         return Ok(response);
     }
 }
