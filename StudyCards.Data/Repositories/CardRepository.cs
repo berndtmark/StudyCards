@@ -30,7 +30,6 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
     public async Task<Card> Add(Card card)
     {
         var entity = await AddEntity(card);
-        await _dbContext.SaveChangesAsync();
 
         return entity;
     }
