@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { CardDifficulty } from 'app/shared/models/card-difficulty';
 
@@ -10,7 +10,7 @@ import { CardDifficulty } from 'app/shared/models/card-difficulty';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudyCardActionsComponent {
-  @Output() reviewedCard = new EventEmitter<CardDifficulty>();
+  reviewedCard = output<CardDifficulty>();
 
   cardDifficulty = CardDifficulty;
 }

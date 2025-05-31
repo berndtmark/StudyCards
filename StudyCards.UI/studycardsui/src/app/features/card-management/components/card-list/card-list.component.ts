@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -13,10 +13,13 @@ import { CardResponse } from 'app/@api/models/card-response';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardListComponent {
-  @Input() set cards(value: CardResponse[]) {
-    this.dataSource.data = value;
-  }
-  @Output() updateCard = new EventEmitter<string>();
+  cards = input([], {
+    transform: (value: CardResponse[]) => {
+      this.dataSource.data = value;
+      return value;
+    }
+  });
+  updateCard = output<string>();
 
   displayedColumns: string[] = ['cardfront', 'cardback'];
   dataSource = new MatTableDataSource<CardResponse>([]);

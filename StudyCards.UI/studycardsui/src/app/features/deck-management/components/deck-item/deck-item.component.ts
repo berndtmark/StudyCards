@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy } from '@angular/core';
 import { Deck } from 'app/@api/models/deck';
 import { DeckActionsComponent } from '../deck-actions/deck-actions.component';
 import { Router } from '@angular/router';
@@ -21,7 +21,7 @@ export class DeckItemComponent implements OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  @Input() deck!: Deck;
+  deck = input.required<Deck>();
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
