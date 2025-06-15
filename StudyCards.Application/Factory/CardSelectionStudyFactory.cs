@@ -11,6 +11,7 @@ public class CardSelectionStudyFactory : ICardSelectionStudyFactory
         return studyMethodology switch
         {
             CardStudyMethodology.Random => new RandomCardStrategy(),
+            CardStudyMethodology.Anki => new AnkiCardStrategy(),
             _ => throw new ArgumentException("Methodology not yet supported ", nameof(studyMethodology))
         };
     }

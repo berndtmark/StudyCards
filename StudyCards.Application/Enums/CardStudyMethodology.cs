@@ -3,4 +3,5 @@
 public enum CardStudyMethodology
 {
     Random,
+    Anki
 }

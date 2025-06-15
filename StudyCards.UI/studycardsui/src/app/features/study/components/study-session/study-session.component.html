@@ -7,21 +7,23 @@
     </button>
 </div>
 
-<div class="container">
-    @if (!isComplete()) {
-        <div>
-            <app-study-card
-                [cardId]="currentCard()!.id!"
-                [frontText]="currentCard()!.cardFront!"
-                [backText]="currentCard()!.cardBack!"
-                (cardStudied)="onCardStudied($event)">
-            </app-study-card>
-            <div class="cards-left">{{ cardsLeft() }}</div>
-        </div>
-    } @else {
-        <button mat-raised-button color="primary" (click)="completeStudy()">
-            <mat-icon>done</mat-icon>
-            Save & Complete
-        </button>
-    }
-</div>
+@if (store.loadingState() == loadingState.Success) {
+    <div class="container">
+        @if (!isComplete()) {
+            <div>
+                <app-study-card
+                    [cardId]="currentCard()!.id!"
+                    [frontText]="currentCard()!.cardFront!"
+                    [backText]="currentCard()!.cardBack!"
+                    (cardStudied)="onCardStudied($event)">
+                </app-study-card>
+                <div class="cards-left">{{ cardsLeft() }}</div>
+            </div>
+        } @else {
+            <button mat-raised-button color="primary" (click)="completeStudy()">
+                <mat-icon>done</mat-icon>
+                Save & Complete
+            </button>
+        }
+    </div>
+}
