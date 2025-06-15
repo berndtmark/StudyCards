@@ -42,7 +42,7 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
 
             var updatedCard = card with
             {
-                CardReviews = [.. card.CardReviews, review]
+                CardReviews = [.. card.CardReviews.Prepend(review).Take(10)] // ideally we should keep reviews in another container, but ja, costs. So limiting to 10 reviews, its all we need for now
             };
 
             var result = unitOfWork.CardRepository.Update(updatedCard);
