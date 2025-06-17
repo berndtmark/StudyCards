@@ -19,6 +19,15 @@ public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor http
             .SingleOrDefaultAsync(d => d.Id == id);
     }
 
+    public async Task<Deck?> Get(Guid id)
+    {
+        return await _dbContext
+            .Deck
+            .WithPartitionKey(EmailAddress)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(d => d.Id == id);
+    }
+
     public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress)
     {
         return await _dbContext.Deck

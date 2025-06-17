@@ -1,5 +1,5 @@
-import { inject } from "@angular/core";
-import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
+import { computed, inject } from "@angular/core";
+import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { CardResponse } from "app/@api/models/card-response";
 import { LoadingState } from "app/shared/models/loading-state";
 import { StudyService } from "../services/study.service";
@@ -26,6 +26,10 @@ const initialState: StudyState = {
 
 export const StudyStore = signalStore(
     withState(initialState),
+    withComputed((store) => ({
+        hasCardsToStudy: computed(() => store.cards().length > 0),
+        isLoading: computed(() => store.loadingState() === LoadingState.Loading),
+    })),
     withMethods((store,
         studyService = inject(StudyService),
         snackBarService = inject(SnackbarService),
@@ -72,8 +76,8 @@ export const StudyStore = signalStore(
                         return studyService.reviewCards(store.deckId(), store.cardsStudied()).pipe(
                             tap(() => {
                                 snackBarService.open('Review Saved');
-                                patchState(store, { loadingState: LoadingState.Success })
-                                route.navigate(['/decks']);
+                                patchState(store, { loadingState: LoadingState.Complete })
+                                setTimeout(() => route.navigate(['/decks']), 3000);
                             }),
                             catchError(() => {
                                 patchState(store, { loadingState: LoadingState.Error });

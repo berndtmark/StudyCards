@@ -29,8 +29,17 @@ public class GetCardsToStudyUseCase(
 
         cardStrategyContext.SetStrategy(cardStrategy);
         cardStrategyContext.AddCards(cards);
-        
-        var result = cardStrategyContext.GetCards(deck!.DeckSettings.ReviewsPerDay);
+
+        // Ramdom strategy always lets you study cards
+        var cardsToStudy = request.StudyMethodology switch
+        {
+            CardStudyMethodology.Random => deck.DeckSettings.ReviewsPerDay,
+            _ => deck.DeckReviewStatus.LastReview.IsSameDay() ?
+                    Math.Max(deck.DeckSettings.ReviewsPerDay - deck.DeckReviewStatus.ReviewCount, 0) :
+                    deck.DeckSettings.ReviewsPerDay
+        };    
+
+        var result = cardStrategyContext.GetCards(cardsToStudy);
 
         return result;
     }

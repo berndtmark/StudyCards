@@ -25,11 +25,8 @@ public class CardStrategyContext : ICardStrategyContext
             throw new InvalidOperationException("Strategy not set.");
         }
 
-        if (!_cards.Any())
-            throw new ArgumentException("Cards collection cannot be null or empty.");
-
-        if (noCardsToSelect <= 0)
-            throw new ArgumentException("The number of cards to select must be greater than zero.");
+        if (!_cards.Any() || noCardsToSelect == 0)
+            return [];
 
         return _strategy.GetCards(_cards, noCardsToSelect);
     }

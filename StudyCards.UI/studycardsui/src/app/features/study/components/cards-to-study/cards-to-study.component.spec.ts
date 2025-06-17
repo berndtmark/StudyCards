@@ -1,28 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeckItemComponent } from './deck-item.component';
-import { DeckStore } from '../../store/deck.store';
+import { CardsToStudyComponent } from './cards-to-study.component';
+import { StudyStore } from '../../store/study.store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-describe('DeckItemComponent', () => {
-  let component: DeckItemComponent;
-  let fixture: ComponentFixture<DeckItemComponent>;
+describe('CardsToStudyComponent', () => {
+  let component: CardsToStudyComponent;
+  let fixture: ComponentFixture<CardsToStudyComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeckItemComponent],
+      imports: [CardsToStudyComponent],
       providers: [
-        DeckStore,
+        StudyStore,
         provideHttpClient(),
-        provideHttpClientTesting(),
+        provideHttpClientTesting()
       ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DeckItemComponent);
+    fixture = TestBed.createComponent(CardsToStudyComponent);
     component = fixture.componentInstance;
-    fixture.componentRef.setInput('deck', { deckName: 'my deck' });
+    fixture.componentRef.setInput('cardsToStudy', [{ id: '123' }]);
 
     fixture.detectChanges();
   });

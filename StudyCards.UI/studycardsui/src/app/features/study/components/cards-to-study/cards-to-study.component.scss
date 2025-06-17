@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    width: 100%;
+
+    .cards-left {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        font-size: 15px;
+        font-weight: 200;
+    }
+}

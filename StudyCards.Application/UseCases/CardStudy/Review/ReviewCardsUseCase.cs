@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Interfaces;
+﻿using StudyCards.Application.Helpers;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
@@ -24,13 +25,10 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
     {
         var response = new List<Card>();
 
+        // update card reviews
         foreach (var cardReview in request.CardReviews)
         {
-            var card = await unitOfWork.CardRepository.Get(cardReview.CardId, request.DeckId);
-            if (card == null)
-            {
-                throw new Exception("Card not found");
-            }
+            var card = await unitOfWork.CardRepository.Get(cardReview.CardId, request.DeckId) ?? throw new Exception("Card not found");
 
             var review = new CardReview
             {
@@ -48,6 +46,21 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
             var result = unitOfWork.CardRepository.Update(updatedCard);
             response.Add(result);
         }
+
+        // update deck last review status
+        var deck = await unitOfWork.DeckRepository.Get(request.DeckId) ?? throw new ApplicationException("Cannot Review other person's cards");
+
+        var isFirstReviewToday = !deck.DeckReviewStatus.LastReview.Date.IsSameDay();
+        var updatedDeck = deck with
+        {
+            DeckReviewStatus = new DeckReviewStatus
+            {
+                LastReview = DateTime.UtcNow,
+                ReviewCount = isFirstReviewToday ? request.CardReviews.Count : deck.DeckReviewStatus.ReviewCount + request.CardReviews.Count,
+            }
+        };
+
+        unitOfWork.DeckRepository.Update(updatedDeck);
 
         await unitOfWork.SaveChangesAsync();
         return response;

@@ -1,26 +1,16 @@
 @use '../../../../theming/responsive' as responsive;
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    width: 100%;
-
-    .cards-left {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-        font-size: 15px;
-        font-weight: 200;
-    }
-}
-
 .button-group {
     position: fixed;
     padding: 2rem;
+    display: flex;
+    gap: 10px;
 
     @include responsive.responsive('mobile') {
         padding: 1rem;
+    }
+
+    @include responsive.responsive('tablet') {
+        flex-direction: column;
     }
 }

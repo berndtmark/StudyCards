@@ -1,29 +1,23 @@
-<mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
+@if (store.isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 
 <div class="button-group">
     <button mat-raised-button color="primary" (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
         Back
     </button>
+    @if (store.hasCardsToStudy()) {
+        <button matMiniFab (click)="completeStudy()">
+            <mat-icon>save</mat-icon>
+        </button>
+    }
 </div>
 
-@if (store.loadingState() == loadingState.Success) {
-    <div class="container">
-        @if (!isComplete()) {
-            <div>
-                <app-study-card
-                    [cardId]="currentCard()!.id!"
-                    [frontText]="currentCard()!.cardFront!"
-                    [backText]="currentCard()!.cardBack!"
-                    (cardStudied)="onCardStudied($event)">
-                </app-study-card>
-                <div class="cards-left">{{ cardsLeft() }}</div>
-            </div>
-        } @else {
-            <button mat-raised-button color="primary" (click)="completeStudy()">
-                <mat-icon>done</mat-icon>
-                Save & Complete
-            </button>
-        }
-    </div>
+@if (store.loadingState() == loadingState.Success && store.hasCardsToStudy()) {
+    <app-cards-to-study [cardsToStudy]="store.cards()" (completeStudy)="completeStudy()"></app-cards-to-study>
+} @else if (!store.hasCardsToStudy()) {
+    <app-study-complete></app-study-complete>
+} @else if (store.loadingState() == loadingState.Complete) {
+    <app-study-complete title="Well Done" subtitle="Great Session!"></app-study-complete>
 }

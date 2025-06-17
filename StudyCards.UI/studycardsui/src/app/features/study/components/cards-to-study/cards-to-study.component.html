@@ -1,0 +1,11 @@
+<div class="container">
+    <div>
+        <app-study-card
+            [cardId]="currentCard()!.id!"
+            [frontText]="currentCard()!.cardFront!"
+            [backText]="currentCard()!.cardBack!"
+            (cardStudied)="onCardStudied($event)">
+        </app-study-card>
+        <div class="cards-left">{{ cardsLeft() }}</div>
+    </div>
+</div>

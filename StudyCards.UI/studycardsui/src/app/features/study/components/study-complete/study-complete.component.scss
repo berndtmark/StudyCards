@@ -1,0 +1,39 @@
+@use '../../../../theming/colour' as colour;
+
+.study-complete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+    min-height: 50vh;
+
+    .celebration-icon {
+        font-size: 4rem;
+        height: 4rem;
+        width: 4rem;
+        margin-bottom: 1rem;
+        color: colour.$orange-100;
+        animation: bounce 1s infinite;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: colour.$blue-300;
+    }
+
+    p {
+        font-size: 1.2rem;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
