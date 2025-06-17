@@ -7,7 +7,7 @@
         <mat-icon>arrow_back</mat-icon>
         Back
     </button>
-    @if (store.hasCardsToStudy()) {
+    @if (store.hasCardsToStudy() && store.loadingState() !== loadingState.Complete) {
         <button matMiniFab (click)="completeStudy()">
             <mat-icon>save</mat-icon>
         </button>
