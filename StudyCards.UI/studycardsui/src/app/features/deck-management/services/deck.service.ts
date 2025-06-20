@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DeckService as DeckServiceApi } from '../../../@api/services';
-import { Deck } from 'app/@api/models/deck';
+import { DeckResponse } from 'app/@api/models/deck-response';
 import { UpdateDeckRequest } from 'app/@api/models/update-deck-request';
 
 @Injectable({
@@ -10,11 +10,11 @@ import { UpdateDeckRequest } from 'app/@api/models/update-deck-request';
 export class DeckService {
   deckServiceApi = inject(DeckServiceApi);
 
-  getDecks(): Observable<Deck[]> {
+  getDecks(): Observable<DeckResponse[]> {
     return this.deckServiceApi.apiDeckGetdecksGet$Json();
   }
 
-  addDeck(deck: Deck): Observable<Deck> {
+  addDeck(deck: DeckResponse): Observable<DeckResponse> {
     const request: UpdateDeckRequest = { 
       deckName: deck.deckName,
       description: deck.description,
@@ -25,7 +25,7 @@ export class DeckService {
     return this.deckServiceApi.apiDeckAdddeckPost$Json({ body: request })
   }
 
-  updateDeck(deck: Deck): Observable<Deck> {
+  updateDeck(deck: DeckResponse): Observable<DeckResponse> {
     const request: UpdateDeckRequest = { 
       deckId: deck.id,
       deckName: deck.deckName,

@@ -1,21 +1,26 @@
-﻿namespace StudyCards.Domain.Entities;
+﻿using StudyCards.Domain.Entities;
 
-public record Deck : EntityBase
+namespace StudyCards.Server.Models.Response;
+
+public class DeckResponse
 {
+    public Guid Id { get; init; }
     public string DeckName { get; init; } = string.Empty;
     public string? Description { get; init; } = string.Empty;
     public string UserEmail { get; init; } = string.Empty;
     public DeckSettings DeckSettings { get; init; } = new();
     public DeckReviewStatus DeckReviewStatus { get; init; } = new();
+    public DateTime CreatedDate { get; init; } = DateTime.UtcNow;
+    public DateTime UpdatedDate { get; init; } = DateTime.UtcNow;
 }
 
-public record DeckSettings
+public record DeckSettingsResponse
 {
     public int ReviewsPerDay { get; init; }
     public int NewCardsPerDay { get; init; }
 }
 
-public record DeckReviewStatus
+public record DeckReviewStatusResponse
 {
     public DateTime LastReview { get; init; }
     public int ReviewCount { get; init; }

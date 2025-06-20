@@ -7,7 +7,8 @@ public static class MappingConfiguration
     public static IServiceCollection AddMappingConfiguration(this IServiceCollection services)
     {
         services.AddAutoMapper(
-            typeof(CardProfile)
+            typeof(CardProfile),
+            typeof(DeckProfile)
         );
 
         return services;

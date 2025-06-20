@@ -322,7 +322,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Deck"
+                                        "$ref": "#/components/schemas/DeckResponse"
                                     }
                                 }
                             },
@@ -330,7 +330,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Deck"
+                                        "$ref": "#/components/schemas/DeckResponse"
                                     }
                                 }
                             },
@@ -338,7 +338,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Deck"
+                                        "$ref": "#/components/schemas/DeckResponse"
                                     }
                                 }
                             }
@@ -378,17 +378,17 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "text/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             }
                         }
@@ -427,17 +427,17 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "text/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             }
                         }
@@ -505,7 +505,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "$ref": "#/components/schemas/CardStudyMethodology"
                         }
                     }
                 ],
@@ -660,9 +660,16 @@
                     }
                 }
             },
-            "Deck": {
+            "CardStudyMethodology": {
+                "type": "integer"
+            },
+            "DeckResponse": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
                     "deckName": {
                         "type": "string"
                     },
@@ -676,9 +683,8 @@
                     "deckSettings": {
                         "$ref": "#/components/schemas/DeckSettings"
                     },
-                    "id": {
-                        "type": "string",
-                        "format": "uuid"
+                    "deckReviewStatus": {
+                        "$ref": "#/components/schemas/DeckReviewStatus"
                     },
                     "createdDate": {
                         "type": "string",
@@ -687,12 +693,19 @@
                     "updatedDate": {
                         "type": "string",
                         "format": "date-time"
+                    }
+                }
+            },
+            "DeckReviewStatus": {
+                "type": "object",
+                "properties": {
+                    "lastReview": {
+                        "type": "string",
+                        "format": "date-time"
                     },
-                    "createdBy": {
-                        "type": "string"
-                    },
-                    "updatedBy": {
-                        "type": "string"
+                    "reviewCount": {
+                        "type": "integer",
+                        "format": "int32"
                     }
                 }
             },

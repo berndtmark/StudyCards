@@ -1,0 +1,16 @@
+@use '../../../theming/colour' as colour;
+
+.status-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: 25px solid transparent;
+    border-left: 25px solid colour.$red-100;
+    z-index: 2;
+    transition: border-left-color 0.2s ease;
+    transform: rotate(180deg);
+
+    &.complete {
+        border-left-color: colour.$green-300;
+    }
+}

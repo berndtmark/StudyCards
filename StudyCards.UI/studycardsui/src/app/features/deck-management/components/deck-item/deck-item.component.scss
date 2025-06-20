@@ -1,6 +1,7 @@
 @use '../../../../theming/colour' as colour;
 
 .deck-card {
+    position: relative;
     background: colour.$white;
     border-radius: 8px;
     padding: 1.5rem;

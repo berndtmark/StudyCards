@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
@@ -8,17 +9,18 @@ using StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
 using StudyCards.Application.UseCases.DeckManagement.UpdateDeck;
 using StudyCards.Domain.Entities;
 using StudyCards.Server.Models.Request;
+using StudyCards.Server.Models.Response;
 
 namespace StudyCards.Server.Controllers;
 
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor httpContextAccessor) : ControllerBase
+public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor httpContextAccessor, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     [Route("getdecks")]
-    [ProducesResponseType(typeof(IEnumerable<Deck>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<DeckResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
         var email = httpContextAccessor.GetEmail();
@@ -26,12 +28,13 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
         var useCase = useCaseFactory.Create<GetDeckUseCaseRequest, IEnumerable<Deck>>();
         var result = await useCase.Handle(new GetDeckUseCaseRequest { EmailAddress = email });
 
-        return Ok(result);
+        var response = mapper.Map<IEnumerable<DeckResponse>>(result);
+        return Ok(response);
     }
 
     [HttpPost]
     [Route("adddeck")]
-    [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Add(AddDeckRequest request)
     {
         var email = httpContextAccessor.GetEmail();
@@ -46,12 +49,13 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
             NewCardsPerDay = request.NewCardsPerDay,
         });
 
-        return Ok(result);
+        var response = mapper.Map<DeckResponse>(result);
+        return Ok(response);
     }
 
     [HttpPut]
     [Route("updatedeck")]
-    [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(UpdateDeckRequest request)
     {
         var email = httpContextAccessor.GetEmail();
@@ -67,7 +71,8 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
             EmailAddress = email,
         });
 
-        return Ok(result);
+        var response = mapper.Map<DeckResponse>(result);
+        return Ok(response);
     }
 
     [HttpDelete]
