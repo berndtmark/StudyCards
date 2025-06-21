@@ -4,13 +4,13 @@ import { CardListComponent } from "../card-list/card-list.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
 
 @Component({
   selector: 'app-card-landing',
-  imports: [CardListComponent, MatProgressBar, NgIf, MatButtonModule, MatIconModule],
+  imports: [CardListComponent, MatProgressBar, MatButtonModule, MatIconModule, BackNavComponent],
   templateUrl: './card-landing.component.html',
   styleUrl: './card-landing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,8 +1,5 @@
 <div class="container">
-    <button mat-raised-button color="primary" (click)="goBackToCardList()">
-        <mat-icon>arrow_back</mat-icon>
-        Back
-    </button>
+    <app-back-nav (back)="goBackToCardList()"></app-back-nav>
 
     <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
         <mat-form-field>
@@ -16,6 +13,8 @@
         </mat-form-field>
     
         <button mat-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">{{saveButtonName}}</button>
-        <button mat-raised-button color="primary" type="button" *ngIf="includeRemove" (click)="removeCard()">Remove Card</button>
+        @if(includeRemove) {
+            <button mat-raised-button color="primary" type="button" (click)="removeCard()">Remove Card</button>
+        }
     </form>
 </div>

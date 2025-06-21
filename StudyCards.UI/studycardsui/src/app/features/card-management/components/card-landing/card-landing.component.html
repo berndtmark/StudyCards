@@ -1,11 +1,10 @@
-<mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
+@if(store.loadingState() == loadingState.Loading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 
 <div class="container">
     <div class="button-container">
-        <button mat-raised-button color="primary" (click)="goBack()">
-            <mat-icon>arrow_back</mat-icon>
-            Back
-        </button>
+        <app-back-nav (back)="goBack()"></app-back-nav>
         <button mat-raised-button color="primary" (click)="addCard()">Add Card</button>
     </div>
 

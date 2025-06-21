@@ -4,12 +4,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AddUpdateCardBaseComponent } from '../add-update-card-base.component';
-import { NgIf } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-
+import { BackNavComponent } from '../../../../../shared/components/back-nav/back-nav.component';
 @Component({
     selector: 'app-add-card-form',
-    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, NgIf, MatIcon],
+    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, BackNavComponent],
     templateUrl: '../add-update-card-form.component.html',
     styleUrl: '../add-update-card-form.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

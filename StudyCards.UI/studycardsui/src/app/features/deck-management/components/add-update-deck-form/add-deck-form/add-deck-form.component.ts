@@ -5,11 +5,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { DeckStore } from '../../../store/deck.store';
 import { AddUpdateDeckBaseComponent } from '../add-update-deck-base.component';
-import { MatIcon } from '@angular/material/icon';
+import { BackNavComponent } from "../../../../../shared/components/back-nav/back-nav.component";
 
 @Component({
   selector: 'app-add-deck-form',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIcon],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, BackNavComponent],
   templateUrl: '../add-update-deck-form.component.html',
   styleUrl: '../add-update-deck-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
