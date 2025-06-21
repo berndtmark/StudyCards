@@ -10,7 +10,8 @@ export class DeckEventsService {
     return this.reviewCompletedSignal.asReadonly();
   }
 
-  notifyReviewCompleted(deckId: string) {
+  // todo add count of reviews today
+  notifyReviewCompleted(deckId: string, reviewCount: number): void {
     this.reviewCompletedSignal.set(deckId);
   }
 }

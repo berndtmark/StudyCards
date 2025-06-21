@@ -25,7 +25,7 @@ export class DeckItemComponent implements OnDestroy {
 
   deck = input.required<DeckResponse>();
 
-  reviewsToday = computed(() => DateFuctions.isToday(new Date(this.deck().deckReviewStatus?.lastReview || 0)));
+  reviewsToday = computed(() => this.deck().hasReviewsToday || false); // todo this needs to handle updates from study sessions. Probably can just reviews - reviewCount. They would be today
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();

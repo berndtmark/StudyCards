@@ -12,7 +12,7 @@ public class AddCardUseCaseRequest
     public string CardBack { get; set; } = string.Empty;
 }
 
-public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logger) : IUseCase<AddCardUseCaseRequest, Card>
+public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logger, IDeckCardCountService deckCardCount) : IUseCase<AddCardUseCaseRequest, Card>
 {
     public async Task<Card> Handle(AddCardUseCaseRequest request)
     {
@@ -27,13 +27,14 @@ public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logg
         try
         {
             var result = await unitOfWork.CardRepository.Add(card);
-            await unitOfWork.SaveChangesAsync();
+            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork);
 
+            await unitOfWork.SaveChangesAsync();
             return result;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Failed to add card to deck {DeckId}", request.DeckId);
+            logger.LogError(ex, "Failed to add card to deck {DeckId}", request.DeckId);
             return default!;
         }
     }

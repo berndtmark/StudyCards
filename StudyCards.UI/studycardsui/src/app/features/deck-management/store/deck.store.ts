@@ -121,7 +121,7 @@ export const DeckStore = signalStore(
                             deckReviewStatus: {
                                 ...deck.deckReviewStatus,
                                 lastReview: new Date().toISOString()
-                            }
+                            } // todo: update review count
                         } :
                         deck)
                 }));

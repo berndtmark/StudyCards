@@ -44,5 +44,12 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
     {
         await RemoveEntity(id, deckId);
     }
+
+    public async Task<int> CountByDeck(Guid deckId)
+    {
+        return await _dbContext.Card
+            .AsNoTracking()
+            .CountAsync(c => c.DeckId == deckId);
+    }
 }
 

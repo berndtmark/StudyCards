@@ -1,10 +1,14 @@
 <div class="deck-card" (click)="onDeckSelected(deck().id!)">
     <app-status-badge [complete]="reviewsToday()"></app-status-badge>
-    <h3>{{ deck().deckName }}</h3>
+    <h3 class="header">{{ deck().deckName }}</h3>
     <p>{{ deck().description || 'No Description' }}</p>
 
     <div class="deck-meta">
-      <span>Modified: {{ deck().updatedDate | date: 'd/M/yy, h:mm a' }}</span>
+      <div class="meta-info">
+        <span>Cards: {{ deck().cardCount || 'unknown' }}</span>
+        <span>Modified: {{ deck().updatedDate | date: 'd/M/yy, h:mm a' }}</span>
+      </div>
+
       <app-deck-actions 
         (click)="$event.stopPropagation(); $event.preventDefault();" 
         (edit)="editDeck(deck().id!);" 

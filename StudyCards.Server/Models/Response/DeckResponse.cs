@@ -1,4 +1,5 @@
-﻿using StudyCards.Domain.Entities;
+﻿using StudyCards.Application.Helpers;
+using StudyCards.Domain.Entities;
 
 namespace StudyCards.Server.Models.Response;
 
@@ -8,10 +9,25 @@ public class DeckResponse
     public string DeckName { get; init; } = string.Empty;
     public string? Description { get; init; } = string.Empty;
     public string UserEmail { get; init; } = string.Empty;
-    public DeckSettings DeckSettings { get; init; } = new();
-    public DeckReviewStatus DeckReviewStatus { get; init; } = new();
+    public int? CardCount { get; init; }
+    public DeckSettingsResponse DeckSettings { get; init; } = new();
+    public DeckReviewStatusResponse DeckReviewStatus { get; init; } = new();
     public DateTime CreatedDate { get; init; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; init; } = DateTime.UtcNow;
+
+    public bool HasReviewsToday
+    {
+        get
+        {
+            var maxReviews = Math.Min(DeckSettings.ReviewsPerDay, CardCount ?? 0);
+            if (maxReviews == 0) return false; // No cards to review
+
+            if (!DeckReviewStatus.LastReview.Date.IsSameDay())
+                return true; // New day and cards exist
+
+            return DeckReviewStatus.ReviewCount < maxReviews;
+        }
+    }
 }
 
 public record DeckSettingsResponse

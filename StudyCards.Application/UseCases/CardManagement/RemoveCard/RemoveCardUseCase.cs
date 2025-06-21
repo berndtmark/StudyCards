@@ -10,13 +10,15 @@ public class RemoveCardUseCaseRequest
     public Guid DeckId { get; set; }
 }
 
-public class RemoveCardUseCase(IUnitOfWork unitOfWork, ILogger<RemoveCardUseCase> logger) : IUseCase<RemoveCardUseCaseRequest, bool>
+public class RemoveCardUseCase(IUnitOfWork unitOfWork, ILogger<RemoveCardUseCase> logger, IDeckCardCountService deckCardCount) : IUseCase<RemoveCardUseCaseRequest, bool>
 {
     public async Task<bool> Handle(RemoveCardUseCaseRequest request)
     {
         try
         {
             await unitOfWork.CardRepository.Remove(request.CardId, request.DeckId);
+            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork);
+
             await unitOfWork.SaveChangesAsync();
             return true;
         }

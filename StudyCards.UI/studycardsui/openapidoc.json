@@ -505,7 +505,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "$ref": "#/components/schemas/CardStudyMethodology"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -660,9 +660,6 @@
                     }
                 }
             },
-            "CardStudyMethodology": {
-                "type": "integer"
-            },
             "DeckResponse": {
                 "type": "object",
                 "properties": {
@@ -680,11 +677,16 @@
                     "userEmail": {
                         "type": "string"
                     },
+                    "cardCount": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
                     "deckSettings": {
-                        "$ref": "#/components/schemas/DeckSettings"
+                        "$ref": "#/components/schemas/DeckSettingsResponse"
                     },
                     "deckReviewStatus": {
-                        "$ref": "#/components/schemas/DeckReviewStatus"
+                        "$ref": "#/components/schemas/DeckReviewStatusResponse"
                     },
                     "createdDate": {
                         "type": "string",
@@ -693,10 +695,13 @@
                     "updatedDate": {
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "hasReviewsToday": {
+                        "type": "boolean"
                     }
                 }
             },
-            "DeckReviewStatus": {
+            "DeckReviewStatusResponse": {
                 "type": "object",
                 "properties": {
                     "lastReview": {
@@ -709,7 +714,7 @@
                     }
                 }
             },
-            "DeckSettings": {
+            "DeckSettingsResponse": {
                 "type": "object",
                 "properties": {
                     "reviewsPerDay": {

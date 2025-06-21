@@ -80,7 +80,7 @@ export const StudyStore = signalStore(
                                 snackBarService.open('Review Saved');
                                 patchState(store, { loadingState: LoadingState.Complete })
                                 
-                                deckEvents.notifyReviewCompleted(store.deckId());
+                                deckEvents.notifyReviewCompleted(store.deckId(), store.cardsStudied().length);
                                 setTimeout(() => route.navigate(['/decks']), 3000);
                             }),
                             catchError(() => {
