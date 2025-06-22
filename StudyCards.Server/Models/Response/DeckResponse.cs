@@ -1,5 +1,4 @@
 ﻿using StudyCards.Application.Helpers;
-using StudyCards.Domain.Entities;
 
 namespace StudyCards.Server.Models.Response;
 

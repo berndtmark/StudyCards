@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, computed } from '@angular/core';
-import { DeckResponse } from 'app/@api/models/deck-response';
 import { DeckActionsComponent } from '../deck-actions/deck-actions.component';
 import { Router } from '@angular/router';
 import { DeckStore } from '../../store/deck.store';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { Subject, takeUntil } from 'rxjs';
 import { StatusBadgeComponent } from 'app/shared/components/status-badge/status-badge.component';
-import { DateFuctions } from 'app/shared/functions/date-functions';
+import { Deck } from '../../models/deck';
 
 @Component({
   selector: 'app-deck-item',
@@ -23,9 +22,9 @@ export class DeckItemComponent implements OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  deck = input.required<DeckResponse>();
+  deck = input.required<Deck>();
 
-  reviewsToday = computed(() => this.deck().hasReviewsToday || false); // todo this needs to handle updates from study sessions. Probably can just reviews - reviewCount. They would be today
+  reviewsToday = computed(() => this.deck().hasReviewsToday || false);
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();

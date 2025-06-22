@@ -1,7 +1,7 @@
 import { inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { DeckResponse } from "app/@api/models/deck-response";
+import { Deck } from "../../models/deck";
 
 export class AddUpdateDeckBaseComponent {
     private router = inject(Router);
@@ -22,7 +22,7 @@ export class AddUpdateDeckBaseComponent {
         this.router.navigate(['/decks']);
     }
 
-    protected formToDeck(): DeckResponse {
+    protected formToDeck(): Deck {
         const deckForm = this.deckForm.value;
 
         return {
@@ -36,7 +36,7 @@ export class AddUpdateDeckBaseComponent {
         }
     }
 
-    protected deckToForm(deck: DeckResponse) {
+    protected deckToForm(deck: Deck) {
         return {
             id: deck.id,
             name: deck?.deckName,

@@ -17,7 +17,7 @@ public class RemoveCardUseCase(IUnitOfWork unitOfWork, ILogger<RemoveCardUseCase
         try
         {
             await unitOfWork.CardRepository.Remove(request.CardId, request.DeckId);
-            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork);
+            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork, -1);
 
             await unitOfWork.SaveChangesAsync();
             return true;

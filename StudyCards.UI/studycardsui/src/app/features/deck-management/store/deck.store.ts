@@ -5,12 +5,12 @@ import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
-import { DeckResponse } from 'app/@api/models/deck-response';
 import { DeckEventsService } from '../services/deck-events.service';
+import { Deck } from '../models/deck';
 
 type DeckState = {
     loadingState: LoadingState
-    decks: DeckResponse[];
+    decks: Deck[];
 };
 
 const initialState: DeckState = {
@@ -43,7 +43,7 @@ export const DeckStore = signalStore(
                     ))
                 )
             ),
-            addDeck: rxMethod<DeckResponse>(
+            addDeck: rxMethod<Deck>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((deck) => deckService.addDeck(deck).pipe(
@@ -62,7 +62,7 @@ export const DeckStore = signalStore(
                     ))
                 )
             ),
-            updateDeck: rxMethod<DeckResponse>(
+            updateDeck: rxMethod<Deck>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((deck) => deckService.updateDeck(deck).pipe(
@@ -113,15 +113,16 @@ export const DeckStore = signalStore(
             getDeckById: (id: string) => {
                 return store.decks().find(deck => deck.id === id) || null;
             },
-            deckReviewed: (deckId: string): void => {
+            deckReviewed: (deckId: string, reviewCount: number): void => {
                 patchState(store, (state) => ({
                     decks: state.decks.map((deck) =>
                         deck.id === deckId ? 
-                        { ...deck, 
+                        { ...deck,
+                            hasReviewsToday: deckService.hasReviewsToday(deck, reviewCount),
                             deckReviewStatus: {
-                                ...deck.deckReviewStatus,
-                                lastReview: new Date().toISOString()
-                            } // todo: update review count
+                                lastReview: new Date().toISOString(),
+                                reviewCount: (deck.deckReviewStatus?.reviewCount || 0) + reviewCount
+                            }
                         } :
                         deck)
                 }));
@@ -134,9 +135,9 @@ export const DeckStore = signalStore(
                 store.loadDecks();
 
                 effect(() => {
-                    const deckId = deckEvents.reviewCompleted();
+                    const {deckId, reviewCount} = deckEvents.reviewCompleted();
                     if (deckId) {
-                        store.deckReviewed(deckId);
+                        store.deckReviewed(deckId, reviewCount);
                     }
                 });
         }

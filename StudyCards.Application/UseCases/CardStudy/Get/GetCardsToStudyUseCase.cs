@@ -30,13 +30,15 @@ public class GetCardsToStudyUseCase(
         cardStrategyContext.SetStrategy(cardStrategy);
         cardStrategyContext.AddCards(cards);
 
-        // Ramdom strategy always lets you study cards
+        var reviewsToday = Math.Min(deck.DeckSettings.ReviewsPerDay, deck.CardCount ?? deck.DeckSettings.ReviewsPerDay);
+
+        // Random strategy always lets you study cards
         var cardsToStudy = request.StudyMethodology switch
         {
-            CardStudyMethodology.Random => deck.DeckSettings.ReviewsPerDay,
+            CardStudyMethodology.Random => reviewsToday,
             _ => deck.DeckReviewStatus.LastReview.IsSameDay() ?
-                    Math.Max(deck.DeckSettings.ReviewsPerDay - deck.DeckReviewStatus.ReviewCount, 0) :
-                    deck.DeckSettings.ReviewsPerDay
+                    Math.Max(reviewsToday - deck.DeckReviewStatus.ReviewCount, 0) :
+                    reviewsToday
         };    
 
         var result = cardStrategyContext.GetCards(cardsToStudy);

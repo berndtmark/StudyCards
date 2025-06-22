@@ -27,7 +27,7 @@ public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logg
         try
         {
             var result = await unitOfWork.CardRepository.Add(card);
-            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork);
+            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork, 1);
 
             await unitOfWork.SaveChangesAsync();
             return result;
