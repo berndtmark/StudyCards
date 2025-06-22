@@ -1,5 +1,5 @@
 <div class="deck-card" (click)="onDeckSelected(deck().id!)">
-    <app-status-badge [complete]="reviewsToday()"></app-status-badge>
+    <app-status-badge [complete]="!reviewsToday()"></app-status-badge>
     <h3 class="header">{{ deck().deckName }}</h3>
     <p>{{ deck().description || 'No Description' }}</p>
 

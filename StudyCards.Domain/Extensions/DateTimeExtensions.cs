@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Application.Helpers;
+﻿namespace StudyCards.Domain.Extensions;
 
 public static class DateTimeExtensions
 {

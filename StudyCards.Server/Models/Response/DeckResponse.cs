@@ -1,6 +1,4 @@
-﻿using StudyCards.Application.Helpers;
-
-namespace StudyCards.Server.Models.Response;
+﻿namespace StudyCards.Server.Models.Response;
 
 public class DeckResponse
 {
@@ -13,20 +11,9 @@ public class DeckResponse
     public DeckReviewStatusResponse DeckReviewStatus { get; init; } = new();
     public DateTime CreatedDate { get; init; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; init; } = DateTime.UtcNow;
+    public int CardNoToReview { get; init; }
 
-    public bool HasReviewsToday
-    {
-        get
-        {
-            var maxReviews = Math.Min(DeckSettings.ReviewsPerDay, CardCount ?? 0);
-            if (maxReviews == 0) return false; // No cards to review
-
-            if (!DeckReviewStatus.LastReview.Date.IsSameDay())
-                return true; // New day and cards exist
-
-            return DeckReviewStatus.ReviewCount < maxReviews;
-        }
-    }
+    public bool HasReviewsToday => CardNoToReview > 0;
 }
 
 public record DeckSettingsResponse

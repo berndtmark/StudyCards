@@ -1,6 +1,6 @@
-﻿using StudyCards.Application.Helpers;
+﻿using StudyCards.Domain.Extensions;
 
-namespace StudyCard.Application.Tests.Helpers;
+namespace StudyCard.Domain.Tests.Extensions;
 
 [TestClass]
 public class DateTimeExtensions

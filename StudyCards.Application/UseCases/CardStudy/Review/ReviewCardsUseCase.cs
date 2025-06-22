@@ -1,8 +1,8 @@
-﻿using StudyCards.Application.Helpers;
-using StudyCards.Application.Interfaces;
+﻿using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
+using StudyCards.Domain.Extensions;
 
 namespace StudyCards.Application.UseCases.CardStudy.Review;
 
