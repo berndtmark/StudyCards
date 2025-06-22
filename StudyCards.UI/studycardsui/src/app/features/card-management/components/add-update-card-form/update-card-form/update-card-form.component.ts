@@ -16,6 +16,7 @@ import { BackNavComponent } from "../../../../../shared/components/back-nav/back
 export class UpdateCardFormComponent extends AddUpdateCardBaseComponent implements OnInit {
     saveButtonName = "Update Card";
     includeRemove = true;
+    title = "Update Card";
 
     constructor() {
         super();

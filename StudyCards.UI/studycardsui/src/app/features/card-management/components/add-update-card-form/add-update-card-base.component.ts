@@ -15,6 +15,7 @@ export abstract class AddUpdateCardBaseComponent {
     cardForm!: FormGroup;
 
     protected cardId?: string;
+    protected abstract title: string;
 
     protected initForm(): void {
         const deckId = this.activatedRoute.snapshot.paramMap.get('deckid') || '';

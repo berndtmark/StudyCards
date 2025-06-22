@@ -8,11 +8,9 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Deck>(dbContext, httpContextAccessor), IDeckRepository
 {
-    private readonly DataBaseContext _dbContext = dbContext;
-
     public async Task<Deck?> Get(Guid id, string emailAddress)
     {
-        return await _dbContext
+        return await dbContext
             .Deck
             .WithPartitionKey(emailAddress)
             .AsNoTracking()
@@ -21,7 +19,7 @@ public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<Deck?> Get(Guid id)
     {
-        return await _dbContext
+        return await dbContext
             .Deck
             .WithPartitionKey(EmailAddress)
             .AsNoTracking()
@@ -30,7 +28,7 @@ public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress)
     {
-        return await _dbContext.Deck
+        return await dbContext.Deck
             .AsNoTracking()
             .Where(c => c.UserEmail == emailAddress)
             .ToListAsync();

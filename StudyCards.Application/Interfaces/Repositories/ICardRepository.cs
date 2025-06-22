@@ -9,5 +9,6 @@ public interface ICardRepository
     Task<Card> Add(Card card);
     Card Update(Card card);
     Task Remove(Guid id, Guid deckId);
+    void RemoveRange(Card[] cards);
     Task<int> CountByDeck(Guid deckId);
 }

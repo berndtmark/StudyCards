@@ -2,41 +2,53 @@
 
 .container {
     padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
 
     @include responsive.responsive('mobile') {
         padding: 1rem;
     }
-}
-
-form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 500px;
 
     @include responsive.responsive('tablet') {
         max-width: 100%;
     }
-}
 
-.sub-section {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    .form-card {
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        margin-top: 2rem;
 
-    @include responsive.responsive('tablet') {
-        flex-direction: column;
-        width: 100%;
-
-        mat-form-field {
-            width: 100%;
+        @include responsive.responsive('tablet') {
+            box-shadow: none;
+            padding: 0;
+            margin-top: 0;
         }
-    }
-}
 
-mat-form-field {
-    @include responsive.responsive('tablet') {
-        width: 100%;
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            @include responsive.responsive('tablet') {
+                margin-top: 20px;
+                max-width: 100%;
+            }
+
+            mat-form-field {
+                width: 100%;
+            }
+
+            .sub-section {
+                display: flex;
+                flex-direction: row;
+                gap: 1rem;
+
+                @include responsive.responsive('tablet') {
+                    flex-direction: column;
+                    width: 100%;
+                }
+            }
+        }
     }
 }

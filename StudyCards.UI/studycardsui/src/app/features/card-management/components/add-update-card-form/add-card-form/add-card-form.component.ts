@@ -15,6 +15,7 @@ import { BackNavComponent } from '../../../../../shared/components/back-nav/back
 export class AddCardFormComponent extends AddUpdateCardBaseComponent implements OnInit {
     saveButtonName = "Add Card";
     includeRemove = false;
+    title = "Add Card";
 
     ngOnInit(): void {
         this.initForm();

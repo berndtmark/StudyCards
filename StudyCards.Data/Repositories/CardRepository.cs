@@ -8,11 +8,9 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Card>(dbContext, httpContextAccessor), ICardRepository
 {
-    private readonly DataBaseContext _dbContext = dbContext;
-
     public async Task<Card?> Get(Guid id, Guid deckId)
     {
-        return await _dbContext
+        return await dbContext
             .Card
             .WithPartitionKey(deckId)
             .AsNoTracking()
@@ -21,7 +19,7 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<IEnumerable<Card>> GetByDeck(Guid deckId)
     {
-        return await _dbContext.Card
+        return await dbContext.Card
             .AsNoTracking()
             .Where(c => c.DeckId == deckId)
             .ToListAsync();
@@ -45,9 +43,14 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
         await RemoveEntity(id, deckId);
     }
 
+    public void RemoveRange(Card[] cards)
+    {
+        dbContext.Card.RemoveRange(cards);
+    }
+
     public async Task<int> CountByDeck(Guid deckId)
     {
-        return await _dbContext.Card
+        return await dbContext.Card
             .AsNoTracking()
             .CountAsync(c => c.DeckId == deckId);
     }

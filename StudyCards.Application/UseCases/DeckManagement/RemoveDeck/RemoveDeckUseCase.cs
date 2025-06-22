@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.Interfaces.UnitOfWork;
 
 namespace StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
@@ -17,6 +16,12 @@ public class RemoveDeckUseCase(IUnitOfWork unitOfWork, ILogger<RemoveDeckUseCase
     {
         try
         {
+            var cards = await unitOfWork.CardRepository.GetByDeck(request.DeckId);
+            if (cards.Any())
+            {
+                unitOfWork.CardRepository.RemoveRange([.. cards]);
+            }
+
             await unitOfWork.DeckRepository.Remove(request.DeckId, request.EmailAddress);
             await unitOfWork.SaveChangesAsync();
 
