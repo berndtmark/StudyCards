@@ -1,3 +1,4 @@
-<div class="deck-card" (click)="addDeck.emit()">
-    <mat-icon class="icon">add</mat-icon>
+<div class="container">
+    <app-back-nav (back)="goBackToDeckList()"></app-back-nav>
+    <app-deck-form saveButtonName="Create Deck" (submit)="onSubmit($event)"></app-deck-form>
 </div>

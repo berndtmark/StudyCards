@@ -1,8 +1,8 @@
 import { Routes } from "@angular/router";
 import { DeckListComponent } from "./components/deck-list/deck-list.component";
 import { DeckStore } from "./store/deck.store";
-import { AddDeckFormComponent } from "./components/add-update-deck-form/add-deck-form/add-deck-form.component";
-import { UpdateDeckFormComponent } from "./components/add-update-deck-form/update-deck-form/update-deck-form.component";
+import { AddDeckComponent } from "./components/add-deck/add-deck.component";
+import { UpdateDeckComponent } from "./components/update-deck/update-deck.component";
 
 export const DECK_MANAGEMENT_ROUTES: Routes = [
     {
@@ -15,11 +15,11 @@ export const DECK_MANAGEMENT_ROUTES: Routes = [
             },
             {
                 path: 'add',
-                component: AddDeckFormComponent
+                component: AddDeckComponent
             },
             {
                 path: 'edit/:deckid',
-                component: UpdateDeckFormComponent
+                component: UpdateDeckComponent
             }
         ]
     }

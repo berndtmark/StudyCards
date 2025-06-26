@@ -21,7 +21,7 @@ export class CardFormComponent implements OnInit {
   saveButtonName = input<string>('Save Card');
   card = input(null, {
     transform: (value: CardResponse) => {
-      this.patchFormValues(value);
+      this.patchForm(value);
       return value;
     }
   })
@@ -54,7 +54,7 @@ export class CardFormComponent implements OnInit {
     });
   }
 
-  private patchFormValues(card: CardResponse): void {
+  private patchForm(card: CardResponse): void {
     if (card) {
       this.initForm();
 

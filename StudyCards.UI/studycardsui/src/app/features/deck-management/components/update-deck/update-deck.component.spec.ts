@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UpdateDeckFormComponent } from './update-deck-form.component';
-import { DeckStore } from 'app/features/deck-management/store/deck.store';
-import { provideHttpClient } from '@angular/common/http';
+import { UpdateDeckComponent } from './update-deck.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterModule } from '@angular/router';
+import { DeckStore } from '../../store/deck.store';
+import { provideHttpClient } from '@angular/common/http';
 
-describe('UpdateDeckFormComponent', () => {
-  let component: UpdateDeckFormComponent;
-  let fixture: ComponentFixture<UpdateDeckFormComponent>;
+describe('UpdateDeckComponent', () => {
+  let component: UpdateDeckComponent;
+  let fixture: ComponentFixture<UpdateDeckComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        UpdateDeckFormComponent,
+        UpdateDeckComponent,
         RouterModule.forRoot([]),
       ],
       providers: [
@@ -24,7 +24,7 @@ describe('UpdateDeckFormComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UpdateDeckFormComponent);
+    fixture = TestBed.createComponent(UpdateDeckComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

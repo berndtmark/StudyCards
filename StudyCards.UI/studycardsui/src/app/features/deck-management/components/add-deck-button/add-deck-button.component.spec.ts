@@ -1,30 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { AddDeckComponent } from './add-deck.component';
-import { RouterModule } from '@angular/router';
 import { DeckStore } from '../../store/deck.store';
-import { provideHttpClient } from '@angular/common/http';
+
+import { AddDeckButtonComponent } from './add-deck-button.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('AddDeckComponent', () => {
-  let component: AddDeckComponent;
-  let fixture: ComponentFixture<AddDeckComponent>;
+  let component: AddDeckButtonComponent;
+  let fixture: ComponentFixture<AddDeckButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AddDeckComponent,
-        RouterModule.forRoot([]),
-      ],
+      imports: [AddDeckButtonComponent],
       providers: [
-        DeckStore,
+        DeckStore, 
         provideHttpClient(),
-        provideHttpClientTesting(),
+        provideHttpClientTesting()
       ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AddDeckComponent);
+    fixture = TestBed.createComponent(AddDeckButtonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
