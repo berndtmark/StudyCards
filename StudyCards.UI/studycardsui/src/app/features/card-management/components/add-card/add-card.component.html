@@ -1,0 +1,8 @@
+<div class="container">
+    <app-back-nav (back)="goBackToCardList()"></app-back-nav>
+
+    <app-card-form
+        [title]="'Add Card'"
+        (submit)="onCardSubmit($event)">
+    </app-card-form>
+</div>

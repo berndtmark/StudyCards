@@ -1,8 +1,8 @@
 import { Routes } from "@angular/router";
 import { CardStore } from "./store/card.store";
 import { CardLandingComponent } from "./components/card-landing/card-landing.component";
-import { AddCardFormComponent } from "./components/add-update-card-form/add-card-form/add-card-form.component";
-import { UpdateCardFormComponent } from "./components/add-update-card-form/update-card-form/update-card-form.component";
+import { AddCardComponent } from "./components/add-card/add-card.component";
+import { UpdateCardComponent } from "./components/update-card/update-card.component";
 
 export const CARD_MANAGEMENT_ROUTES: Routes = [
     {
@@ -15,11 +15,11 @@ export const CARD_MANAGEMENT_ROUTES: Routes = [
             },
             {
                 path: 'add',
-                component: AddCardFormComponent
+                component: AddCardComponent
             },
             {
                 path: 'edit/:cardid',
-                component: UpdateCardFormComponent
+                component: UpdateCardComponent
             }
         ]
     }

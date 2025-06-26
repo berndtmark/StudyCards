@@ -1,0 +1,15 @@
+@use '../../../../theming/responsive' as responsive;
+
+.container {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+
+    @include responsive.responsive('mobile') {
+        padding: 1rem;
+    }
+
+    @include responsive.responsive('tablet') {
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,11 @@
+<div class="container">
+    <app-back-nav (back)="goBackToCardList()"></app-back-nav>
+
+    <app-card-form
+        [title]="'Update Card'"
+        [card]="store.getCardById(cardId)!"
+        (cardRemoved)="onRemovedCard()"
+        (submit)="onCardSubmit($event)">
+            <button button-content mat-raised-button color="primary" type="button" (click)="onRemovedCard()">Remove Card</button>
+    </app-card-form>
+</div>

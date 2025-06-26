@@ -1,0 +1,38 @@
+@use '../../../../theming/responsive' as responsive;
+
+.title {
+    margin-top: 0;
+}
+
+form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    mat-form-field {
+        width: 100%;
+    }
+}
+
+.form-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-top: 2rem;
+
+    @include responsive.responsive('mobile') {
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    @include responsive.responsive('tablet') {
+        flex-direction: column;
+    }
+}
