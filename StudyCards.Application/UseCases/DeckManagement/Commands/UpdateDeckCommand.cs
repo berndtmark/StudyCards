@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Interfaces.CQRS;
+﻿using StudyCards.Application.Exceptions;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
@@ -18,7 +19,7 @@ public class UpdateDeckCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<
 {
     public async Task<Deck> Handle(UpdateDeckCommand request, CancellationToken cancellationToken)
     {
-        var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.EmailAddress, cancellationToken) ?? throw new Exception("Deck not found");
+        var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.EmailAddress, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
 
         var newDeck = currentDeck with
         {

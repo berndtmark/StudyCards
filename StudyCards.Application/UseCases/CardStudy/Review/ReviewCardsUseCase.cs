@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Interfaces;
+﻿using StudyCards.Application.Exceptions;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
@@ -28,7 +29,7 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
         // update card reviews
         foreach (var cardReview in request.CardReviews)
         {
-            var card = await unitOfWork.CardRepository.Get(cardReview.CardId, request.DeckId) ?? throw new Exception("Card not found");
+            var card = await unitOfWork.CardRepository.Get(cardReview.CardId, request.DeckId) ?? throw new EntityNotFoundException(nameof(Card), cardReview.CardId);
 
             var review = new CardReview
             {
@@ -48,7 +49,7 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
         }
 
         // update deck last review status
-        var deck = await unitOfWork.DeckRepository.Get(request.DeckId) ?? throw new Exception($"Deck not found ${request.DeckId}");
+        var deck = await unitOfWork.DeckRepository.Get(request.DeckId) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
 
         var isFirstReviewToday = !deck.DeckReviewStatus.LastReview.Date.IsSameDay();
         var updatedDeck = deck with

@@ -38,10 +38,10 @@ public class AddDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<AddDeckComman
 
             return result;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Failed to add deck {DeckName}", request.DeckName);
-            return default!;
+            logger.LogError(ex, "Failed to add deck {DeckName}", request.DeckName);
+            throw;
         }
     }
 }

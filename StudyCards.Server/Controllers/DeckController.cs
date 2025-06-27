@@ -13,7 +13,7 @@ namespace StudyCards.Server.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper mapper, ISender sender) : ApiControllerBase(sender)
+public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper mapper, ISender sender) : ControllerBase
 {
     [HttpGet]
     [Route("getdecks")]
@@ -26,7 +26,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
         {
             EmailAddress = email
         };
-        var result = await Sender.Send(query, cancellationToken);
+        var result = await sender.Send(query, cancellationToken);
 
         var response = mapper.Map<IEnumerable<DeckResponse>>(result);
         return Ok(response);
@@ -39,7 +39,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
     {
         var email = httpContextAccessor.GetEmail();
 
-        var result = await Sender.Send(new AddDeckCommand
+        var result = await sender.Send(new AddDeckCommand
         {
             EmailAddress = email,
             DeckName = request.DeckName,
@@ -59,7 +59,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
     {
         var email = httpContextAccessor.GetEmail();
 
-        var result = await Sender.Send(new UpdateDeckCommand
+        var result = await sender.Send(new UpdateDeckCommand
         {
             DeckId = request.DeckId,
             DeckName = request.DeckName,
@@ -80,7 +80,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
     {
         var email = httpContextAccessor.GetEmail();
 
-        var result = await Sender.Send(new RemoveDeckCommand 
+        var result = await sender.Send(new RemoveDeckCommand 
         { 
             DeckId = new Guid(deckId),
             EmailAddress = email

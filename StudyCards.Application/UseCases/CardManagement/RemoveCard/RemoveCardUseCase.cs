@@ -22,10 +22,10 @@ public class RemoveCardUseCase(IUnitOfWork unitOfWork, ILogger<RemoveCardUseCase
             await unitOfWork.SaveChangesAsync();
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Failed to remove card {CardId}", request.CardId);
-            return false;
+            logger.LogError(ex, "Failed to remove card {CardId}", request.CardId);
+            throw;
         }
     }
 }

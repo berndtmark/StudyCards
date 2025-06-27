@@ -35,7 +35,7 @@ public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logg
         catch (Exception ex)
         {
             logger.LogError(ex, "Failed to add card to deck {DeckId}", request.DeckId);
-            return default!;
+            throw;
         }
     }
 }

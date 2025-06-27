@@ -27,10 +27,10 @@ public class RemoveDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<RemoveDeck
 
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            logger.LogError("Failed to remove deck {DeckId}", request.DeckId);
-            return false;
+            logger.LogError(ex, "Failed to remove deck {DeckId}", request.DeckId);
+            throw;
         }
     }
 }

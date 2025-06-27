@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using StudyCards.Application.Enums;
+using StudyCards.Application.Exceptions;
 using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
@@ -22,7 +23,7 @@ public class GetCardsToStudyUseCase(
 {
     public async Task<IEnumerable<Card>> Handle(GetCardsToStudyUseCaseRequest request)
     {
-        var deck = await deckRepository.Get(request.DeckId, httpContextAccessor.GetEmail()) ?? throw new ArgumentException($"Deck with ID {request.DeckId} not found.");
+        var deck = await deckRepository.Get(request.DeckId, httpContextAccessor.GetEmail()) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
         var cards = await cardRepository.GetByDeck(request.DeckId);
 
         var cardStrategy = cardSelectionStudyFactory.Create(request.StudyMethodology);

@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Interfaces;
+﻿using StudyCards.Application.Exceptions;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
@@ -16,7 +17,7 @@ public class UpdataCardUseCase(IUnitOfWork unitOfWork) : IUseCase<UpdateCardUseC
 {
     public async Task<Card> Handle(UpdateCardUseCaseRequest request)
     {
-        var currentCard = await unitOfWork.CardRepository.Get(request.CardId, request.DeckId) ?? throw new Exception("Card not found");
+        var currentCard = await unitOfWork.CardRepository.Get(request.CardId, request.DeckId) ?? throw new EntityNotFoundException(nameof(Card), request.CardId);
         var newCard = currentCard with
         {
             CardFront = request.CardFront,
