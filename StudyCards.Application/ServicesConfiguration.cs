@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StudyCards.Application.Factory;
 using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Services;
 using StudyCards.Application.Strategy.CardStrategy;
 using System.Reflection;
@@ -18,6 +19,7 @@ public static class ServicesConfiguration
         services.AddTransient<ICardStrategyContext, CardStrategyContext>();
         services.AddTransient<IDeckCardCountService, DeckCardCountService>();
         services.AddUseCases();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(ICommand<>)));
 
         return services;
     }

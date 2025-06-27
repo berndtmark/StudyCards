@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.UseCases.DeckManagement.AddDeck;
-using StudyCards.Application.UseCases.DeckManagement.GetDeck;
+using StudyCards.Application.UseCases.DeckManagement.Queries;
 using StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
 using StudyCards.Application.UseCases.DeckManagement.UpdateDeck;
 using StudyCards.Domain.Entities;
@@ -16,7 +17,7 @@ namespace StudyCards.Server.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor httpContextAccessor, IMapper mapper) : ControllerBase
+public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor httpContextAccessor, IMapper mapper, ISender sender) : ApiControllerBase(sender)
 {
     [HttpGet]
     [Route("getdecks")]
@@ -25,8 +26,11 @@ public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor
     {
         var email = httpContextAccessor.GetEmail();
 
-        var useCase = useCaseFactory.Create<GetDeckUseCaseRequest, IEnumerable<Deck>>();
-        var result = await useCase.Handle(new GetDeckUseCaseRequest { EmailAddress = email });
+        var query = new GetDeckQuery
+        {
+            EmailAddress = email
+        };
+        var result = await Sender.Send(query);
 
         var response = mapper.Map<IEnumerable<DeckResponse>>(result);
         return Ok(response);
