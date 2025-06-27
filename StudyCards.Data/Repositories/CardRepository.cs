@@ -8,21 +8,21 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Card>(dbContext, httpContextAccessor), ICardRepository
 {
-    public async Task<Card?> Get(Guid id, Guid deckId)
+    public async Task<Card?> Get(Guid id, Guid deckId, CancellationToken cancellationToken = default)
     {
         return await dbContext
             .Card
             .WithPartitionKey(deckId)
             .AsNoTracking()
-            .SingleOrDefaultAsync(d => d.Id == id);
+            .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Card>> GetByDeck(Guid deckId)
+    public async Task<IEnumerable<Card>> GetByDeck(Guid deckId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Card
             .AsNoTracking()
             .Where(c => c.DeckId == deckId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Card> Add(Card card)
@@ -48,11 +48,11 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
         dbContext.Card.RemoveRange(cards);
     }
 
-    public async Task<int> CountByDeck(Guid deckId)
+    public async Task<int> CountByDeck(Guid deckId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Card
             .AsNoTracking()
-            .CountAsync(c => c.DeckId == deckId);
+            .CountAsync(c => c.DeckId == deckId, cancellationToken);
     }
 }
 

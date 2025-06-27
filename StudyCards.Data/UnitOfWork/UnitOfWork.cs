@@ -30,9 +30,9 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
         }
     }
 
-    public async Task SaveChangesAsync()
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     protected virtual void Dispose(bool disposing)

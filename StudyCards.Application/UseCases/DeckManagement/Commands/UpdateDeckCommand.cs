@@ -1,10 +1,10 @@
-﻿using StudyCards.Application.Interfaces;
+﻿using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
-namespace StudyCards.Application.UseCases.DeckManagement.UpdateDeck;
+namespace StudyCards.Application.UseCases.DeckManagement.Commands;
 
-public class UpdateDeckUseCaseRequest
+public class UpdateDeckCommand : ICommand<Deck>
 {
     public Guid DeckId { get; set; }
     public string DeckName { get; set; } = string.Empty;
@@ -14,16 +14,11 @@ public class UpdateDeckUseCaseRequest
     public int NewCardsPerDay { get; set; }
 }
 
-public class UpdateDeckUseCase(IUnitOfWork unitOfWork) : IUseCase<UpdateDeckUseCaseRequest, Deck>
+public class UpdateDeckCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<UpdateDeckCommand, Deck>
 {
-    public async Task<Deck> Handle(UpdateDeckUseCaseRequest request)
+    public async Task<Deck> Handle(UpdateDeckCommand request, CancellationToken cancellationToken)
     {
-        var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.EmailAddress);
-
-        if (currentDeck == null)
-        {
-            throw new Exception("Deck not found");
-        }
+        var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.EmailAddress, cancellationToken) ?? throw new Exception("Deck not found");
 
         var newDeck = currentDeck with
         {
@@ -38,7 +33,7 @@ public class UpdateDeckUseCase(IUnitOfWork unitOfWork) : IUseCase<UpdateDeckUseC
         };
 
         var result = unitOfWork.DeckRepository.Update(newDeck);
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return result;
     }

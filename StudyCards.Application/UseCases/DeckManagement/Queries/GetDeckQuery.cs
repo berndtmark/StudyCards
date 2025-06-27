@@ -13,6 +13,6 @@ public class GetDeckQueryHandler(IDeckRepository deckRepository) : IQueryHandler
 {
     public async Task<IEnumerable<Deck>> Handle(GetDeckQuery request, CancellationToken cancellationToken)
     {
-        return await deckRepository.GetByEmail(request.EmailAddress);
+        return await deckRepository.GetByEmail(request.EmailAddress, cancellationToken);
     }
 }

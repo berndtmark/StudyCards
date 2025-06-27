@@ -3,10 +3,8 @@ using StudyCards.Domain.Entities;
 
 namespace StudyCards.Infrastructure.Database.Context;
 
-public class DataBaseContext : DbContext
+public class DataBaseContext(DbContextOptions options) : DbContext(options)
 {
-    public DataBaseContext(DbContextOptions options) : base(options) { }
-
     public DbSet<Deck> Deck { get; set; }
     public DbSet<Card> Card { get; set; }
 

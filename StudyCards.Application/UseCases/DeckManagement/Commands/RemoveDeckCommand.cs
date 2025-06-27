@@ -1,29 +1,29 @@
 ﻿using Microsoft.Extensions.Logging;
-using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 
-namespace StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
+namespace StudyCards.Application.UseCases.DeckManagement.Commands;
 
-public class RemoveDeckUseCaseRequest
+public class RemoveDeckCommand : ICommand<bool>
 {
     public Guid DeckId { get; set; }
     public string EmailAddress { get; set; } = string.Empty;
 }
 
-public class RemoveDeckUseCase(IUnitOfWork unitOfWork, ILogger<RemoveDeckUseCase> logger) : IUseCase<RemoveDeckUseCaseRequest, bool>
+public class RemoveDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<RemoveDeckCommand> logger) : ICommandHandler<RemoveDeckCommand, bool>
 {
-    public async Task<bool> Handle(RemoveDeckUseCaseRequest request)
+    public async Task<bool> Handle(RemoveDeckCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var cards = await unitOfWork.CardRepository.GetByDeck(request.DeckId);
+            var cards = await unitOfWork.CardRepository.GetByDeck(request.DeckId, cancellationToken);
             if (cards.Any())
             {
                 unitOfWork.CardRepository.RemoveRange([.. cards]);
             }
 
             await unitOfWork.DeckRepository.Remove(request.DeckId, request.EmailAddress);
-            await unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return true;
         }

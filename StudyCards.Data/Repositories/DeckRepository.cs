@@ -8,30 +8,30 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Deck>(dbContext, httpContextAccessor), IDeckRepository
 {
-    public async Task<Deck?> Get(Guid id, string emailAddress)
+    public async Task<Deck?> Get(Guid id, string emailAddress, CancellationToken cancellationToken = default)
     {
         return await dbContext
             .Deck
             .WithPartitionKey(emailAddress)
             .AsNoTracking()
-            .SingleOrDefaultAsync(d => d.Id == id);
+            .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
-    public async Task<Deck?> Get(Guid id)
+    public async Task<Deck?> Get(Guid id, CancellationToken cancellationToken = default)
     {
         return await dbContext
             .Deck
             .WithPartitionKey(EmailAddress)
             .AsNoTracking()
-            .SingleOrDefaultAsync(d => d.Id == id);
+            .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress)
+    public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress, CancellationToken cancellationToken = default)
     {
         return await dbContext.Deck
             .AsNoTracking()
             .Where(c => c.UserEmail == emailAddress)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Deck> Add(Deck deck)

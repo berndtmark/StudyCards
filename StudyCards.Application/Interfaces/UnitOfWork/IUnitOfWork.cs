@@ -6,5 +6,5 @@ public interface IUnitOfWork : IDisposable
 {
     ICardRepository CardRepository { get; }
     IDeckRepository DeckRepository { get; }
-    Task SaveChangesAsync();
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

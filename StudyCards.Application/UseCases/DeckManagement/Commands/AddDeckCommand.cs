@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
-namespace StudyCards.Application.UseCases.DeckManagement.AddDeck;
+namespace StudyCards.Application.UseCases.DeckManagement.Commands;
 
-public class AddDeckUseCaseRequest
+public class AddDeckCommand : ICommand<Deck>
 {
     public string DeckName { get; set; } = string.Empty;
     public string EmailAddress { get; set; } = string.Empty;
@@ -13,9 +13,10 @@ public class AddDeckUseCaseRequest
     public int ReviewsPerDay { get; set; }
     public int NewCardsPerDay { get; set; }
 }
-public class AddDeckUseCase(IUnitOfWork unitOfWork, ILogger<AddDeckUseCase> logger) : IUseCase<AddDeckUseCaseRequest, Deck>
+
+public class AddDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<AddDeckCommand> logger) : ICommandHandler<AddDeckCommand, Deck>
 {
-    public async Task<Deck> Handle(AddDeckUseCaseRequest request)
+    public async Task<Deck> Handle(AddDeckCommand request, CancellationToken cancellationToken)
     {
         var deck = new Deck
         {
@@ -33,7 +34,7 @@ public class AddDeckUseCase(IUnitOfWork unitOfWork, ILogger<AddDeckUseCase> logg
         try
         {
             var result = await unitOfWork.DeckRepository.Add(deck);
-            await unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return result;
         }

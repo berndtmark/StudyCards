@@ -48,9 +48,9 @@ public class GetCardsToStudyUseCaseTests
 
         _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(It.IsAny<string>()))
             .Returns(new System.Security.Claims.Claim("email", userEmail));
-        _deckRepositoryMock.Setup(x => x.Get(deckId, userEmail))
+        _deckRepositoryMock.Setup(x => x.Get(deckId, userEmail, CancellationToken.None))
             .ReturnsAsync(deck);
-        _cardRepositoryMock.Setup(x => x.GetByDeck(deckId))
+        _cardRepositoryMock.Setup(x => x.GetByDeck(deckId, CancellationToken.None))
             .ReturnsAsync(cards);
         _cardSelectionStudyFactoryMock.Setup(x => x.Create(It.IsAny<CardStudyMethodology>()))
             .Returns(strategy);
@@ -82,7 +82,7 @@ public class GetCardsToStudyUseCaseTests
 
         _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(It.IsAny<string>()))
             .Returns(new System.Security.Claims.Claim("email", userEmail));
-        _deckRepositoryMock.Setup(x => x.Get(deckId, userEmail))
+        _deckRepositoryMock.Setup(x => x.Get(deckId, userEmail, CancellationToken.None))
             .ReturnsAsync((Deck)null!);
 
         var request = new GetCardsToStudyUseCaseRequest
