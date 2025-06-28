@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Deck } from '../../models/deck';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -49,8 +49,12 @@ export class DeckFormComponent implements OnInit {
         name: ['', Validators.required],
         description: [''],
         maxReviews: [10, Validators.min(1)],
-        maxNew: [5, Validators.min(1)]
-    });
+        maxNew: [2, Validators.min(1)]
+      },
+      {
+        validators: this.maxNewLessThanOrEqualValidator
+      }
+    );
   }
 
   private patchForm(deck: Deck): void {
@@ -79,5 +83,16 @@ export class DeckFormComponent implements OnInit {
               newCardsPerDay: deckForm.maxNew
           }
       }
+  }
+
+  private maxNewLessThanOrEqualValidator(control: AbstractControl): ValidationErrors | null {
+    const maxNew = control.get('maxNew')?.value;
+    const maxReviews = control.get('maxReviews')?.value;
+
+    if (maxNew != null && maxReviews != null && maxNew > maxReviews) {
+      return { maxNewExceedsReviews: true };
+    }
+
+    return null;
   }
 }

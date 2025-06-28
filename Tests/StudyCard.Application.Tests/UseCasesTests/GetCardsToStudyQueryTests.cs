@@ -16,7 +16,7 @@ public class GetCardsToStudyQueryTests
     private Mock<IDeckRepository> _deckRepositoryMock = default!;
     private Mock<ICardRepository> _cardRepositoryMock = default!;
     private Mock<IHttpContextAccessor> _httpContextAccessorMock = default!;
-    private Mock<ICardStrategyContext> _cardStrategyContextMock = default!;
+    private Mock<ICardsToStudyStrategyContext> _cardStrategyContextMock = default!;
     private Mock<ICardSelectionStudyFactory> _cardSelectionStudyFactoryMock = default!;
     private GetCardsToStudyQueryHandler _useCase = default!;
 
@@ -26,7 +26,7 @@ public class GetCardsToStudyQueryTests
         _deckRepositoryMock = new Mock<IDeckRepository>();
         _cardRepositoryMock = new Mock<ICardRepository>();
         _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-        _cardStrategyContextMock = new Mock<ICardStrategyContext>();
+        _cardStrategyContextMock = new Mock<ICardsToStudyStrategyContext>();
         _cardSelectionStudyFactoryMock = new Mock<ICardSelectionStudyFactory>();
 
         _useCase = new GetCardsToStudyQueryHandler(
@@ -46,7 +46,7 @@ public class GetCardsToStudyQueryTests
         var deckId = Guid.NewGuid();
         var deck = new Deck { Id = deckId, DeckSettings = new DeckSettings { ReviewsPerDay = 10 } };
         var cards = new List<Card> { new(), new() };
-        var strategy = Mock.Of<ICardStrategy>();
+        var strategy = Mock.Of<ICardsToStudyStrategy>();
 
         _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(It.IsAny<string>()))
             .Returns(new System.Security.Claims.Claim("email", userEmail));
@@ -56,7 +56,7 @@ public class GetCardsToStudyQueryTests
             .ReturnsAsync(cards);
         _cardSelectionStudyFactoryMock.Setup(x => x.Create(It.IsAny<CardStudyMethodology>()))
             .Returns(strategy);
-        _cardStrategyContextMock.Setup(x => x.GetCards(deck.DeckSettings.ReviewsPerDay))
+        _cardStrategyContextMock.Setup(x => x.GetStudyCards(deck.DeckSettings.ReviewsPerDay, deck.DeckSettings.NewCardsPerDay))
             .Returns(cards);
 
         var request = new GetCardsToStudyQuery

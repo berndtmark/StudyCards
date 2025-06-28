@@ -17,6 +17,16 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
             .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
+    public async Task<IEnumerable<Card>?> Get(Guid[] ids, Guid deckId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext
+            .Card
+            .WithPartitionKey(deckId)
+            .Where(c => ids.Contains(c.Id))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<IEnumerable<Card>> GetByDeck(Guid deckId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Card

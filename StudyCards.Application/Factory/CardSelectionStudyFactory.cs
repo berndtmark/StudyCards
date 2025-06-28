@@ -1,13 +1,13 @@
 ﻿using StudyCards.Application.Interfaces;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
-using StudyCards.Domain.Strategy.CardStrategy.Strategies;
+using StudyCards.Domain.Strategy.CardsToStudyStrategy.Strategies;
 
 namespace StudyCards.Application.Factory;
 
 public class CardSelectionStudyFactory : ICardSelectionStudyFactory
 {
-    public ICardStrategy Create(CardStudyMethodology studyMethodology)
+    public ICardsToStudyStrategy Create(CardStudyMethodology studyMethodology)
     {
         return studyMethodology switch
         {

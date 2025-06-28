@@ -16,9 +16,12 @@
             <input matInput formControlName="maxReviews" type="number">
         </mat-form-field>
         <mat-form-field>
-        <mat-label>Max New (per day)</mat-label>
+            <mat-label>Max New (per day)</mat-label>
             <input matInput formControlName="maxNew" type="number">
         </mat-form-field>
+        @if(deckForm.errors?.['maxNewExceedsReviews']) {
+            <mat-error class="max-new-cards-error">Max new cards must be less than or equal to max reviews.</mat-error>
+        }
     </div>
 
     <button mat-raised-button color="primary" type="submit" [disabled]="!deckForm.valid">

@@ -34,6 +34,10 @@
             @include responsive.responsive('tablet') {
                 flex-direction: column;
                 width: 100%;
+
+                .max-new-cards-error {
+                    margin-top: -30px;
+                }
             }
         }
     }

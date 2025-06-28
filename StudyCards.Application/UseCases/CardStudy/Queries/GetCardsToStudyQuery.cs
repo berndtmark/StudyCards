@@ -20,7 +20,7 @@ public class GetCardsToStudyQueryHandler(
     IDeckRepository deckRepository, 
     ICardRepository cardRepository, 
     IHttpContextAccessor httpContextAccessor, 
-    ICardStrategyContext cardStrategyContext, 
+    ICardsToStudyStrategyContext cardStrategyContext, 
     ICardSelectionStudyFactory cardSelectionStudyFactory) : IQueryHandler<GetCardsToStudyQuery, IEnumerable<Card>>
 {
     public async Task<IEnumerable<Card>> Handle(GetCardsToStudyQuery request, CancellationToken cancellationToken)
@@ -40,7 +40,7 @@ public class GetCardsToStudyQueryHandler(
             _ => deck.CardNoToReview
         };    
 
-        var result = cardStrategyContext.GetCards(cardsToStudy);
+        var result = cardStrategyContext.GetStudyCards(cardsToStudy, deck.DeckSettings.NewCardsPerDay);
 
         return result;
     }
