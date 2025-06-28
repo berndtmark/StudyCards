@@ -5,7 +5,8 @@ using StudyCards.Application.Factory;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Services;
-using StudyCards.Application.Strategy.CardStrategy;
+using StudyCards.Domain.Interfaces;
+using StudyCards.Domain.Strategy.CardStrategy;
 using System.Reflection;
 
 namespace StudyCards.Application;

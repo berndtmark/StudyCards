@@ -4,7 +4,8 @@ using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.UseCases.CardStudy.Get;
 using StudyCards.Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using StudyCards.Application.Enums;
+using StudyCards.Domain.Enums;
+using StudyCards.Domain.Interfaces;
 
 namespace StudyCards.Application.Tests.UseCasesTests;
 

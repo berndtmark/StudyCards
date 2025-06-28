@@ -1,8 +1,8 @@
-﻿using StudyCards.Application.Interfaces;
-using StudyCards.Domain.Entities;
+﻿using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
+using StudyCards.Domain.Interfaces;
 
-namespace StudyCards.Application.Strategy.CardStrategy.Strategies;
+namespace StudyCards.Domain.Strategy.CardStrategy.Strategies;
 
 public class AnkiCardStrategy : ICardStrategy
 {
@@ -66,7 +66,7 @@ public class AnkiCardStrategy : ICardStrategy
         var totalRepeats = recentReviews.Sum(r => r.RepeatCount ?? 0);
         if (totalRepeats > 0)
         {
-            var repeatMultiplier = Math.Max(0.5, 1 - (0.1 * Math.Min(totalRepeats, MAX_REPEATS_TO_CONSIDER)));
+            var repeatMultiplier = Math.Max(0.5, 1 - 0.1 * Math.Min(totalRepeats, MAX_REPEATS_TO_CONSIDER));
             interval *= repeatMultiplier;
         }
 

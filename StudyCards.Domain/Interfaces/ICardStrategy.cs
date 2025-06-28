@@ -1,6 +1,6 @@
 ﻿using StudyCards.Domain.Entities;
 
-namespace StudyCards.Application.Interfaces;
+namespace StudyCards.Domain.Interfaces;
 
 public interface ICardStrategy
 {

@@ -1,7 +1,7 @@
-﻿using StudyCards.Application.Interfaces;
-using StudyCards.Domain.Entities;
+﻿using StudyCards.Domain.Entities;
+using StudyCards.Domain.Interfaces;
 
-namespace StudyCards.Application.Strategy.CardStrategy;
+namespace StudyCards.Domain.Strategy.CardStrategy;
 
 public class CardStrategyContext : ICardStrategyContext
 {

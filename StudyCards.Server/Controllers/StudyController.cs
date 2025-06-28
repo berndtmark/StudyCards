@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StudyCards.Application.Enums;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.UseCases.CardStudy.Get;
 using StudyCards.Application.UseCases.CardStudy.Review;
 using StudyCards.Domain.Entities;
+using StudyCards.Domain.Enums;
 using StudyCards.Server.Models.Request;
 using StudyCards.Server.Models.Response;
 

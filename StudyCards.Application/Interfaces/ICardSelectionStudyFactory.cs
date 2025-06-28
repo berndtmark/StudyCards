@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Enums;
+﻿using StudyCards.Domain.Enums;
+using StudyCards.Domain.Interfaces;
 
 namespace StudyCards.Application.Interfaces;
 

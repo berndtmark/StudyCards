@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Application.Enums;
+﻿namespace StudyCards.Domain.Enums;
 
 public enum CardStudyMethodology
 {

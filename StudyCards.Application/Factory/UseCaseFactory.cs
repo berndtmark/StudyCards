@@ -3,6 +3,7 @@ using StudyCards.Application.Interfaces;
 
 namespace StudyCards.Application.Factory;
 
+// todo - remove
 public class UseCaseFactory : IUseCaseFactory
 {
     private readonly IServiceProvider _serviceProvider;

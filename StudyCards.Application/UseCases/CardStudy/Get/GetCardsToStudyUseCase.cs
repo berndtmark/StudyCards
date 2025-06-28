@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using StudyCards.Application.Enums;
 using StudyCards.Application.Exceptions;
 using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
+using StudyCards.Domain.Enums;
+using StudyCards.Domain.Interfaces;
 
 namespace StudyCards.Application.UseCases.CardStudy.Get;
 
