@@ -28,7 +28,8 @@ public class AddDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<AddDeckComman
             {
                 NewCardsPerDay = request.NewCardsPerDay,
                 ReviewsPerDay = request.ReviewsPerDay,
-            }
+            },
+            CardCount = 0
         };
 
         try
