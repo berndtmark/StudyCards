@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.UseCases.CardManagement.AddCard;
-using StudyCards.Application.UseCases.CardManagement.GetCards;
-using StudyCards.Application.UseCases.CardManagement.RemoveCard;
-using StudyCards.Application.UseCases.CardManagement.UpdateCard;
-using StudyCards.Domain.Entities;
+using StudyCards.Application.UseCases.CardManagement.Commands;
+using StudyCards.Application.UseCases.CardManagement.Queries;
 using StudyCards.Server.Models.Request;
 using StudyCards.Server.Models.Response;
 
@@ -15,15 +13,14 @@ namespace StudyCards.Server.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class CardController(IUseCaseFactory useCaseFactory, IMapper mapper) : ControllerBase
+public class CardController(IMapper mapper, ISender sender) : ControllerBase
 {
     [HttpGet]
     [Route("getcards")]
     [ProducesResponseType(typeof(IEnumerable<CardResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid deckId)
     {
-        var useCase = useCaseFactory.Create<GetCardsUseCaseRequest, IEnumerable<Card>>();
-        var result = await useCase.Handle(new GetCardsUseCaseRequest { DeckId = deckId });
+        var result = await sender.Send(new GetCardsQuery { DeckId = deckId });
 
         var response = mapper.Map<IEnumerable<CardResponse>>(result);
         return Ok(response);
@@ -34,8 +31,7 @@ public class CardController(IUseCaseFactory useCaseFactory, IMapper mapper) : Co
     [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(UpdateCardRequest request)
     {
-        var useCase = useCaseFactory.Create<UpdateCardUseCaseRequest, Card>();
-        var result = await useCase.Handle(new UpdateCardUseCaseRequest
+        var result = await sender.Send(new UpdateCardCommand
         {
             CardId = request.CardId,
             DeckId = request.DeckId,
@@ -52,8 +48,7 @@ public class CardController(IUseCaseFactory useCaseFactory, IMapper mapper) : Co
     [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Add(AddCardRequest request)
     {
-        var useCase = useCaseFactory.Create<AddCardUseCaseRequest, Card>();
-        var result = await useCase.Handle(new AddCardUseCaseRequest
+        var result = await sender.Send(new AddCardCommand
         {
             DeckId = request.DeckId,
             CardFront = request.CardFront,
@@ -69,8 +64,7 @@ public class CardController(IUseCaseFactory useCaseFactory, IMapper mapper) : Co
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remove(string deckId, string cardId)
     {
-        var useCase = useCaseFactory.Create<RemoveCardUseCaseRequest, bool>();
-        var result = await useCase.Handle(new RemoveCardUseCaseRequest { 
+        var result = await sender.Send(new RemoveCardCommand { 
             CardId = new Guid(cardId),
             DeckId = new Guid(deckId)
         });

@@ -1,20 +1,21 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
-namespace StudyCards.Application.UseCases.CardManagement.AddCard;
+namespace StudyCards.Application.UseCases.CardManagement.Commands;
 
-public class AddCardUseCaseRequest
+public class AddCardCommand : ICommand<Card>
 {
     public Guid DeckId { get; set; }
     public string CardFront { get; set; } = string.Empty;
     public string CardBack { get; set; } = string.Empty;
 }
 
-public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logger, IDeckCardCountService deckCardCount) : IUseCase<AddCardUseCaseRequest, Card>
+public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardCommand> logger, IDeckCardCountService deckCardCount) : ICommandHandler<AddCardCommand, Card>
 {
-    public async Task<Card> Handle(AddCardUseCaseRequest request)
+    public async Task<Card> Handle(AddCardCommand request, CancellationToken cancellationToken)
     {
         var card = new Card
         {
@@ -27,9 +28,9 @@ public class AddCardUseCase(IUnitOfWork unitOfWork, ILogger<AddCardUseCase> logg
         try
         {
             var result = await unitOfWork.CardRepository.Add(card);
-            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork, 1);
+            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork, 1, cancellationToken);
 
-            await unitOfWork.SaveChangesAsync();
+            await unitOfWork.SaveChangesAsync(cancellationToken);
             return result;
         }
         catch (Exception ex)

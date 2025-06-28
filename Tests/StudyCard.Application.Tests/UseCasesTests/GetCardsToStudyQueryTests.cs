@@ -1,23 +1,24 @@
 ﻿using Moq;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
-using StudyCards.Application.UseCases.CardStudy.Get;
 using StudyCards.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
+using StudyCards.Application.UseCases.CardStudy.Queries;
+using StudyCards.Application.Exceptions;
 
-namespace StudyCards.Application.Tests.UseCasesTests;
+namespace StudyCard.Application.Tests.UseCasesTests;
 
 [TestClass]
-public class GetCardsToStudyUseCaseTests
+public class GetCardsToStudyQueryTests
 {
     private Mock<IDeckRepository> _deckRepositoryMock = default!;
     private Mock<ICardRepository> _cardRepositoryMock = default!;
     private Mock<IHttpContextAccessor> _httpContextAccessorMock = default!;
     private Mock<ICardStrategyContext> _cardStrategyContextMock = default!;
     private Mock<ICardSelectionStudyFactory> _cardSelectionStudyFactoryMock = default!;
-    private GetCardsToStudyUseCase _useCase = default!;
+    private GetCardsToStudyQueryHandler _useCase = default!;
 
     [TestInitialize]
     public void Setup()
@@ -28,7 +29,7 @@ public class GetCardsToStudyUseCaseTests
         _cardStrategyContextMock = new Mock<ICardStrategyContext>();
         _cardSelectionStudyFactoryMock = new Mock<ICardSelectionStudyFactory>();
 
-        _useCase = new GetCardsToStudyUseCase(
+        _useCase = new GetCardsToStudyQueryHandler(
             _deckRepositoryMock.Object,
             _cardRepositoryMock.Object,
             _httpContextAccessorMock.Object,
@@ -58,14 +59,14 @@ public class GetCardsToStudyUseCaseTests
         _cardStrategyContextMock.Setup(x => x.GetCards(deck.DeckSettings.ReviewsPerDay))
             .Returns(cards);
 
-        var request = new GetCardsToStudyUseCaseRequest
+        var request = new GetCardsToStudyQuery
         {
             DeckId = deckId,
             StudyMethodology = CardStudyMethodology.Random
         };
 
         // Act
-        var result = await _useCase.Handle(request);
+        var result = await _useCase.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -86,14 +87,14 @@ public class GetCardsToStudyUseCaseTests
         _deckRepositoryMock.Setup(x => x.Get(deckId, userEmail, CancellationToken.None))
             .ReturnsAsync((Deck)null!);
 
-        var request = new GetCardsToStudyUseCaseRequest
+        var request = new GetCardsToStudyQuery
         {
             DeckId = deckId,
             StudyMethodology = CardStudyMethodology.Random
         };
 
         // Act & Assert
-        await Assert.ThrowsExceptionAsync<ArgumentException>(async () => await _useCase.Handle(request));
+        await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () => await _useCase.Handle(request, CancellationToken.None));
     }
 }
 

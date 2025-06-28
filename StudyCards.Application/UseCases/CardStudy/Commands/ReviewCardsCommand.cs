@@ -1,13 +1,13 @@
 ﻿using StudyCards.Application.Exceptions;
-using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Extensions;
 
-namespace StudyCards.Application.UseCases.CardStudy.Review;
+namespace StudyCards.Application.UseCases.CardStudy.Commands;
 
-public class ReviewCardsUseCaseRequest
+public class ReviewCardsCommand : ICommand<IList<Card>>
 {
     public Guid DeckId { get; set; }
     public IList<CardReviewed> CardReviews { get; set; } = new List<CardReviewed>();
@@ -20,16 +20,16 @@ public class ReviewCardsUseCaseRequest
     }
 }
 
-public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsUseCaseRequest, IList<Card>>
+public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<ReviewCardsCommand, IList<Card>>
 {
-    public async Task<IList<Card>> Handle(ReviewCardsUseCaseRequest request)
+    public async Task<IList<Card>> Handle(ReviewCardsCommand request, CancellationToken cancellationToken)
     {
         var response = new List<Card>();
 
         // update card reviews
         foreach (var cardReview in request.CardReviews)
         {
-            var card = await unitOfWork.CardRepository.Get(cardReview.CardId, request.DeckId) ?? throw new EntityNotFoundException(nameof(Card), cardReview.CardId);
+            var card = await unitOfWork.CardRepository.Get(cardReview.CardId, request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Card), cardReview.CardId);
 
             var review = new CardReview
             {
@@ -49,7 +49,7 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
         }
 
         // update deck last review status
-        var deck = await unitOfWork.DeckRepository.Get(request.DeckId) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
+        var deck = await unitOfWork.DeckRepository.Get(request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
 
         var isFirstReviewToday = !deck.DeckReviewStatus.LastReview.Date.IsSameDay();
         var updatedDeck = deck with
@@ -63,7 +63,7 @@ public class ReviewCardsUseCards(IUnitOfWork unitOfWork) : IUseCase<ReviewCardsU
 
         unitOfWork.DeckRepository.Update(updatedDeck);
 
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return response;
     }
 }

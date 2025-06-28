@@ -2,30 +2,31 @@
 using StudyCards.Application.Exceptions;
 using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
 
-namespace StudyCards.Application.UseCases.CardStudy.Get;
+namespace StudyCards.Application.UseCases.CardStudy.Queries;
 
-public class GetCardsToStudyUseCaseRequest
+public class GetCardsToStudyQuery : IQuery<IEnumerable<Card>>
 {
     public Guid DeckId { get; set; }
     public CardStudyMethodology StudyMethodology { get; set; }
 }
 
-public class GetCardsToStudyUseCase(
+public class GetCardsToStudyQueryHandler(
     IDeckRepository deckRepository, 
     ICardRepository cardRepository, 
     IHttpContextAccessor httpContextAccessor, 
     ICardStrategyContext cardStrategyContext, 
-    ICardSelectionStudyFactory cardSelectionStudyFactory) : IUseCase<GetCardsToStudyUseCaseRequest, IEnumerable<Card>>
+    ICardSelectionStudyFactory cardSelectionStudyFactory) : IQueryHandler<GetCardsToStudyQuery, IEnumerable<Card>>
 {
-    public async Task<IEnumerable<Card>> Handle(GetCardsToStudyUseCaseRequest request)
+    public async Task<IEnumerable<Card>> Handle(GetCardsToStudyQuery request, CancellationToken cancellationToken)
     {
-        var deck = await deckRepository.Get(request.DeckId, httpContextAccessor.GetEmail()) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
-        var cards = await cardRepository.GetByDeck(request.DeckId);
+        var deck = await deckRepository.Get(request.DeckId, httpContextAccessor.GetEmail(), cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
+        var cards = await cardRepository.GetByDeck(request.DeckId, cancellationToken);
 
         var cardStrategy = cardSelectionStudyFactory.Create(request.StudyMethodology);
 
