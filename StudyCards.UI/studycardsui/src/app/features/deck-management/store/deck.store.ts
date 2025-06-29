@@ -1,12 +1,12 @@
-import { patchState, signalStore, withComputed, withMethods, withState, withHooks } from '@ngrx/signals';
-import { computed, effect, inject } from '@angular/core';
+import { patchState, signalStore, withComputed, withMethods, withState, withHooks, type } from '@ngrx/signals';
+import { computed, inject } from '@angular/core';
 import { DeckService } from '../services/deck.service';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
-import { DeckEventsService } from '../services/deck-events.service';
 import { Deck } from '../models/deck';
+import { eventGroup, on, withReducer } from '@ngrx/signals/events';
 
 type DeckState = {
     loadingState: LoadingState
@@ -18,11 +18,33 @@ const initialState: DeckState = {
     decks: []
 };
 
+export const deckEvents = eventGroup({
+  source: 'Deck Events',
+  events: {
+    completedReview: type<{deckId: string, reviewCount: number}>(),
+  },
+});
+
 export const DeckStore = signalStore(
     withState(initialState),
     withComputed(({ decks }) => ({
         deckCount: computed(() => decks().length)
     })),
+    withReducer(
+        on(deckEvents.completedReview, (event, state) => ({
+            decks: state.decks.map((deck) =>
+                deck.id === event.payload.deckId ? 
+                { ...deck,
+                    hasReviewsToday: DeckService.hasReviewsToday(deck, event.payload.reviewCount),
+                    deckReviewStatus: {
+                        lastReview: new Date().toISOString(),
+                        reviewCount: (deck.deckReviewStatus?.reviewCount || 0) + event.payload.reviewCount
+                    }
+                } :
+                deck)
+            })
+        )
+    ),
     withMethods((store, 
         snackBar = inject(SnackbarService),
         deckService = inject(DeckService)) => ({
@@ -112,34 +134,12 @@ export const DeckStore = signalStore(
             ),
             getDeckById: (id: string) => {
                 return store.decks().find(deck => deck.id === id) || null;
-            },
-            deckReviewed: (deckId: string, reviewCount: number): void => {
-                patchState(store, (state) => ({
-                    decks: state.decks.map((deck) =>
-                        deck.id === deckId ? 
-                        { ...deck,
-                            hasReviewsToday: deckService.hasReviewsToday(deck, reviewCount),
-                            deckReviewStatus: {
-                                lastReview: new Date().toISOString(),
-                                reviewCount: (deck.deckReviewStatus?.reviewCount || 0) + reviewCount
-                            }
-                        } :
-                        deck)
-                }));
             }
         }),
     ),
     withHooks({
-        onInit(store, 
-            deckEvents = inject(DeckEventsService)) {
-                store.loadDecks();
-
-                effect(() => {
-                    const {deckId, reviewCount} = deckEvents.reviewCompleted();
-                    if (deckId) {
-                        store.deckReviewed(deckId, reviewCount);
-                    }
-                });
+        onInit(store) {
+            store.loadDecks();
         }
     })
 );

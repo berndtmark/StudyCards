@@ -9,7 +9,8 @@ import { StudyMethodology } from "app/shared/models/study-methodology";
 import { CardDifficulty } from "app/shared/models/card-difficulty";
 import { SnackbarService } from "app/shared/services/snackbar.service";
 import { Router } from "@angular/router";
-import { DeckEventsService } from "app/features/deck-management/services/deck-events.service";
+import { injectDispatch } from "@ngrx/signals/events";
+import { deckEvents } from "app/features/deck-management/store/deck.store";
 
 type StudyState = {
     loadingState: LoadingState
@@ -35,7 +36,7 @@ export const StudyStore = signalStore(
         studyService = inject(StudyService),
         snackBarService = inject(SnackbarService),
         route = inject(Router),
-        deckEvents = inject(DeckEventsService)) => ({
+        deckDispatch = injectDispatch(deckEvents)) => ({
             loadCards: rxMethod<{ deckId: string, methodology: StudyMethodology }>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
@@ -80,7 +81,10 @@ export const StudyStore = signalStore(
                                 snackBarService.open('Review Saved');
                                 patchState(store, { loadingState: LoadingState.Complete })
                                 
-                                deckEvents.notifyReviewCompleted(store.deckId(), store.cardsStudied().length);
+                                deckDispatch.completedReview({
+                                    deckId: store.deckId(), 
+                                    reviewCount: store.cardsStudied().length
+                                 });
                                 setTimeout(() => route.navigate(['/decks']), 3000);
                             }),
                             catchError(() => {

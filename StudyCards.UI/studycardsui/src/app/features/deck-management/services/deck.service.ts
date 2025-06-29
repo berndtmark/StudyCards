@@ -42,7 +42,7 @@ export class DeckService {
     return this.deckServiceApi.apiDeckRemovedeckDeckIdDelete$Json({ deckId });
   }
 
-  hasReviewsToday(deck: Deck, reviews: number): boolean {
+  static hasReviewsToday(deck: Deck, reviews: number): boolean {
     let reviewsToday = reviews;
 
     if (deck.deckReviewStatus?.lastReview) {
