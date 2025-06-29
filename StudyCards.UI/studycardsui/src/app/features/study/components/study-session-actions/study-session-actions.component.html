@@ -1,0 +1,13 @@
+<div class="button-group">
+    <app-back-nav (back)="goBack.emit()"></app-back-nav>
+    
+    @if (showSaveGroup()) {
+        <div class="save-group">
+            <button matMiniFab (click)="save.emit()">
+                <mat-icon title="Save">save</mat-icon>
+            </button>
+
+            <app-determinate-progress-spinner title="Auto Save" [progress]="autoSave.remainingSeconds() / autoSaveTimeSeconds * 100"></app-determinate-progress-spinner>
+        </div>
+    }
+</div>

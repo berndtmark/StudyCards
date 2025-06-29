@@ -1,23 +1,24 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
 import { StudyStore } from '../../store/study.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudyMethodology } from 'app/shared/models/study-methodology';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { CardsToStudyComponent } from "../cards-to-study/cards-to-study.component";
-import { MatIcon } from '@angular/material/icon';
-import { MatMiniFabButton } from '@angular/material/button';
 import { StudyCompleteComponent } from '../study-complete/study-complete.component';
-import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
+import { CardDifficulty } from 'app/shared/models/card-difficulty';
+import { StudySessionActionsComponent } from '../study-session-actions/study-session-actions.component';
 
 @Component({
   selector: 'app-study-session',
-  imports: [MatProgressBar, CardsToStudyComponent, MatIcon, MatMiniFabButton, StudyCompleteComponent, BackNavComponent],
+  imports: [MatProgressBar, CardsToStudyComponent, StudyCompleteComponent, StudySessionActionsComponent],
   templateUrl: './study-session.component.html',
   styleUrl: './study-session.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudySessionComponent {
+  @ViewChild(StudySessionActionsComponent) studySessionActions!: StudySessionActionsComponent;
+
   readonly store = inject(StudyStore);
   private activatedRoute = inject(ActivatedRoute);
   private route = inject(Router)
@@ -36,6 +37,16 @@ export class StudySessionComponent {
   }
 
   completeStudy(): void {
+    this.studySessionActions.autoSave.clear();
     this.store.saveReviewedCards({});
+  }
+
+  reviewCard(cardId: string, difficulty: CardDifficulty): void {
+    this.studySessionActions.autoSave.reset();
+    this.store.reviewCard(cardId, difficulty);
+  }
+
+  repeatCard(cardId: string) {
+    this.store.repeatCard(cardId);
   }
 }

@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardsToStudyComponent } from './cards-to-study.component';
-import { StudyStore } from '../../store/study.store';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('CardsToStudyComponent', () => {
   let component: CardsToStudyComponent;
@@ -11,12 +8,7 @@ describe('CardsToStudyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardsToStudyComponent],
-      providers: [
-        StudyStore,
-        provideHttpClient(),
-        provideHttpClientTesting()
-      ]
+      imports: [CardsToStudyComponent]
     })
     .compileComponents();
 

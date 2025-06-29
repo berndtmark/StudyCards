@@ -2,20 +2,27 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
-<div class="button-group">
-    <app-back-nav (back)="goBack()"></app-back-nav>
-    
-    @if (store.hasCardsToStudy() && store.loadingState() !== loadingState.Complete) {
-        <button matMiniFab (click)="completeStudy()">
-            <mat-icon>save</mat-icon>
-        </button>
-    }
-</div>
+<app-study-session-actions 
+    [showSaveGroup]="store.hasCardsToStudy() && store.loadingState() !== loadingState.Complete && !store.isLoading()"
+    (goBack)="goBack()"
+    (save)="completeStudy()">
+</app-study-session-actions>
 
-@if (store.loadingState() == loadingState.Success && store.hasCardsToStudy()) {
-    <app-cards-to-study [cardsToStudy]="store.cards()" (completeStudy)="completeStudy()"></app-cards-to-study>
-} @else if (!store.hasCardsToStudy()) {
-    <app-study-complete></app-study-complete>
-} @else if (store.loadingState() == loadingState.Complete) {
-    <app-study-complete title="Well Done" subtitle="Great Session!"></app-study-complete>
+@switch (store.loadingState()) {
+  @case (loadingState.Success) {
+    @if (store.hasCardsToStudy()) {
+      <app-cards-to-study
+        [cardsToStudy]="store.cards()"
+        (reviewCard)="reviewCard($event.cardId, $event.dificulty)"
+        (repeatCard)="repeatCard($event)"
+        (completeStudy)="completeStudy()"
+      />
+    } @else {
+      <app-study-complete />
+    }
+  }
+
+  @case (loadingState.Complete) {
+    <app-study-complete title="Well Done" subtitle="Great Session!" />
+  }
 }

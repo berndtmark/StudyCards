@@ -1,0 +1,22 @@
+@use '../../../../theming/responsive' as responsive;
+
+.button-group {
+    position: fixed;
+    padding: 2rem;
+    display: flex;
+    gap: 10px;
+
+    @include responsive.responsive('mobile') {
+        padding: 1rem;
+    }
+
+    @include responsive.responsive('tablet') {
+        flex-direction: column;
+    }
+
+    .save-group {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+}
