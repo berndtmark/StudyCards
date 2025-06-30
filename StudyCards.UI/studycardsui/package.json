@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "npm run generate-api && npm run test -- --no-watch --no-progress --browsers=ChromeHeadless",
-    "generate-api": "npx ng-openapi-gen --input openapidoc.json --output src/app/@api",
+    "generate-api": "npx ng-openapi-gen --input servercardsapi.json --output src/app/@api",
     "start-api": "dotnet run --project ../../StudyCards.Server/StudyCards.Server.csproj --launch-profile https"
   },
   "private": true,
