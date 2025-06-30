@@ -9,6 +9,7 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) where TEntity : EntityBase
 {
     protected string EmailAddress => httpContextAccessor.GetEmail();
+    protected DataBaseContext DbContext => dbContext;
 
     protected virtual TEntity UpdateEntity(TEntity entity)
     {

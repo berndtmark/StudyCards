@@ -10,7 +10,7 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
 {
     public async Task<Card?> Get(Guid id, Guid deckId, CancellationToken cancellationToken = default)
     {
-        return await dbContext
+        return await DbContext
             .Card
             .WithPartitionKey(deckId)
             .AsNoTracking()
@@ -19,7 +19,7 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<IEnumerable<Card>?> Get(Guid[] ids, Guid deckId, CancellationToken cancellationToken = default)
     {
-        return await dbContext
+        return await DbContext
             .Card
             .WithPartitionKey(deckId)
             .Where(c => ids.Contains(c.Id))
@@ -29,7 +29,7 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<IEnumerable<Card>> GetByDeck(Guid deckId, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Card
+        return await DbContext.Card
             .AsNoTracking()
             .Where(c => c.DeckId == deckId)
             .ToListAsync(cancellationToken);
@@ -55,12 +55,12 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public void RemoveRange(Card[] cards)
     {
-        dbContext.Card.RemoveRange(cards);
+        DbContext.Card.RemoveRange(cards);
     }
 
     public async Task<int> CountByDeck(Guid deckId, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Card
+        return await DbContext.Card
             .AsNoTracking()
             .CountAsync(c => c.DeckId == deckId, cancellationToken);
     }
