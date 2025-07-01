@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StudyCards.Application.Configuration;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Infrastructure.Database.Context;
@@ -12,9 +13,12 @@ public static class ServicesConfiguration
 {
     public static IServiceCollection ConfigureInfrastructureDatabaseServices(this IServiceCollection services, IConfiguration configuration)
     {
+        if (OpenApiGen.IsOpenApiGeneration())
+            return services;
+
         var dbConnectionString = configuration.GetConnectionString("CosmosDb")
             ?? throw new InvalidOperationException("CosmosDB connection string not found.");
-
+        
         services.AddDbContextFactory<DataBaseContext>(optionsBuilder =>
             optionsBuilder
     .           UseCosmos(dbConnectionString, databaseName: "StudyCards"));
