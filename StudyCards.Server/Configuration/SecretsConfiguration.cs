@@ -10,6 +10,9 @@ public static class SecretsConfiguration
 {
     public static IServiceCollection AddSecretsConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
+        if (OpenApiGen.IsOpenApiGeneration())
+            return services;
+
         // Create secrets manager directly
         var secretOptions = configuration.GetSection(SecretOptions.Key).Get<SecretOptions>()!;
         var secretClient = new SecretsClient(Microsoft.Extensions.Options.Options.Create(secretOptions));
