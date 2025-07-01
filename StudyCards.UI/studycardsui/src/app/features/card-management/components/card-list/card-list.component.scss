@@ -24,12 +24,28 @@
             cursor: pointer;
         }
     }
+
+    .mat-column-studycount {
+        width: 6%;
+        text-align: center;
+    }
 }
 
-.filter {
-    display: block;
-    margin-top: 20px;
-    margin-bottom: 10px;
+.action-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+    .filter {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    .show-more {
+        font-size: 13px;
+    }
 }
 
 .no-data {

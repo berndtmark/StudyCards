@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DeckStore } from '../../store/deck.store';
-import { AddDeckComponent } from "../add-deck/add-deck.component";
+import { AddDeckButtonComponent } from "../add-deck-button/add-deck-button.component";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { LoadingState } from 'app/shared/models/loading-state';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-deck-list',
-  imports: [AddDeckComponent, MatProgressBarModule, DeckItemComponent, NgIf],
+  imports: [AddDeckButtonComponent, MatProgressBarModule, DeckItemComponent, NgIf],
   templateUrl: './deck-list.component.html',
   styleUrl: './deck-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

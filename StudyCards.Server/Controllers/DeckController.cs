@@ -1,87 +1,90 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
-using StudyCards.Application.Interfaces;
-using StudyCards.Application.UseCases.DeckManagement.AddDeck;
-using StudyCards.Application.UseCases.DeckManagement.GetDeck;
-using StudyCards.Application.UseCases.DeckManagement.RemoveDeck;
-using StudyCards.Application.UseCases.DeckManagement.UpdateDeck;
-using StudyCards.Domain.Entities;
+using StudyCards.Application.UseCases.DeckManagement.Commands;
+using StudyCards.Application.UseCases.DeckManagement.Queries;
 using StudyCards.Server.Models.Request;
+using StudyCards.Server.Models.Response;
 
 namespace StudyCards.Server.Controllers;
 
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(IUseCaseFactory useCaseFactory, IHttpContextAccessor httpContextAccessor) : ControllerBase
+public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper mapper, ISender sender) : ControllerBase
 {
     [HttpGet]
     [Route("getdecks")]
-    [ProducesResponseType(typeof(IEnumerable<Deck>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get()
+    [ProducesResponseType(typeof(IEnumerable<DeckResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
         var email = httpContextAccessor.GetEmail();
 
-        var useCase = useCaseFactory.Create<GetDeckUseCaseRequest, IEnumerable<Deck>>();
-        var result = await useCase.Handle(new GetDeckUseCaseRequest { EmailAddress = email });
+        var query = new GetDeckQuery
+        {
+            EmailAddress = email
+        };
+        var result = await sender.Send(query, cancellationToken);
 
-        return Ok(result);
+        var response = mapper.Map<IEnumerable<DeckResponse>>(result);
+        return Ok(response);
     }
 
     [HttpPost]
     [Route("adddeck")]
-    [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Add(AddDeckRequest request)
+    [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Add(AddDeckRequest request, CancellationToken cancellationToken)
     {
         var email = httpContextAccessor.GetEmail();
 
-        var useCase = useCaseFactory.Create<AddDeckUseCaseRequest, Deck>();
-        var result = await useCase.Handle(new AddDeckUseCaseRequest
+        var result = await sender.Send(new AddDeckCommand
         {
             EmailAddress = email,
             DeckName = request.DeckName,
             Description = request.Description,
             ReviewsPerDay = request.ReviewsPerDay,
             NewCardsPerDay = request.NewCardsPerDay,
-        });
+        }, cancellationToken);
 
-        return Ok(result);
+        var response = mapper.Map<DeckResponse>(result);
+        return Ok(response);
     }
 
     [HttpPut]
     [Route("updatedeck")]
-    [ProducesResponseType(typeof(Deck), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Update(UpdateDeckRequest request)
+    [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Update(UpdateDeckRequest request, CancellationToken cancellationToken)
     {
         var email = httpContextAccessor.GetEmail();
 
-        var useCase = useCaseFactory.Create<UpdateDeckUseCaseRequest, Deck>();
-        var result = await useCase.Handle(new UpdateDeckUseCaseRequest
+        var result = await sender.Send(new UpdateDeckCommand
         {
             DeckId = request.DeckId,
             DeckName = request.DeckName,
             Description = request.Description,
             ReviewsPerDay = request.ReviewsPerDay,
             NewCardsPerDay = request.NewCardsPerDay,
-            EmailAddress = email,
-        });
+            EmailAddress = email
+        }, cancellationToken);
 
-        return Ok(result);
+        var response = mapper.Map<DeckResponse>(result);
+        return Ok(response);
     }
 
     [HttpDelete]
     [Route("removedeck/{deckId}")]
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Remove(string deckId)
+    public async Task<IActionResult> Remove(string deckId, CancellationToken cancellationToken)
     {
         var email = httpContextAccessor.GetEmail();
 
-        var useCase = useCaseFactory.Create<RemoveDeckUseCaseRequest, bool>();
-        var result = await useCase.Handle(new RemoveDeckUseCaseRequest { 
+        var result = await sender.Send(new RemoveDeckCommand 
+        { 
             DeckId = new Guid(deckId),
             EmailAddress = email
-        });
+        }, cancellationToken);
 
         return Ok(result);
     }

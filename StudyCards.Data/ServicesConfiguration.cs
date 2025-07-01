@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Infrastructure.Database.Context;
 using StudyCards.Infrastructure.Database.Repositories;
 
@@ -18,8 +19,9 @@ public static class ServicesConfiguration
             optionsBuilder
     .           UseCosmos(dbConnectionString, databaseName: "StudyCards"));
 
-        services.AddTransient<ICardRepository, CardRepository>();
-        services.AddTransient<IDeckRepository, DeckRepository>();
+        services.AddScoped<ICardRepository, CardRepository>();
+        services.AddScoped<IDeckRepository, DeckRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
         return services;
     }

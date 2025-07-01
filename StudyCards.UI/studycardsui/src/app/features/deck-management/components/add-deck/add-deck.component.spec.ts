@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DeckStore } from '../../store/deck.store';
 
 import { AddDeckComponent } from './add-deck.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { RouterModule } from '@angular/router';
+import { DeckStore } from '../../store/deck.store';
 import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('AddDeckComponent', () => {
   let component: AddDeckComponent;
@@ -11,11 +12,14 @@ describe('AddDeckComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddDeckComponent],
+      imports: [
+        AddDeckComponent,
+        RouterModule.forRoot([]),
+      ],
       providers: [
-        DeckStore, 
+        DeckStore,
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
       ]
     })
     .compileComponents();

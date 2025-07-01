@@ -1,21 +1,28 @@
-<mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
+@if (store.isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 
-<div class="button-group">
-    <button mat-raised-button color="primary" (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-        Back
-    </button>
-</div>
+<app-study-session-actions 
+    [showSaveGroup]="store.hasCardsToStudy() && store.loadingState() !== loadingState.Complete && !store.isLoading()"
+    (goBack)="goBack()"
+    (save)="completeStudy()">
+</app-study-session-actions>
 
-<div class="container">
-    @if (store.cards().length > currentCardIndex) {
-        <app-study-card
-            [cardId]="store.cards()[currentCardIndex].id!"
-            [frontText]="store.cards()[currentCardIndex].cardFront!"
-            [backText]="store.cards()[currentCardIndex].cardBack!"
-            (cardStudied)="onCardStudied()">
-        </app-study-card>
+@switch (store.loadingState()) {
+  @case (loadingState.Success) {
+    @if (store.hasCardsToStudy()) {
+      <app-cards-to-study
+        [cardsToStudy]="store.cards()"
+        (reviewCard)="reviewCard($event.cardId, $event.dificulty)"
+        (repeatCard)="repeatCard($event)"
+        (completeStudy)="completeStudy()"
+      />
     } @else {
-        Completed!
+      <app-study-complete />
     }
-</div>
+  }
+
+  @case (loadingState.Complete) {
+    <app-study-complete title="Well Done" subtitle="Great Session!" />
+  }
+}

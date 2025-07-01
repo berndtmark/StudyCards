@@ -322,7 +322,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Deck"
+                                        "$ref": "#/components/schemas/DeckResponse"
                                     }
                                 }
                             },
@@ -330,7 +330,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Deck"
+                                        "$ref": "#/components/schemas/DeckResponse"
                                     }
                                 }
                             },
@@ -338,7 +338,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Deck"
+                                        "$ref": "#/components/schemas/DeckResponse"
                                     }
                                 }
                             }
@@ -378,17 +378,17 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "text/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             }
                         }
@@ -427,17 +427,17 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             },
                             "text/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Deck"
+                                    "$ref": "#/components/schemas/DeckResponse"
                                 }
                             }
                         }
@@ -541,6 +541,56 @@
                     }
                 }
             }
+        },
+        "/api/Study/reviewcards": {
+            "put": {
+                "tags": [
+                    "Study"
+                ],
+                "operationId": "reviewcards",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewCardsRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewCardsRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReviewCardsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResponse"
+                                }
+                            },
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResponse"
+                                }
+                            },
+                            "text/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CardResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -580,6 +630,9 @@
                     }
                 }
             },
+            "CardDifficulty": {
+                "type": "integer"
+            },
             "CardResponse": {
                 "type": "object",
                 "properties": {
@@ -607,9 +660,13 @@
                     }
                 }
             },
-            "Deck": {
+            "DeckResponse": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
                     "deckName": {
                         "type": "string"
                     },
@@ -620,12 +677,16 @@
                     "userEmail": {
                         "type": "string"
                     },
-                    "deckSettings": {
-                        "$ref": "#/components/schemas/DeckSettings"
+                    "cardCount": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
                     },
-                    "id": {
-                        "type": "string",
-                        "format": "uuid"
+                    "deckSettings": {
+                        "$ref": "#/components/schemas/DeckSettingsResponse"
+                    },
+                    "deckReviewStatus": {
+                        "$ref": "#/components/schemas/DeckReviewStatusResponse"
                     },
                     "createdDate": {
                         "type": "string",
@@ -635,15 +696,25 @@
                         "type": "string",
                         "format": "date-time"
                     },
-                    "createdBy": {
-                        "type": "string"
-                    },
-                    "updatedBy": {
-                        "type": "string"
+                    "hasReviewsToday": {
+                        "type": "boolean"
                     }
                 }
             },
-            "DeckSettings": {
+            "DeckReviewStatusResponse": {
+                "type": "object",
+                "properties": {
+                    "lastReview": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "reviewCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "DeckSettingsResponse": {
                 "type": "object",
                 "properties": {
                     "reviewsPerDay": {
@@ -653,6 +724,38 @@
                     "newCardsPerDay": {
                         "type": "integer",
                         "format": "int32"
+                    }
+                }
+            },
+            "ReviewCardRequest": {
+                "type": "object",
+                "properties": {
+                    "cardId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "cardDifficulty": {
+                        "$ref": "#/components/schemas/CardDifficulty"
+                    },
+                    "repeatCount": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    }
+                }
+            },
+            "ReviewCardsRequest": {
+                "type": "object",
+                "properties": {
+                    "deckId": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "cards": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ReviewCardRequest"
+                        }
                     }
                 }
             },

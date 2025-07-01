@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DeckService as DeckServiceApi } from '../../../@api/services';
-import { Deck } from 'app/@api/models/deck';
 import { UpdateDeckRequest } from 'app/@api/models/update-deck-request';
+import { Deck } from '../models/deck';
+import { DateFuctions } from 'app/shared/functions/date-functions';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,15 @@ export class DeckService {
 
   removeDeck(deckId: string): Observable<boolean> {
     return this.deckServiceApi.apiDeckRemovedeckDeckIdDelete$Json({ deckId });
+  }
+
+  static hasReviewsToday(deck: Deck, reviews: number): boolean {
+    let reviewsToday = reviews;
+
+    if (deck.deckReviewStatus?.lastReview) {
+      reviewsToday += DateFuctions.isToday(new Date(deck.deckReviewStatus!.lastReview!)) ? deck.deckReviewStatus!.reviewCount! : 0;
+    }
+
+    return reviewsToday < Math.min(deck.deckSettings!.reviewsPerDay!, deck.cardCount!)
   }
 }

@@ -22,8 +22,8 @@ describe('DeckItemComponent', () => {
 
     fixture = TestBed.createComponent(DeckItemComponent);
     component = fixture.componentInstance;
-    component.deck = { deckName: 'my deck' };
-    
+    fixture.componentRef.setInput('deck', { deckName: 'my deck' });
+
     fixture.detectChanges();
   });
 

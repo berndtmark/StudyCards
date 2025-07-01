@@ -1,0 +1,29 @@
+@use '../../../../theming/colour' as colour;
+
+.deck-card {
+    background: colour.$white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+
+        .icon {
+            transform: scale(4) rotate(90deg);
+        }
+    }
+
+    .icon {
+        transform: scale(4);
+        color: colour.$blue-200;
+        transition: transform 0.5s ease;
+    }
+}

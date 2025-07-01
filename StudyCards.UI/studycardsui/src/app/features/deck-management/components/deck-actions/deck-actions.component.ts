@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
@@ -9,6 +9,6 @@ import { MatIcon } from '@angular/material/icon';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeckActionsComponent {
-  @Output() edit = new EventEmitter<void>();
-  @Output() remove = new EventEmitter<void>();
+  edit = output<void>();
+  remove = output<void>();
 }

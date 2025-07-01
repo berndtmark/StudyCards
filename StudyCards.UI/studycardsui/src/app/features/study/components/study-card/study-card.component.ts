@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { StudyCardActionsComponent } from "../study-card-actions/study-card-actions.component";
 import { CardDifficulty } from 'app/shared/models/card-difficulty';
 
@@ -11,10 +11,10 @@ import { CardDifficulty } from 'app/shared/models/card-difficulty';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudyCardComponent {
-  @Input() cardId!: string;
-  @Input() frontText: string = '';
-  @Input() backText: string = '';
-  @Output() cardStudied = new EventEmitter<void>();
+  cardId = input.required<string>();
+  frontText = input<string>('');
+  backText = input<string>('');
+  cardStudied = output<[string, CardDifficulty]>();
   
   isFlipped: boolean = false;
   noAnimation: boolean = false;
@@ -28,7 +28,6 @@ export class StudyCardComponent {
 
     this.isFlipped = false;
     this.noAnimation = true;
-    this.cardStudied.emit();
 
     // Reset noAnimation after a brief delay to allow the state to update
     setTimeout(() => {
@@ -37,7 +36,6 @@ export class StudyCardComponent {
   }
 
   reviewCard(cardDifficulty: CardDifficulty): void {
-    // todo
-    console.log(`Card ${this.cardId} reviewed with difficulty:`, cardDifficulty);
+    this.cardStudied.emit([this.cardId(), cardDifficulty]);
   }
 }

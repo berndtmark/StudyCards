@@ -1,0 +1,8 @@
+<div class="container">
+    <app-back-nav (back)="goBackToDeckList()"></app-back-nav>
+    <app-deck-form 
+        saveButtonName="Update Deck" 
+        [deck]="store.getDeckById(deckId)!"
+        (submit)="onSubmit($event)">
+    </app-deck-form>
+</div>

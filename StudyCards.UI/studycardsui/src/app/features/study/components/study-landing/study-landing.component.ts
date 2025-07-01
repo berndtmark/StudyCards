@@ -25,6 +25,10 @@ export class StudyLandingComponent implements OnInit {
     this.router.navigate(['/cards', this.deckId]);
   }
 
+  manageDeck(): void {
+    this.router.navigate(['/decks/edit', this.deckId]);
+  }
+
   studySession(methodology: StudyMethodology): void {
     this.router.navigate(['session', methodology], { 
       relativeTo: this.activatedRoute 

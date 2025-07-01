@@ -115,7 +115,7 @@ export const CardStore = signalStore(
                 )
             ),
             deckLoaded: (deckId: string) => store.deckId() === deckId,
-            getCardById: (id: string) => {
+            getCardById: (id: string): CardResponse | null => {
                 return store.cards().find(card => card.id === id) || null;
             }
     })),

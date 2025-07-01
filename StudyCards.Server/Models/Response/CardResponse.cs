@@ -8,4 +8,6 @@ public class CardResponse
     public string CardBack { get; init; } = string.Empty;
     public DateTime CreatedDate { get; init; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; init; } = DateTime.UtcNow;
+    public DateTime? NextReviewDate { get; init; } = null;
+    public int ReviewCount { get; init; } = 0;
 }

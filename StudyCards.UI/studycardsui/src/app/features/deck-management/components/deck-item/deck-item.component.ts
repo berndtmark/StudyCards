@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, Input, OnDestroy } from '@angular/core';
-import { Deck } from 'app/@api/models/deck';
+import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, computed } from '@angular/core';
 import { DeckActionsComponent } from '../deck-actions/deck-actions.component';
 import { Router } from '@angular/router';
 import { DeckStore } from '../../store/deck.store';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { Subject, takeUntil } from 'rxjs';
+import { StatusBadgeComponent } from 'app/shared/components/status-badge/status-badge.component';
+import { Deck } from '../../models/deck';
 
 @Component({
   selector: 'app-deck-item',
-  imports: [CommonModule, DeckActionsComponent],
+  imports: [CommonModule, DeckActionsComponent, StatusBadgeComponent],
   templateUrl: './deck-item.component.html',
   styleUrl: './deck-item.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -21,7 +22,9 @@ export class DeckItemComponent implements OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
 
-  @Input() deck!: Deck;
+  deck = input.required<Deck>();
+
+  reviewsToday = computed(() => this.deck().hasReviewsToday || false);
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();

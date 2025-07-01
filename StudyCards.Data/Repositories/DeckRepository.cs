@@ -6,51 +6,48 @@ using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class DeckRepository : BaseRepository<Deck>, IDeckRepository
+public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Deck>(dbContext, httpContextAccessor), IDeckRepository
 {
-    private readonly DataBaseContext _dbContext;
-
-    public DeckRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
+    public async Task<Deck?> Get(Guid id, string emailAddress, CancellationToken cancellationToken = default)
     {
-        _dbContext = dbContext;
-    }
-
-    public async Task<Deck?> Get(Guid id, string emailAddress)
-    {
-        return await _dbContext
+        return await DbContext
             .Deck
             .WithPartitionKey(emailAddress)
             .AsNoTracking()
-            .SingleOrDefaultAsync(d => d.Id == id);
+            .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress)
+    public async Task<Deck?> Get(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Deck
+        return await DbContext
+            .Deck
+            .WithPartitionKey(EmailAddress)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress, CancellationToken cancellationToken = default)
+    {
+        return await DbContext.Deck
             .AsNoTracking()
             .Where(c => c.UserEmail == emailAddress)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Deck> Add(Deck deck)
     {
         var entity = await AddEntity(deck);
-        await _dbContext.SaveChangesAsync();
-
         return entity;
     }
 
-    public async Task<Deck> Update(Deck deck)
+    public Deck Update(Deck deck)
     {
         var entity = UpdateEntity(deck);
-        await _dbContext.SaveChangesAsync();
-
         return entity;
     }
 
     public async Task Remove(Guid deckId, string emailAddress)
     {
         await RemoveEntity(deckId, emailAddress);
-        await _dbContext.SaveChangesAsync();
     }
 }

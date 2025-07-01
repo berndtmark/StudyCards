@@ -6,52 +6,63 @@ using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class CardRepository : BaseRepository<Card>, ICardRepository
+public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Card>(dbContext, httpContextAccessor), ICardRepository
 {
-    private readonly DataBaseContext _dbContext;
-
-    public CardRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
+    public async Task<Card?> Get(Guid id, Guid deckId, CancellationToken cancellationToken = default)
     {
-        _dbContext = dbContext;
-    }
-
-    public async Task<Card?> Get(Guid id, Guid deckId)
-    {
-        return await _dbContext
+        return await DbContext
             .Card
             .WithPartitionKey(deckId)
             .AsNoTracking()
-            .SingleOrDefaultAsync(d => d.Id == id);
+            .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Card>> GetByDeck(Guid deckId)
+    public async Task<IEnumerable<Card>?> Get(Guid[] ids, Guid deckId, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Card
+        return await DbContext
+            .Card
+            .WithPartitionKey(deckId)
+            .Where(c => ids.Contains(c.Id))
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Card>> GetByDeck(Guid deckId, CancellationToken cancellationToken = default)
+    {
+        return await DbContext.Card
             .AsNoTracking()
             .Where(c => c.DeckId == deckId)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Card> Add(Card card)
     {
         var entity = await AddEntity(card);
-        await _dbContext.SaveChangesAsync();
 
         return entity;
     }
 
-    public async Task<Card> Update(Card card)
+    public Card Update(Card card)
     {
-        var entity = UpdateEntity(card);
-        await _dbContext.SaveChangesAsync();
-
+        var entity = UpdateEntity(card);       
         return entity;
     }
 
     public async Task Remove(Guid id, Guid deckId)
     {
         await RemoveEntity(id, deckId);
-        await _dbContext.SaveChangesAsync();
+    }
+
+    public void RemoveRange(Card[] cards)
+    {
+        DbContext.Card.RemoveRange(cards);
+    }
+
+    public async Task<int> CountByDeck(Guid deckId, CancellationToken cancellationToken = default)
+    {
+        return await DbContext.Card
+            .AsNoTracking()
+            .CountAsync(c => c.DeckId == deckId, cancellationToken);
     }
 }
 
