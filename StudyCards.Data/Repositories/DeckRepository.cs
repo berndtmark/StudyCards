@@ -10,7 +10,7 @@ public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor http
 {
     public async Task<Deck?> Get(Guid id, string emailAddress, CancellationToken cancellationToken = default)
     {
-        return await dbContext
+        return await DbContext
             .Deck
             .WithPartitionKey(emailAddress)
             .AsNoTracking()
@@ -19,7 +19,7 @@ public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<Deck?> Get(Guid id, CancellationToken cancellationToken = default)
     {
-        return await dbContext
+        return await DbContext
             .Deck
             .WithPartitionKey(EmailAddress)
             .AsNoTracking()
@@ -28,7 +28,7 @@ public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Deck
+        return await DbContext.Deck
             .AsNoTracking()
             .Where(c => c.UserEmail == emailAddress)
             .ToListAsync(cancellationToken);

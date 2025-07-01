@@ -41,7 +41,8 @@ public class AddDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<AddDeckComman
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Failed to add deck {DeckName}", request.DeckName);
+            var sanitizedDeckName = request.DeckName.Replace(Environment.NewLine, "").Replace("\r", "");
+            logger.LogError(ex, "Failed to add deck {DeckName}", sanitizedDeckName);
             throw;
         }
     }
