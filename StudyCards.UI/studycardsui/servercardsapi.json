@@ -256,6 +256,55 @@
         }
       }
     },
+    "/api/Card/addcards": {
+      "post": {
+        "tags": [
+          "Card"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCardsRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCardsRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCardsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCardsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCardsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCardsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Card/removecard/deck/{deckId}/card/{cardId}": {
       "delete": {
         "tags": [
@@ -605,6 +654,36 @@
           }
         }
       },
+      "AddCardsRequest": {
+        "type": "object",
+        "properties": {
+          "deckId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardText"
+            }
+          }
+        }
+      },
+      "AddCardsResponse": {
+        "type": "object",
+        "properties": {
+          "cardsAdded": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CardResponse"
+            }
+          },
+          "cardsSkipped": {
+            "type": "array",
+            "items": { }
+          }
+        }
+      },
       "AddDeckRequest": {
         "type": "object",
         "properties": {
@@ -652,6 +731,30 @@
           "updatedDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "nextReviewDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "reviewCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CardText": {
+        "required": [
+          "cardFront",
+          "cardBack"
+        ],
+        "type": "object",
+        "properties": {
+          "cardFront": {
+            "type": "string"
+          },
+          "cardBack": {
+            "type": "string"
           }
         }
       },
