@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StudyCards.Application.Interfaces;
 using StudyCards.Application.UseCases.CardManagement.Commands;
 using StudyCards.Application.UseCases.CardManagement.Queries;
 using StudyCards.Server.Models.Request;
@@ -57,6 +56,27 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
 
         var response = mapper.Map<CardResponse>(result);
         return Ok(response);
+    }
+
+    [HttpPost]
+    [Route("addcards")]
+    [ProducesResponseType(typeof(AddCardsResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> AddCards(AddCardsRequest request)
+    {
+        var result = await sender.Send(new AddCardsCommand
+        {
+            DeckId = request.DeckId,
+            Cards = [.. request.Cards.Select(card => (card.CardFront, card.CardBack))]
+        });
+
+        var cardsAdded = mapper.Map<IList<CardResponse>>(result.CardsAdded);
+        var cardsSkipped = mapper.Map<IList<CardResponse>>(result.CardsSkipped);
+
+        return Ok(new AddCardsResponse
+        {
+            CardsAdded = cardsAdded,
+            CardsSkipped = cardsSkipped
+        });
     }
 
     [HttpDelete]

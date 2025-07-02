@@ -45,7 +45,7 @@ public class StudyController(IMapper mapper, ISender sender) : ControllerBase
             })]
         });
 
-        var response = mapper.Map<IList<CardResponseWithReviews>>(result);
+        var response = mapper.Map<IList<CardResponse>>(result);
         return Ok(response);
     }
 }

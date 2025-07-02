@@ -23,14 +23,15 @@ export class CardsToStudyComponent {
   readonly isComplete = computed(() => this.currentIndex() >= this.cards().length);
 
   onCardStudied(card: [string, CardDifficulty]): void {
-    if (card[1] === CardDifficulty.Repeat) {
+    const isRepeat = card[1] === CardDifficulty.Repeat;
+    if (isRepeat) {
       this.repeatCard.emit(card[0]);
     }
 
     this.reviewCard.emit({cardId: card[0], dificulty: card[1]});
     this.currentIndex.update(i => ++i);
 
-    if (this.isComplete()) {
+    if (!isRepeat && this.isComplete()) {
       this.completeStudy.emit();
     }
   }
