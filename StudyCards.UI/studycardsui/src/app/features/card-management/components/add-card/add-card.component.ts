@@ -19,8 +19,7 @@ export class AddCardComponent implements OnInit {
   ngOnInit(): void {
     // ensure the deck cards is loaded before trying to get a card by id
     const deckId = this.activatedRoute.snapshot.paramMap.get('deckid') || '';
-    if (!this.store.deckLoaded(deckId))
-        this.store.loadCards(deckId);
+    this.store.loadDeckIfNot(deckId);
   }
   
   onCardSubmit(form: { cardFront: string; cardBack: string }): void {

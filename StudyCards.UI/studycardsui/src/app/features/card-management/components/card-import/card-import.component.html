@@ -1,8 +1,14 @@
 <button mat-raised-button color="primary" (click)="fileInput.click()">Upload File</button>
 <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".json" />
+<button mat-raised-button color="primary" [disabled]="this.selectedItemsForImport().length === 0" (click)="import()">Import</button>
 
-<div class="code-card">
-  <pre><code>{{ codeSnippet }}</code></pre>
-</div>
+@if(!isImportStarted()) {
+  <h3>Format of File</h3>
+  <div class="code-card">
+    <pre><code>{{ codeSnippet }}</code></pre>
+  </div>
+}
 
-{{ store.importCards() | json }}
+<app-card-import-display [includeSelector]="true" [cards]="store.importCards().file ?? []" title="Cards From File" (selectedIds)="updateSelectedItems($event)"></app-card-import-display>
+<app-card-import-display [cards]="store.importCards().success ?? []" title="Sucessful Imports"></app-card-import-display>
+<app-card-import-display [cards]="store.importCards().existing ?? []" title="Existing Cards"></app-card-import-display>

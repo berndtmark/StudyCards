@@ -1,22 +1,20 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { FileService } from 'app/shared/services/file.service';
-import { ImportCard } from '../../models/import-card';
 import { CardStore } from '../../store/card.store';
-import { DialogService } from 'app/shared/services/dialog.service';
-import { JsonPipe } from '@angular/common';
+import { CardImportDisplayComponent } from "../card-import-display/card-import-display.component";
 
 @Component({
   selector: 'app-card-import',
-  imports: [MatButtonModule, JsonPipe],
+  imports: [MatButtonModule, CardImportDisplayComponent],
   templateUrl: './card-import.component.html',
   styleUrl: './card-import.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardImportComponent {
-  fileService = inject(FileService);
-  dialog = inject(DialogService);
   readonly store = inject(CardStore);
+
+  selectedItemsForImport = signal<string[]>([]);
+  isImportStarted = computed(() => this.store.importCards().file);
 
   codeSnippet = `[
     {
@@ -30,15 +28,15 @@ export class CardImportComponent {
 ]`;
 
   async onFileSelected(event: Event) {
-    try {
-      const data = await this.fileService.readJsonFile<ImportCard[]>(event);
-      const isValid = ImportCard.isValid(data);
-      if (!isValid)
-        throw new Error();
+    this.store.importCardsFromFile(event);
+  }
 
-      this.store.addImportCards(data);
-    } catch (error) {
-      this.dialog.info("Error Importing", "The File is not in a recognisable format or is badly formed");
-    }
+  import() {
+    console.log(this.selectedItemsForImport());
+    this.store.import();
+  }
+
+  updateSelectedItems(ids: string[]) {
+    this.selectedItemsForImport.set([...ids]);
   }
 }

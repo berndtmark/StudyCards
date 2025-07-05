@@ -1,4 +1,5 @@
 export class ImportCard {
+    id?: string;
     cardFront?: string
     cardBack?: string;
 

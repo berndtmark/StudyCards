@@ -7,19 +7,21 @@ import { CardService } from '../services/card.service';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
 import { CardResponse } from 'app/@api/models/card-response';
 import { ImportCard } from '../models/import-card';
+import { DialogService } from 'app/shared/services/dialog.service';
+import { FileService } from 'app/shared/services/file.service';
 
 type CardState = {
     loadingState: LoadingState
     cards: CardResponse[];
     deckId: string;
-    importCards: ImportCard[];
+    importCards: { file?: ImportCard[], success?: ImportCard[], existing?: ImportCard[] };
 };
 
 const initialState: CardState = {
     loadingState: LoadingState.Initial,
     cards: [],
     deckId: '',
-    importCards: []
+    importCards: {}
 };
 
 export const CardStore = signalStore(
@@ -29,7 +31,9 @@ export const CardStore = signalStore(
     })),
     withMethods((store,
         cardService = inject(CardService),
-        snackBar = inject(SnackbarService)) => ({
+        snackBar = inject(SnackbarService),
+        dialogService = inject(DialogService),
+        fileService = inject(FileService)) => ({
             loadCards: rxMethod<string>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
@@ -117,12 +121,43 @@ export const CardStore = signalStore(
                     ))
                 )
             ),
-            deckLoaded: (deckId: string) => store.deckId() === deckId,
             getCardById: (id: string): CardResponse | null => {
                 return store.cards().find(card => card.id === id) || null;
             },
-            addImportCards: (cards: ImportCard[]) => {
-                patchState(store, { importCards: cards });
+            importCardsFromFile: async (event: Event) => {
+                patchState(store, { importCards: {} });
+
+                try {
+                    const data = await fileService.readJsonFile<ImportCard[]>(event);
+                    const isValid = ImportCard.isValid(data);
+                    if (!isValid)
+                        throw new Error();
+
+                    patchState(store, { 
+                        importCards: {
+                            ...store.importCards(), 
+                            file: data.map(d => ({...d, id: crypto.randomUUID()})),
+                            success: [],
+                            existing: []
+                        } 
+                    });
+                } catch (error) {
+                    dialogService.info("Error Importing", "The File is not in a recognisable format or is badly formed");
+                }
+            },
+            import: () => {
+                patchState(store, { 
+                    importCards: { 
+                        ...store.importCards(), 
+                        file: [],
+                        success: [new ImportCard()]
+                    }});
             }
+    })),
+    withMethods((store) => ({
+        loadDeckIfNot: (deckId: string) => {
+            if (store.deckId() !== deckId)
+                store.loadCards(deckId);
+        }
     })),
 );
