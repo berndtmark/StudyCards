@@ -3,6 +3,7 @@ import { CardStore } from "./store/card.store";
 import { CardLandingComponent } from "./components/card-landing/card-landing.component";
 import { AddCardComponent } from "./components/add-card/add-card.component";
 import { UpdateCardComponent } from "./components/update-card/update-card.component";
+import { CardImportComponent } from "./components/card-import/card-import.component";
 
 export const CARD_MANAGEMENT_ROUTES: Routes = [
     {
@@ -20,6 +21,10 @@ export const CARD_MANAGEMENT_ROUTES: Routes = [
             {
                 path: 'edit/:cardid',
                 component: UpdateCardComponent
+            },
+            {
+                path: 'import',
+                component: CardImportComponent
             }
         ]
     }

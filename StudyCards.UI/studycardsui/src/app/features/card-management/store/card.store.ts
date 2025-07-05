@@ -6,17 +6,20 @@ import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { CardService } from '../services/card.service';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
 import { CardResponse } from 'app/@api/models/card-response';
+import { ImportCard } from '../models/import-card';
 
 type CardState = {
     loadingState: LoadingState
     cards: CardResponse[];
     deckId: string;
+    importCards: ImportCard[];
 };
 
 const initialState: CardState = {
     loadingState: LoadingState.Initial,
     cards: [],
-    deckId: ''
+    deckId: '',
+    importCards: []
 };
 
 export const CardStore = signalStore(
@@ -117,6 +120,9 @@ export const CardStore = signalStore(
             deckLoaded: (deckId: string) => store.deckId() === deckId,
             getCardById: (id: string): CardResponse | null => {
                 return store.cards().find(card => card.id === id) || null;
+            },
+            addImportCards: (cards: ImportCard[]) => {
+                patchState(store, { importCards: cards });
             }
     })),
 );

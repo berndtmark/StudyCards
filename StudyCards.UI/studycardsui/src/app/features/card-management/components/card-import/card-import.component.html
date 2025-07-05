@@ -1,0 +1,8 @@
+<button mat-raised-button color="primary" (click)="fileInput.click()">Upload File</button>
+<input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".json" />
+
+<div class="code-card">
+  <pre><code>{{ codeSnippet }}</code></pre>
+</div>
+
+{{ store.importCards() | json }}
