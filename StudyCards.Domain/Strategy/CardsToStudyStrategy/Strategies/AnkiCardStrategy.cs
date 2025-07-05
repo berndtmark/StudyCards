@@ -13,7 +13,7 @@ public class AnkiCardStrategy : ICardsToStudyStrategy
         // 1. Select new cards (ReviewCount == 0)
         var newCards = cardsList
             .Where(card => card.CardReviewStatus.ReviewCount == 0)
-            .OrderBy(card => card.CardReviewStatus.NextReviewDate)
+            .OrderBy(card => card.CreatedDate)
             .Take(noNewCardsToSelect)
             .ToList();
 

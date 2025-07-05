@@ -7,6 +7,7 @@ namespace StudyCards.Domain.Strategy.CardScheduleReviewStrategy.Strategies;
 public class AnkiScheduleStrategy : ICardScheduleStrategy
 {
     private const double MIN_INTERVAL = 1.0; // Minimum interval in days
+    private const double MAX_INTERVAL = 365.0; // Maximum interval in days
     private const double EASE_BONUS = 0.15; // How much to increase/decrease ease
     private const double MIN_EASE = 1.3; // Minimum ease factor
     private const double REPEAT_PENALTY = 0.2; // Penalty for each repeat
@@ -41,32 +42,16 @@ public class AnkiScheduleStrategy : ICardScheduleStrategy
         }
         else if (card.CardReviewStatus.ReviewCount == 1)
         {
-            newInterval = 3.0;
+            newInterval = 2.0;
         }
         else
         {
             // Use the current interval and ease factor to determine next interval
             newInterval = currentInterval * newEase;
-
-            // Adjust interval based on difficulty
-            newInterval *= difficulty switch
-            {
-                CardDifficulty.Easy => 1.3,
-                CardDifficulty.Medium => 1.0,
-                CardDifficulty.Hard => 0.7,
-                _ => 1.0
-            };
         }
 
-        // Apply repeat penalty to interval
-        if (repeatCount > 0)
-        {
-            var repeatMultiplier = Math.Max(0.5, 1 - 0.1 * repeatsToConsider);
-            newInterval *= repeatMultiplier;
-        }
-
-        // Ensure minimum interval
-        newInterval = Math.Max(MIN_INTERVAL, newInterval);
+        // Ensure min and max interval
+        newInterval = Math.Clamp(newInterval, MIN_INTERVAL, MAX_INTERVAL);
 
         return card with
         {
