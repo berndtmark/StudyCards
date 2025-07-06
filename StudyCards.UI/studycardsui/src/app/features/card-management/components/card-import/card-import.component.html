@@ -4,9 +4,9 @@
 
 <div class="container">
   <div class="button-group">
-    <app-back-nav (back)="goBack()"></app-back-nav>
+    <app-my-button title="Back" icon="arrow_back" (action)="goBack()"></app-my-button>
     <app-file-upload (fileSelected)="onFileSelected($event)"></app-file-upload>
-    <button mat-raised-button color="primary" [disabled]="this.selectedItemsForImport().length === 0" (click)="import()">Import</button>
+    <app-my-button title="Import" buttonType="filled" [disabled]="this.selectedItemsForImport().length === 0" (action)="import()"></app-my-button>
   </div>
 
   @if(!store.isImportStared()) {

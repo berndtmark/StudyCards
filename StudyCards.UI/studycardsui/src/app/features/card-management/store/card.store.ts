@@ -176,6 +176,10 @@ export const CardStore = signalStore(
                     )
                 )
             ),
+            export: () => {
+                const data = store.cards().map(c => ({ cardFront: c.cardFront, cardBack: c.cardBack }));
+                fileService.downloadJson(data, 'studycards.json');
+            }
     })),
     withMethods((store) => ({
         loadDeckIfNot: (deckId: string) => {

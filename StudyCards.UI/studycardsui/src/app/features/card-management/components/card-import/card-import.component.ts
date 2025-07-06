@@ -1,16 +1,15 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CardStore } from '../../store/card.store';
 import { CardImportDisplayComponent } from "../card-import-display/card-import-display.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImportCodeSnippetComponent } from "../import-code-snippet/import-code-snippet.component";
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
 import { FileUploadComponent } from "../../../../shared/components/file-upload/file-upload.component";
+import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
 
 @Component({
   selector: 'app-card-import',
-  imports: [MatButtonModule, CardImportDisplayComponent, ImportCodeSnippetComponent, MatProgressBar, BackNavComponent, FileUploadComponent],
+  imports: [CardImportDisplayComponent, ImportCodeSnippetComponent, MatProgressBar, FileUploadComponent, MyButtonComponent],
   templateUrl: './card-import.component.html',
   styleUrl: './card-import.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

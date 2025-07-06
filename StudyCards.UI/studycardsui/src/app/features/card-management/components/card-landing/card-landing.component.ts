@@ -6,11 +6,11 @@ import { LoadingState } from 'app/shared/models/loading-state';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
+import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
 
 @Component({
   selector: 'app-card-landing',
-  imports: [CardListComponent, MatProgressBar, MatButtonModule, MatIconModule, BackNavComponent],
+  imports: [CardListComponent, MatProgressBar, MatButtonModule, MatIconModule, MyButtonComponent],
   templateUrl: './card-landing.component.html',
   styleUrl: './card-landing.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,5 +47,9 @@ export class CardLandingComponent implements OnInit {
     this.router.navigate(['import'], { 
       relativeTo: this.activatedRoute 
     });
+  }
+
+  export(): void {
+    this.store.export();
   }
 }

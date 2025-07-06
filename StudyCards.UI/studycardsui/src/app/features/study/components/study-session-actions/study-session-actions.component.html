@@ -1,5 +1,5 @@
 <div class="button-group">
-    <app-back-nav (back)="goBack.emit()"></app-back-nav>
+    <app-my-button title="Back" icon="arrow_back" (action)="goBack.emit()"></app-my-button>
     
     @if (showSaveGroup()) {
         <div class="save-group">
