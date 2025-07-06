@@ -1,14 +1,19 @@
-<button mat-raised-button color="primary" (click)="fileInput.click()">Upload File</button>
-<input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept=".json" />
-<button mat-raised-button color="primary" [disabled]="this.selectedItemsForImport().length === 0" (click)="import()">Import</button>
-
-@if(!isImportStarted()) {
-  <h3>Format of File</h3>
-  <div class="code-card">
-    <pre><code>{{ codeSnippet }}</code></pre>
-  </div>
+@if(store.isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
-<app-card-import-display [includeSelector]="true" [cards]="store.importCards().file ?? []" title="Cards From File" (selectedIds)="updateSelectedItems($event)"></app-card-import-display>
-<app-card-import-display [cards]="store.importCards().success ?? []" title="Sucessful Imports"></app-card-import-display>
-<app-card-import-display [cards]="store.importCards().existing ?? []" title="Existing Cards"></app-card-import-display>
+<div class="container">
+  <div class="button-group">
+    <app-back-nav (back)="goBack()"></app-back-nav>
+    <app-file-upload (fileSelected)="onFileSelected($event)"></app-file-upload>
+    <button mat-raised-button color="primary" [disabled]="this.selectedItemsForImport().length === 0" (click)="import()">Import</button>
+  </div>
+
+  @if(!store.isImportStared()) {
+    <app-import-code-snippet></app-import-code-snippet>
+  }
+
+  <app-card-import-display [includeSelector]="true" [cards]="store.importCards().file ?? []" title="Cards From File" (selectedIds)="updateSelectedItems($event)"></app-card-import-display>
+  <app-card-import-display [cards]="store.importCards().success ?? []" title="Successful Imports"></app-card-import-display>
+  <app-card-import-display [cards]="store.importCards().existing ?? []" title="Existing Cards"></app-card-import-display>
+</div>

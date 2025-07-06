@@ -2,11 +2,15 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } 
 import { MatButtonModule } from '@angular/material/button';
 import { CardStore } from '../../store/card.store';
 import { CardImportDisplayComponent } from "../card-import-display/card-import-display.component";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ImportCodeSnippetComponent } from "../import-code-snippet/import-code-snippet.component";
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
+import { FileUploadComponent } from "../../../../shared/components/file-upload/file-upload.component";
 
 @Component({
   selector: 'app-card-import',
-  imports: [MatButtonModule, CardImportDisplayComponent],
+  imports: [MatButtonModule, CardImportDisplayComponent, ImportCodeSnippetComponent, MatProgressBar, BackNavComponent, FileUploadComponent],
   templateUrl: './card-import.component.html',
   styleUrl: './card-import.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -14,24 +18,14 @@ import { ActivatedRoute } from '@angular/router';
 export class CardImportComponent implements OnInit {
   readonly store = inject(CardStore);
   activatedRoute = inject(ActivatedRoute);
+  router = inject(Router);
 
   selectedItemsForImport = signal<string[]>([]);
-  isImportStarted = computed(() => this.store.importCards().file);
-
-  codeSnippet = `[
-    {
-      "cardFront": "What is the capital of France",
-      "cardBack": "Paris"
-    },
-    {
-      "cardFront": "What is 2 + 2",
-      "cardBack": "4"
-    }
-]`;
+  deckId: string | null = '';
 
   ngOnInit(): void {
-    const deckId = this.activatedRoute.snapshot.paramMap.get('deckid');
-    this.store.loadDeckIfNot(deckId!);
+    this.deckId = this.activatedRoute.snapshot.paramMap.get('deckid');
+    this.store.loadDeckIfNot(this.deckId!);
   }
 
   async onFileSelected(event: Event) {
@@ -44,5 +38,9 @@ export class CardImportComponent implements OnInit {
 
   updateSelectedItems(ids: string[]) {
     this.selectedItemsForImport.set([...ids]);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/cards', this.deckId]);
   }
 }

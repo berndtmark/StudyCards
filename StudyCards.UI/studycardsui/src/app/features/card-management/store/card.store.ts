@@ -27,8 +27,10 @@ const initialState: CardState = {
 
 export const CardStore = signalStore(
     withState(initialState),
-    withComputed(({ cards }) => ({
-        cardCount: computed(() => cards().length)
+    withComputed((store) => ({
+        cardCount: computed(() => store.cards().length),
+        isImportStared: computed(() => store.importCards().file),
+        isLoading: computed(() => store.loadingState() === LoadingState.Loading)
     })),
     withMethods((store,
         cardService = inject(CardService),
@@ -150,9 +152,8 @@ export const CardStore = signalStore(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap(({cardsIdsToImport}) => { 
                         const cardsToImport = store.importCards().file?.filter(f => f.id && cardsIdsToImport.includes(f.id)) ?? [];
-                        const cardTexts: CardText[] = cardsToImport.map(c => ({ cardFront: c.cardFront!, cardBack: c.cardBack! }));
 
-                        return cardService.addCards(store.deckId(), cardTexts)
+                        return cardService.addCards(store.deckId(), cardsToImport)
                             .pipe(
                                 tap((importedCards) => {
                                     patchState(store, { 
@@ -164,7 +165,7 @@ export const CardStore = signalStore(
                                         },
                                         cards: [...store.cards(), ...importedCards.cardsAdded!]
                                     });
-                                    snackBar.open("Cards imported");
+                                    snackBar.open("Cards import ran successfully");
                                 }),
                                 catchError(() => {
                                     patchState(store, { loadingState: LoadingState.Error });

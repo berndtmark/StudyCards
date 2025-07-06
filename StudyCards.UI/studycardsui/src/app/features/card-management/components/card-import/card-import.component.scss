@@ -1,15 +1,14 @@
-@use '../../../../theming/colour' as colour;
+@use '../../../../theming/responsive' as responsive;
 
-.code-card {
-  background-color: colour.$grey-300;
-  color: colour.$white-100;
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 20px;
-}
+.container {
+  padding: 2rem;
+  
+  @include responsive.responsive('mobile') {
+      padding: 1rem;
+  }
 
-pre, code {
-  margin: 0;
-  white-space: pre-wrap;
-  word-break: break-word;
+  .button-group {
+    display: flex;
+    gap: 10px;
+  }
 }
