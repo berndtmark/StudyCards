@@ -1,5 +1,2 @@
-    <button mat-raised-button color="primary" (click)="fileInput.click()">
-      <mat-icon>file_upload</mat-icon>
-      Upload File
-    </button>
+    <app-my-button title="Upload File" (action)="fileInput.click()" icon="file_upload" [noResponsive]="true"></app-my-button>
     <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" [accept]="accept()" />

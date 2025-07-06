@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -13,7 +13,10 @@ export class MyButtonComponent {
   title = input<string>();
   icon = input<string>();
   disabled = input<boolean>();
+  noResponsive = input<boolean>();
   buttonType = input<'elevated' | 'filled' | 'tonal' | 'outlined'>("elevated");
 
   action = output<void>();
+
+  responsiveIcon = computed(() => this.icon() && !this.noResponsive());
 }

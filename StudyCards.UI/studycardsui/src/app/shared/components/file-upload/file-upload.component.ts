@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MyButtonComponent } from "../my-button/my-button.component";
 
 @Component({
   selector: 'app-file-upload',
-  imports: [MatIconModule, MatButtonModule],
+  imports: [MyButtonComponent],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

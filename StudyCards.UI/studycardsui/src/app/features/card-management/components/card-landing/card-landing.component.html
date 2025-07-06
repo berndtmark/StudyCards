@@ -5,7 +5,7 @@
 <div class="container">
     <div class="button-container">
         <app-my-button title="Back" icon="arrow_back" (action)="goBack()"></app-my-button>
-        <button mat-raised-button color="primary" (click)="addCard()">Add Card</button>
+        <app-my-button title="Add Card" (action)="addCard()"></app-my-button>
         <app-my-button title="Import" (action)="import()" icon="upload"></app-my-button>
         <app-my-button title="Export" (action)="export()" icon="download_2"></app-my-button>
     </div>
