@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CardService as CardServiceApi } from '../../../@api/services';
 import { CardResponse } from 'app/@api/models/card-response';
+import { CardText } from 'app/@api/models/card-text';
+import { AddCardsResponse } from 'app/@api/models/add-cards-response';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +25,9 @@ export class CardService {
 
   removeCard(deckId: string, cardId: string): Observable<boolean> {
     return this.cardServiceApi.removecard$Json({ deckId, cardId });
+  }
+
+  addCards(deckId: string, cards: CardText[]): Observable<AddCardsResponse> {
+    return this.cardServiceApi.apiCardAddcardsPost$Json({ body: { deckId, cards } });
   }
 }

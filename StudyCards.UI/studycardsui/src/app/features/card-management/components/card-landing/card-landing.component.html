@@ -6,6 +6,7 @@
     <div class="button-container">
         <app-back-nav (back)="goBack()"></app-back-nav>
         <button mat-raised-button color="primary" (click)="addCard()">Add Card</button>
+        <button mat-raised-button color="primary" (click)="import()">Import</button>
     </div>
 
     <app-card-list [cards]="store.cards()" (updateCard)="updateCard($event)"></app-card-list>

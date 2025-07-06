@@ -9,6 +9,7 @@ import { CardResponse } from 'app/@api/models/card-response';
 import { ImportCard } from '../models/import-card';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { FileService } from 'app/shared/services/file.service';
+import { CardText } from 'app/@api/models/card-text';
 
 type CardState = {
     loadingState: LoadingState
@@ -134,8 +135,7 @@ export const CardStore = signalStore(
                         throw new Error();
 
                     patchState(store, { 
-                        importCards: {
-                            ...store.importCards(), 
+                        importCards: { 
                             file: data.map(d => ({...d, id: crypto.randomUUID()})),
                             success: [],
                             existing: []
@@ -145,14 +145,36 @@ export const CardStore = signalStore(
                     dialogService.info("Error Importing", "The File is not in a recognisable format or is badly formed");
                 }
             },
-            import: () => {
-                patchState(store, { 
-                    importCards: { 
-                        ...store.importCards(), 
-                        file: [],
-                        success: [new ImportCard()]
-                    }});
-            }
+            import: rxMethod<{ cardsIdsToImport: string[] }>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap(({cardsIdsToImport}) => { 
+                        const cardsToImport = store.importCards().file?.filter(f => f.id && cardsIdsToImport.includes(f.id)) ?? [];
+                        const cardTexts: CardText[] = cardsToImport.map(c => ({ cardFront: c.cardFront!, cardBack: c.cardBack! }));
+
+                        return cardService.addCards(store.deckId(), cardTexts)
+                            .pipe(
+                                tap((importedCards) => {
+                                    patchState(store, { 
+                                        loadingState: LoadingState.Success,
+                                        importCards: { 
+                                            file: [],
+                                            success: [...importedCards.cardsAdded!],
+                                            existing: [...importedCards.cardsSkipped!]
+                                        },
+                                        cards: [...store.cards(), ...importedCards.cardsAdded!]
+                                    });
+                                    snackBar.open("Cards imported");
+                                }),
+                                catchError(() => {
+                                    patchState(store, { loadingState: LoadingState.Error });
+                                    snackBar.open("Failed to import cards");
+                                    return of(null);
+                                })
+                        )}
+                    )
+                )
+            ),
     })),
     withMethods((store) => ({
         loadDeckIfNot: (deckId: string) => {

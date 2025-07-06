@@ -42,4 +42,10 @@ export class CardLandingComponent implements OnInit {
       relativeTo: this.activatedRoute 
     });
   }
+
+  import(): void {
+    this.router.navigate(['import'], { 
+      relativeTo: this.activatedRoute 
+    });
+  }
 }

@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { CardStore } from '../../store/card.store';
 import { CardImportDisplayComponent } from "../card-import-display/card-import-display.component";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-card-import',
@@ -10,8 +11,9 @@ import { CardImportDisplayComponent } from "../card-import-display/card-import-d
   styleUrl: './card-import.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardImportComponent {
+export class CardImportComponent implements OnInit {
   readonly store = inject(CardStore);
+  activatedRoute = inject(ActivatedRoute);
 
   selectedItemsForImport = signal<string[]>([]);
   isImportStarted = computed(() => this.store.importCards().file);
@@ -27,13 +29,17 @@ export class CardImportComponent {
     }
 ]`;
 
+  ngOnInit(): void {
+    const deckId = this.activatedRoute.snapshot.paramMap.get('deckid');
+    this.store.loadDeckIfNot(deckId!);
+  }
+
   async onFileSelected(event: Event) {
     this.store.importCardsFromFile(event);
   }
 
   import() {
-    console.log(this.selectedItemsForImport());
-    this.store.import();
+    this.store.import({ cardsIdsToImport: this.selectedItemsForImport() });
   }
 
   updateSelectedItems(ids: string[]) {
