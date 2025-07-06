@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardImportComponent } from './card-import.component';
+import { CardStore } from '../../store/card.store';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { RouterModule } from '@angular/router';
 
 describe('CardImportComponent', () => {
   let component: CardImportComponent;
@@ -8,7 +12,15 @@ describe('CardImportComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardImportComponent]
+      imports: [
+        CardImportComponent,
+        RouterModule.forRoot([])
+      ],
+      providers: [
+        CardStore,
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ]
     })
     .compileComponents();
 
