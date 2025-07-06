@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, input, OnDestroy, output } from '@angular/core';
-import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
 import { DeterminateProgressSpinnerComponent } from "../../../../shared/components/determinate-progress-spinner/determinate-progress-spinner.component";
 import { createAutoEvoke } from 'app/shared/functions/auto-evoke';
 import { MatIcon } from '@angular/material/icon';
 import { MatMiniFabButton } from '@angular/material/button';
+import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
 
 @Component({
   selector: 'app-study-session-actions',
-  imports: [BackNavComponent, DeterminateProgressSpinnerComponent, MatIcon, MatMiniFabButton],
+  imports: [DeterminateProgressSpinnerComponent, MatIcon, MatMiniFabButton, MyButtonComponent],
   templateUrl: './study-session-actions.component.html',
   styleUrl: './study-session-actions.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

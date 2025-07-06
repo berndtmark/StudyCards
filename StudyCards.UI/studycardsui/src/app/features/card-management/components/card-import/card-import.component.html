@@ -1,0 +1,19 @@
+@if(store.isLoading()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+<div class="container">
+  <div class="button-group">
+    <app-my-button title="Back" icon="arrow_back" (action)="goBack()"></app-my-button>
+    <app-file-upload (fileSelected)="onFileSelected($event)"></app-file-upload>
+    <app-my-button title="Import" buttonType="filled" [disabled]="this.selectedItemsForImport().length === 0" (action)="import()"></app-my-button>
+  </div>
+
+  @if(!store.isImportStared()) {
+    <app-import-code-snippet></app-import-code-snippet>
+  }
+
+  <app-card-import-display [includeSelector]="true" [cards]="store.importCards().file ?? []" title="Cards From File" (selectedIds)="updateSelectedItems($event)"></app-card-import-display>
+  <app-card-import-display [cards]="store.importCards().success ?? []" title="Successful Imports"></app-card-import-display>
+  <app-card-import-display [cards]="store.importCards().existing ?? []" title="Existing Cards"></app-card-import-display>
+</div>
