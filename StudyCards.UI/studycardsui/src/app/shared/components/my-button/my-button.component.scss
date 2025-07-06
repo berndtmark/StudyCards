@@ -1,0 +1,15 @@
+@use '../../../theming/responsive' as responsive;
+
+.button {
+    @include responsive.responsive('mobile') {
+        &.icon-responsive {
+            .text {
+                display: none;
+            }
+
+            mat-icon {
+                margin: 0;
+            }
+        }
+    }
+}
