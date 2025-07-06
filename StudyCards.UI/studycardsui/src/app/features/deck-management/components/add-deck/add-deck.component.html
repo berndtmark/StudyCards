@@ -1,4 +1,4 @@
 <div class="container">
-    <app-back-nav (back)="goBackToDeckList()"></app-back-nav>
+    <app-my-button title="Back" icon="arrow_back" (action)="goBackToDeckList()"></app-my-button>
     <app-deck-form saveButtonName="Create Deck" (submit)="onSubmit($event)"></app-deck-form>
 </div>

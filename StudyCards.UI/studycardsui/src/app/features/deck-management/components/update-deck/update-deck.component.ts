@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
 import { DeckFormComponent } from "../deck-form/deck-form.component";
 import { DeckStore } from '../../store/deck.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Deck } from '../../models/deck';
+import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
 
 @Component({
   selector: 'app-update-deck',
-  imports: [BackNavComponent, DeckFormComponent],
+  imports: [DeckFormComponent, MyButtonComponent],
   templateUrl: './update-deck.component.html',
   styleUrl: './update-deck.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

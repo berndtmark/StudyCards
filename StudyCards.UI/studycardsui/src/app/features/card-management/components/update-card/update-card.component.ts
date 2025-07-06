@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CardStore } from '../../store/card.store';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BackNavComponent } from "../../../../shared/components/back-nav/back-nav.component";
 import { CardFormComponent } from "../card-form/card-form.component";
 import { DialogService } from 'app/shared/services/dialog.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
 
 @Component({
   selector: 'app-update-card',
-  imports: [BackNavComponent, CardFormComponent, MatButtonModule],
+  imports: [CardFormComponent, MatButtonModule, MyButtonComponent],
   templateUrl: './update-card.component.html',
   styleUrl: './update-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -24,8 +24,7 @@ export class UpdateCardComponent implements OnInit {
   ngOnInit(): void {
     // ensure the deck cards is loaded before trying to get a card by id
     const deckId = this.activatedRoute.snapshot.paramMap.get('deckid') || '';
-    if (!this.store.deckLoaded(deckId))
-        this.store.loadCards(deckId);
+    this.store.loadDeckIfNot(deckId);
 
     this.cardId = this.activatedRoute.snapshot.paramMap.get('cardid')!;
   }

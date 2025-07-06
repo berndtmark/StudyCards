@@ -1,0 +1,25 @@
+@use '../../../../theming/colour' as colour;
+@use '../../../../theming/responsive' as responsive;
+
+.table {
+    --mat-sys-surface: colour.$off-white;
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px colour.$grey-800;
+
+    th {
+        background-color: colour.$blue-100;
+        
+        &:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        &:last-child {
+            border-top-right-radius: 8px;
+        }
+    }
+
+    .mat-column-select {
+        width: 5%;
+    }
+}
