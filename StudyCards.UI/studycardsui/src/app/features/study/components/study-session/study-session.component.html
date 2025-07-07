@@ -18,11 +18,11 @@
         (completeStudy)="completeStudy()"
       />
     } @else {
-      <app-study-complete />
+      <app-study-complete (done)="goBack()" />
     }
   }
 
   @case (loadingState.Complete) {
-    <app-study-complete title="Well Done" subtitle="Great Session!" />
+    <app-study-complete title="Well Done" subtitle="Great Session!" (done)="goBack()" />
   }
 }

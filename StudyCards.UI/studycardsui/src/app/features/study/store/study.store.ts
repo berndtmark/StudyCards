@@ -8,7 +8,6 @@ import { catchError, of, pipe, switchMap, tap } from "rxjs";
 import { StudyMethodology } from "app/shared/models/study-methodology";
 import { CardDifficulty } from "app/shared/models/card-difficulty";
 import { SnackbarService } from "app/shared/services/snackbar.service";
-import { Router } from "@angular/router";
 import { injectDispatch } from "@ngrx/signals/events";
 import { deckEvents } from "app/features/deck-management/store/deck.store";
 
@@ -35,7 +34,6 @@ export const StudyStore = signalStore(
     withMethods((store,
         studyService = inject(StudyService),
         snackBarService = inject(SnackbarService),
-        route = inject(Router),
         deckDispatch = injectDispatch(deckEvents)) => ({
             loadCards: rxMethod<{ deckId: string, methodology: StudyMethodology }>(
                 pipe(
@@ -85,7 +83,6 @@ export const StudyStore = signalStore(
                                     deckId: store.deckId(), 
                                     reviewCount: store.cardsStudied().length
                                  });
-                                setTimeout(() => route.navigate(['/decks']), 3000);
                             }),
                             catchError(() => {
                                 patchState(store, { loadingState: LoadingState.Error });

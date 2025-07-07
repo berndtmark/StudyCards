@@ -3,14 +3,22 @@
     <h3>Study</h3>
     <mat-icon class="icon">menu_book</mat-icon>
   </div>
+
   <div class="card" (click)="studySession(methodology.Random)">
-    <h3>Quick Study</h3>
-    <mat-icon class="icon">menu_book</mat-icon>
+    <div class="with-subtext">
+      <span class="main-content">
+          <h3>Quick Study</h3>
+          <mat-icon class="icon">menu_book</mat-icon>
+      </span>
+      <span class="subtext">Always available - Random Cards</span>
+    </div>
   </div>
+
   <div class="card" (click)="manageCards()">
     <h3>Manage Cards</h3>
     <mat-icon class="icon">add_card</mat-icon>
   </div>
+
   <div class="card" (click)="manageDeck()">
     <h3>Manage Deck</h3>
     <mat-icon class="icon">deck</mat-icon>
