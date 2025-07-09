@@ -26,5 +26,20 @@
         .icon {
             margin-left: 10px;;
         }
+
+        .with-subtext {
+            position: relative;
+
+            .main-content {
+                display: flex;
+                align-items: center;
+            }
+
+            .subtext {
+                position: absolute;
+                font-size: 10px;
+                bottom: -15px;
+            }
+        }
     }
 }

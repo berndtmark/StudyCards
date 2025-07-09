@@ -41,4 +41,13 @@
             }
         }
     }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+
+        @include responsive.responsive('tablet') {
+            flex-direction: column;
+        }
+    }
 }

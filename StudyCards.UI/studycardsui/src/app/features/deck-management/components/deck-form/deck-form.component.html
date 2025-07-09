@@ -1,31 +1,34 @@
 <div class="form-card">
     <form [formGroup]="deckForm" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" required>
-    </mat-form-field>
-    
-    <mat-form-field>
-        <mat-label>Description</mat-label>
-        <input matInput formControlName="description">
-    </mat-form-field>
-
-    <div class="sub-section">
         <mat-form-field>
-            <mat-label>Max Reviews (per day)</mat-label>
-            <input matInput formControlName="maxReviews" type="number">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required>
         </mat-form-field>
+        
         <mat-form-field>
-            <mat-label>Max New (per day)</mat-label>
-            <input matInput formControlName="maxNew" type="number">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
         </mat-form-field>
-        @if(deckForm.errors?.['maxNewExceedsReviews']) {
-            <mat-error class="max-new-cards-error">Max new cards must be less than or equal to max reviews.</mat-error>
-        }
-    </div>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!deckForm.valid">
-        {{ saveButtonName() }}
-    </button>
+        <div class="sub-section">
+            <mat-form-field>
+                <mat-label>Max Reviews (per day)</mat-label>
+                <input matInput formControlName="maxReviews" type="number">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Max New (per day)</mat-label>
+                <input matInput formControlName="maxNew" type="number">
+            </mat-form-field>
+            @if(deckForm.errors?.['maxNewExceedsReviews']) {
+                <mat-error class="max-new-cards-error">Max new cards must be less than or equal to max reviews.</mat-error>
+            }
+        </div>
+
+        <div class="action-buttons">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!deckForm.valid">
+                {{ saveButtonName() }}
+            </button>
+            <ng-content type="button" select="[button-content]"></ng-content>
+        </div>
     </form>  
 </div>  
