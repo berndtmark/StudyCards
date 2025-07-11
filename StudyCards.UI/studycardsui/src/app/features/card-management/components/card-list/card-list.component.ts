@@ -24,7 +24,7 @@ export class CardListComponent {
   updateCard = output<string>();
 
   private defaultColumns = ['cardfront', 'cardback'];
-  private extendedColumns =  ['cardfront', 'cardback', 'nextstudy', 'studycount'];
+  private extendedColumns =  ['reviewphase', 'cardfront', 'cardback', 'nextstudy', 'studycount'];
   displayedColumns: string[] = this.defaultColumns;
   dataSource = new MatTableDataSource<CardResponse>([]);
 

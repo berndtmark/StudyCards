@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Exceptions;
+﻿using Microsoft.Extensions.Logging;
+using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -23,7 +24,7 @@ public class ReviewCardsCommand : ICommand<IList<Card>>
     }
 }
 
-public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStrategyContext cardScheduleStrategy) : ICommandHandler<ReviewCardsCommand, IList<Card>>
+public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStrategyContext cardScheduleStrategy, ILogger<ReviewCardsCommandHandler> logger) : ICommandHandler<ReviewCardsCommand, IList<Card>>
 {
     public async Task<IList<Card>> Handle(ReviewCardsCommand request, CancellationToken cancellationToken)
     {
@@ -53,6 +54,8 @@ public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStra
             var updatedCard = card.AddReview(cardReview);
             var result = unitOfWork.CardRepository.Update(updatedCard);
             response.Add(result);
+
+            logger.LogInformation("Scheduling card {CardId}: difficulty={Difficulty}, interval={Interval}, nextPhase={NextPhase}", result.Id, review.CardDifficulty, result.CardReviewStatus.IntervalInDays, result.CardReviewStatus.CurrentPhase);
         }
 
         // update deck last review status
