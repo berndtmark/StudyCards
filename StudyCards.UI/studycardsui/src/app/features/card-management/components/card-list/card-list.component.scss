@@ -29,6 +29,11 @@
         width: 6%;
         text-align: center;
     }
+
+    .mat-column-reviewphase {
+        width: 2%;
+        text-align: center;
+    }
 }
 
 .action-container {
@@ -52,4 +57,30 @@
     padding: 1rem;
     text-align: center;
     color: colour.$gray-200;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: default;
+
+    &.learning {
+        background-color: colour.$blue-300;
+    }
+
+    &.relearning {
+        background-color: colour.$red-100;
+    }
+
+    &.reviewing {
+        background-color: colour.$green-300;
+    }
+}
+
+.legend {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
 }

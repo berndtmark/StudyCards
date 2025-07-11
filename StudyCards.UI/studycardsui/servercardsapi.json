@@ -740,6 +740,10 @@
           "reviewCount": {
             "type": "integer",
             "format": "int32"
+          },
+          "reviewPhase": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
