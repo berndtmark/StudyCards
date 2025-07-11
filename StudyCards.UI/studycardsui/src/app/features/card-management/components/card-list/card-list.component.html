@@ -34,6 +34,24 @@
         <td mat-cell *matCellDef="let element"> {{element.reviewCount}} </td>
     </ng-container>
 
+    <!-- Review Phase Column -->
+    <ng-container matColumnDef="reviewphase">
+        <th mat-header-cell *matHeaderCellDef> Review Phase </th>
+        <td mat-cell *matCellDef="let element"> 
+            @switch (element.reviewPhase) {
+                @case ('Reviewing') {
+                    <div class="status-dot reviewing" title="Reviewing"></div>
+                }
+                @case ('Learning') {
+                    <div class="status-dot learning" title="Learning"></div>
+                }
+                @case ('Relearning') {
+                    <div class="status-dot relearning" title="Relearning"></div>
+                }
+            }
+        </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="updateCard.emit(row.id)"></tr>
 
@@ -44,3 +62,12 @@
         </td>
     </tr>
 </table>
+
+@if(displayedColumns.includes('reviewphase'))
+{
+    <div class="legend">
+        <div>Learning: <span class="status-dot learning" title="Learning"></span></div>
+        <div>Reviewing: <span class="status-dot reviewing" title="Reviewing"></span></div>
+        <div>Relearning: <span class="status-dot relearning" title="Relearning"></span></div>
+    </div>
+}

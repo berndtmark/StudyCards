@@ -10,6 +10,7 @@ public class CardProfile : Profile
     {
         CreateMap<Card, CardResponse>()
             .ForMember(dest => dest.ReviewCount, src => src.MapFrom(p => p.CardReviewStatus.ReviewCount))
-            .ForMember(dest => dest.NextReviewDate, src => src.MapFrom(p => p.CardReviewStatus.NextReviewDate));
+            .ForMember(dest => dest.NextReviewDate, src => src.MapFrom(p => p.CardReviewStatus.NextReviewDate))
+            .ForMember(dest => dest.ReviewPhase, src => src.MapFrom(p => p.CardReviewStatus.CurrentPhase.ToString()));
     }
 }

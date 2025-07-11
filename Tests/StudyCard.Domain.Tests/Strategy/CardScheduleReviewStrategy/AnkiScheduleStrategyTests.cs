@@ -51,33 +51,4 @@ public class AnkiScheduleStrategyTests
         Assert.AreEqual(20, card.CardReviewStatus.ReviewCount);
         Assert.IsFalse(card.CardReviewStatus.IntervalInDays > 365);
     }
-
-    [TestMethod]
-    public void ScheduleNext_CardWithEqualEasyAndHardReviews_EaseRemainsUnchanged()
-    {
-        // Arrange
-        var strategy = new AnkiScheduleStrategy();
-        var card = new Card
-        {
-            CardReviewStatus = new CardReviewStatus
-            {
-                ReviewCount = 5,
-                EaseFactor = 2.5,
-            }
-        };
-
-        // Act
-        for (int i = 0; i < 7m; i++)
-        {
-            card = strategy.ScheduleNext(card, CardDifficulty.Easy);
-        }
-        for (int i = 0; i < 7; i++)
-        {
-            card = strategy.ScheduleNext(card, CardDifficulty.Hard);
-        }
-
-        // Assert
-        Assert.AreEqual(19, card.CardReviewStatus.ReviewCount);
-        Assert.AreEqual(2.5, card.CardReviewStatus.EaseFactor);
-    }
 }

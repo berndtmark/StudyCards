@@ -10,4 +10,5 @@ public class CardResponse
     public DateTime UpdatedDate { get; init; } = DateTime.UtcNow;
     public DateTime? NextReviewDate { get; init; } = null;
     public int ReviewCount { get; init; } = 0;
+    public string? ReviewPhase { get; init; }
 }
