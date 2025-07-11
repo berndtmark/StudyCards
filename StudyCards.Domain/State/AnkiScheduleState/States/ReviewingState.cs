@@ -3,73 +3,58 @@ using StudyCards.Domain.Enums;
 
 namespace StudyCards.Domain.State.AnkiScheduleState.States;
 
-//public enum ReviewPhase
-//{
-//    Learning,
-//    Reviewing,
-//    Relearning
-//}
-
 public interface ICardReviewState
 {
-    (Card UpdatedCard, ReviewPhase? NextPhase) Schedule(Card card, CardDifficulty difficulty, int repeatCount);
+    (CardReviewStatus UpdatedCardStatus, ReviewPhase? NextPhase) Schedule(CardReviewStatus cardStatus, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration);
 }
 
 public class LearningState : ICardReviewState
 {
-    private static readonly double[] LEARNING_STEPS = [1, 2];
-
-    public (Card, ReviewPhase?) Schedule(Card card, CardDifficulty difficulty, int repeatCount)
+    public (CardReviewStatus, ReviewPhase?) Schedule(CardReviewStatus cardStatus, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
     {
-        var step = card.CardReviewStatus.LearningStep ?? 0;
+        var step = cardStatus.LearningStep ?? 0;
 
+        // go back to the start of the learning phase
         if (difficulty == CardDifficulty.Hard || repeatCount > 0)
         {
             return (
-                card with
+                cardStatus with
                 {
-                    CardReviewStatus = card.CardReviewStatus with
-                    {
-                        LearningStep = 0,
-                        IntervalInDays = (int)Math.Round(LEARNING_STEPS[0]),
-                        NextReviewDate = DateTime.UtcNow.AddDays(LEARNING_STEPS[0]),
-                        ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                    }
+                    LearningStep = 0,
+                    IntervalInDays = (int)Math.Round(configuration.LEARNING_STEPS[0]),
+                    NextReviewDate = DateTime.UtcNow.AddDays(configuration.LEARNING_STEPS[0]),
+                    ReviewCount = cardStatus.ReviewCount + 1
                 },
                 null
             );
         }
 
+        // If we've completed all steps, graduate
         var nextStep = step + 1;
-        if (nextStep >= LEARNING_STEPS.Length)
+        if (nextStep >= configuration.LEARNING_STEPS.Length)
         {
-            double interval = difficulty == CardDifficulty.Easy ? 4.0 : 1.0;
+            double interval = difficulty == CardDifficulty.Easy ? configuration.GRADUATED_EASY_INTERVAL : configuration.MIN_INTERVAL;
             return (
-                card with
+                cardStatus with
                 {
-                    CardReviewStatus = card.CardReviewStatus with
-                    {
-                        LearningStep = null,
-                        IntervalInDays = (int)Math.Round(interval),
-                        NextReviewDate = DateTime.UtcNow.AddDays(interval),
-                        EaseFactor = 2.5,
-                        ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                    }
+                    LearningStep = null,
+                    IntervalInDays = (int)Math.Round(interval),
+                    NextReviewDate = DateTime.UtcNow.AddDays(interval),
+                    EaseFactor = configuration.INITIAL_EASE,
+                    ReviewCount = cardStatus.ReviewCount + 1
                 },
                 ReviewPhase.Reviewing
             );
         }
 
+        // move to the next learning step
         return (
-            card with
-            {
-                CardReviewStatus = card.CardReviewStatus with
-                {
-                    LearningStep = nextStep,
-                    IntervalInDays = (int)Math.Round(LEARNING_STEPS[nextStep]),
-                    NextReviewDate = DateTime.UtcNow.AddDays(LEARNING_STEPS[nextStep]),
-                    ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                }
+            cardStatus with
+            { 
+                LearningStep = nextStep,
+                IntervalInDays = (int)Math.Round(configuration.LEARNING_STEPS[nextStep]),
+                NextReviewDate = DateTime.UtcNow.AddDays(configuration.LEARNING_STEPS[nextStep]),
+                ReviewCount = cardStatus.ReviewCount + 1
             },
             null
         );
@@ -78,51 +63,42 @@ public class LearningState : ICardReviewState
 
 public class ReviewingState : ICardReviewState
 {
-    private const double EASE_BONUS = 0.15;
-    private const double MIN_EASE = 1.3;
-    private const double MAX_INTERVAL = 365;
-    private const double MIN_INTERVAL = 1;
-    private const double REPEAT_PENALTY = 0.2;
-    private const int MAX_REPEATS_TO_CONSIDER = 3;
-
-    public (Card, ReviewPhase?) Schedule(Card card, CardDifficulty difficulty, int repeatCount)
+    public (CardReviewStatus, ReviewPhase?) Schedule(CardReviewStatus cardStatus, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
     {
+        // Go to the relearning phase
         if (difficulty == CardDifficulty.Hard || repeatCount > 0)
         {
-            var (updatedCard, _) = new RelearningState().Schedule(card, difficulty, repeatCount);
+            var (updatedCard, _) = new RelearningState().Schedule(cardStatus, difficulty, repeatCount, configuration);
             return (updatedCard, ReviewPhase.Relearning);
         }
 
         var easeChange = difficulty switch
         {
-            CardDifficulty.Easy => EASE_BONUS,
+            CardDifficulty.Easy => configuration.EASE_BONUS,
             CardDifficulty.Medium => 0,
-            CardDifficulty.Hard => -EASE_BONUS,
+            CardDifficulty.Hard => -configuration.EASE_BONUS,
             _ => 0
         };
 
-        var newEase = Math.Max(MIN_EASE, card.CardReviewStatus.EaseFactor + easeChange);
+        var newEase = Math.Max(configuration.MIN_EASE, cardStatus.EaseFactor + easeChange);
 
         double multiplier = difficulty switch
         {
-            CardDifficulty.Hard => 1.2,
-            CardDifficulty.Easy => newEase * 1.3,
+            CardDifficulty.Hard => configuration.HARD_REVIEW_MULTIPLIER,
+            CardDifficulty.Easy => newEase * configuration.EASY_REVIEW_MULTIPLIER,
             CardDifficulty.Medium => newEase,
             _ => newEase
         };
 
-        var newInterval = Math.Clamp(card.CardReviewStatus.IntervalInDays * multiplier, MIN_INTERVAL, MAX_INTERVAL);
+        var newInterval = Math.Clamp(cardStatus.IntervalInDays * multiplier, configuration.MIN_INTERVAL, configuration.MAX_INTERVAL);
 
         return (
-            card with
+            cardStatus with
             {
-                CardReviewStatus = card.CardReviewStatus with
-                {
-                    EaseFactor = newEase,
-                    IntervalInDays = (int)Math.Round(newInterval),
-                    NextReviewDate = DateTime.UtcNow.AddDays(newInterval),
-                    ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                }
+                EaseFactor = newEase,
+                IntervalInDays = (int)Math.Round(newInterval),
+                NextReviewDate = DateTime.UtcNow.AddDays(newInterval),
+                ReviewCount = cardStatus.ReviewCount + 1
             },
             null
         );
@@ -131,13 +107,9 @@ public class ReviewingState : ICardReviewState
 
 public class RelearningState : ICardReviewState
 {
-    private static readonly double[] RELEARNING_STEPS = [1, 3];
-    private const double LAPSE_EASE_PENALTY = 0.2;
-    private const double MIN_EASE = 1.3;
-
-    public (Card, ReviewPhase?) Schedule(Card card, CardDifficulty difficulty, int repeatCount)
+    public (CardReviewStatus, ReviewPhase?) Schedule(CardReviewStatus cardStatus, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
     {
-        var step = card.CardReviewStatus.LearningStep ?? 0;
+        var step = cardStatus.LearningStep ?? 0;
 
         // Handle repeated failure at step 0
         if (step == 0)
@@ -145,22 +117,19 @@ public class RelearningState : ICardReviewState
             if (difficulty == CardDifficulty.Hard || repeatCount > 0)
             {
                 var newEase = Math.Max(
-                    MIN_EASE,
-                    card.CardReviewStatus.EaseFactor - LAPSE_EASE_PENALTY
-                      - Math.Max(0, Math.Min(repeatCount - 1, MAX_REPEATS_TO_CONSIDER) * LAPSE_EASE_PENALTY)
+                    configuration.MIN_EASE,
+                    cardStatus.EaseFactor - configuration.LAPSE_EASE_PENALTY
+                      - Math.Max(0, Math.Min(repeatCount - 1, configuration.MAX_REPEATS_TO_CONSIDER) * configuration.LAPSE_EASE_PENALTY)
                 );
 
                 return (
-                    card with
+                    cardStatus with
                     {
-                        CardReviewStatus = card.CardReviewStatus with
-                        {
-                            EaseFactor = newEase,
-                            LearningStep = 0,
-                            IntervalInDays = (int)Math.Round(RELEARNING_STEPS[0]),
-                            NextReviewDate = DateTime.UtcNow.AddDays(RELEARNING_STEPS[0]),
-                            ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                        }
+                        EaseFactor = newEase,
+                        LearningStep = 0,
+                        IntervalInDays = (int)Math.Round(configuration.RELEARNING_STEPS[0]),
+                        NextReviewDate = DateTime.UtcNow.AddDays(configuration.RELEARNING_STEPS[0]),
+                        ReviewCount = cardStatus.ReviewCount + 1
                     },
                     null
                 );
@@ -168,17 +137,14 @@ public class RelearningState : ICardReviewState
 
             // Successful recall — move to next step
             var nextStep = 1;
-            var interval = RELEARNING_STEPS[nextStep];
+            var interval = configuration.RELEARNING_STEPS[nextStep];
             return (
-                card with
+                cardStatus with
                 {
-                    CardReviewStatus = card.CardReviewStatus with
-                    {
-                        LearningStep = nextStep,
-                        IntervalInDays = (int)Math.Round(interval),
-                        NextReviewDate = DateTime.UtcNow.AddDays(interval),
-                        ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                    }
+                    LearningStep = nextStep,
+                    IntervalInDays = (int)Math.Round(interval),
+                    NextReviewDate = DateTime.UtcNow.AddDays(interval),
+                    ReviewCount = cardStatus.ReviewCount + 1
                 },
                 null
             );
@@ -186,50 +152,42 @@ public class RelearningState : ICardReviewState
 
         // If we've completed all steps, graduate
         var nextStepProgress = step + 1;
-        if (nextStepProgress >= RELEARNING_STEPS.Length)
+        if (nextStepProgress >= configuration.RELEARNING_STEPS.Length)
         {
             const double graduatedInterval = 2.0;
             return (
-                card with
-                {
-                    CardReviewStatus = card.CardReviewStatus with
-                    {
-                        LearningStep = null,
-                        IntervalInDays = (int)Math.Round(graduatedInterval),
-                        NextReviewDate = DateTime.UtcNow.AddDays(graduatedInterval),
-                        ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                    }
+                cardStatus with
+                { 
+                    LearningStep = null,
+                    IntervalInDays = (int)Math.Round(graduatedInterval),
+                    NextReviewDate = DateTime.UtcNow.AddDays(graduatedInterval),
+                    ReviewCount = cardStatus.ReviewCount + 1
                 },
                 ReviewPhase.Reviewing
             );
         }
 
         // Move to next relearning step
-        var nextInterval = RELEARNING_STEPS[nextStepProgress];
+        var nextInterval = configuration.RELEARNING_STEPS[nextStepProgress];
         return (
-            card with
+            cardStatus with
             {
-                CardReviewStatus = card.CardReviewStatus with
-                {
-                    LearningStep = nextStepProgress,
-                    IntervalInDays = (int)Math.Round(nextInterval),
-                    NextReviewDate = DateTime.UtcNow.AddDays(nextInterval),
-                    ReviewCount = card.CardReviewStatus.ReviewCount + 1
-                }
+                LearningStep = nextStepProgress,
+                IntervalInDays = (int)Math.Round(nextInterval),
+                NextReviewDate = DateTime.UtcNow.AddDays(nextInterval),
+                ReviewCount = cardStatus.ReviewCount + 1
             },
             null
         );
     }
 }
 
-
-
 public class AnkiReviewStateMachine
 {
     public Card Schedule(Card card, CardDifficulty difficulty, int repeatCount)
     {
         var currentPhase = card.CardReviewStatus.CurrentPhase ?? InferPhase(card);
-
+        var configuration = new AnkiScheduleConfiguration();
 
         ICardReviewState state = currentPhase switch
         {
@@ -239,23 +197,24 @@ public class AnkiReviewStateMachine
             _ => throw new InvalidOperationException("Unknown review phase")
         };
 
-        var (updatedCard, nextPhase) = state.Schedule(card, difficulty, repeatCount);
+        var (updatedCardStatus, nextPhase) = state.Schedule(card.CardReviewStatus, difficulty, repeatCount, configuration);
 
         if (nextPhase is not null && nextPhase != card.CardReviewStatus.CurrentPhase)
         {
-            updatedCard = updatedCard with
+            card = card with
             {
-                CardReviewStatus = updatedCard.CardReviewStatus with
+                CardReviewStatus = updatedCardStatus with
                 {
                     CurrentPhase = nextPhase.Value
                 }
             };
         }
 
-        return updatedCard;
+        return card;
     }
 
-    private ReviewPhase InferPhase(Card card)
+    // Used for existing cards that dont have phase set
+    private static ReviewPhase InferPhase(Card card)
     {
         var count = card.CardReviewStatus.ReviewCount;
 

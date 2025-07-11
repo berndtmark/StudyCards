@@ -82,7 +82,7 @@ public class AnkiScheduleStrategy : ICardScheduleStrategy
 
         if (difficulty == CardDifficulty.Hard)
         {
-            HandleLapse(card)
+            HandleLapse(card);
         }
 
         return difficulty switch
