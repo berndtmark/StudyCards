@@ -16,7 +16,7 @@ public class ReviewingStateTests
         EASE_BONUS = 0.15,
         HARD_REVIEW_MULTIPLIER = 1.2,
         EASY_REVIEW_MULTIPLIER = 1.3,
-        RELEARNING_STEPS = new[] { 1.0, 5.0 }
+        RELEARNING_STEPS = [1.0, 5.0]
     };
 
     private static CardReviewStatus CreateInitialStatus() => new()

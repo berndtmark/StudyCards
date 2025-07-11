@@ -36,7 +36,7 @@ public class LearningStateTests
 
         // Assert
         Assert.AreEqual(0, newStatus.LearningStep);
-        Assert.AreEqual(1, newStatus.IntervalInDays);
+        Assert.AreEqual(DefaultConfig.LEARNING_STEPS[0], newStatus.IntervalInDays);
         Assert.AreEqual(ReviewPhase.Learning, phase);
     }
 
@@ -52,7 +52,7 @@ public class LearningStateTests
 
         // Assert
         Assert.AreEqual(0, newStatus.LearningStep);
-        Assert.AreEqual(1, newStatus.IntervalInDays);
+        Assert.AreEqual(DefaultConfig.LEARNING_STEPS[0], newStatus.IntervalInDays);
         Assert.AreEqual(ReviewPhase.Learning, phase);
     }
 
@@ -68,8 +68,8 @@ public class LearningStateTests
 
         // Assert
         Assert.IsNull(newStatus.LearningStep);
-        Assert.AreEqual(1, newStatus.IntervalInDays); // MIN_INTERVAL
-        Assert.AreEqual(2.5, newStatus.EaseFactor); // INITIAL_EASE
+        Assert.AreEqual(DefaultConfig.MIN_INTERVAL, newStatus.IntervalInDays); // MIN_INTERVAL
+        Assert.AreEqual(DefaultConfig.INITIAL_EASE, newStatus.EaseFactor); // INITIAL_EASE
         Assert.AreEqual(ReviewPhase.Reviewing, phase);
     }
 
@@ -85,8 +85,8 @@ public class LearningStateTests
 
         // Assert
         Assert.IsNull(newStatus.LearningStep);
-        Assert.AreEqual(4, newStatus.IntervalInDays); // GRADUATED_EASY_INTERVAL
-        Assert.AreEqual(2.5, newStatus.EaseFactor); // INITIAL_EASE
+        Assert.AreEqual(DefaultConfig.GRADUATED_EASY_INTERVAL, newStatus.IntervalInDays); // GRADUATED_EASY_INTERVAL
+        Assert.AreEqual(DefaultConfig.INITIAL_EASE, newStatus.EaseFactor); // INITIAL_EASE
         Assert.AreEqual(ReviewPhase.Reviewing, phase);
     }
 
@@ -102,7 +102,7 @@ public class LearningStateTests
 
         // Assert
         Assert.AreEqual(1, newStatus.LearningStep);
-        Assert.AreEqual(10, newStatus.IntervalInDays);
+        Assert.AreEqual(DefaultConfig.LEARNING_STEPS[1], newStatus.IntervalInDays);
         Assert.AreEqual(ReviewPhase.Learning, phase);
     }
 }
