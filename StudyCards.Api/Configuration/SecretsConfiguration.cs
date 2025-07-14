@@ -1,0 +1,41 @@
+﻿using StudyCards.Api.Configuration.Options;
+using StudyCards.Application.Configuration;
+using StudyCards.Application.Interfaces;
+using StudyCards.Application.SecretsManager;
+using System.Text.Json;
+
+namespace StudyCards.Api.Configuration;
+
+public static class SecretsConfiguration
+{
+    public static IServiceCollection AddSecretsConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        if (OpenApiGen.IsOpenApiGeneration())
+            return services;
+
+        // Create secrets manager directly
+        var secretOptions = configuration.GetSection(SecretOptions.Key).Get<SecretOptions>()!;
+        var secretClient = new SecretsClient(Microsoft.Extensions.Options.Options.Create(secretOptions));
+        var secretsManager = new SecretsManager(secretClient);
+
+        // Load secrets
+        var secrets = secretsManager.GetSecrets(Secrets.CosmosDbConnectionString, Secrets.GoogleAuthOptions);
+        var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(secrets[Secrets.GoogleAuthOptions])!;
+
+        // Update configuration
+        configuration.GetSection("ConnectionStrings")["CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
+        configuration.GetSection("GoogleAuth:ClientId").Value = googleAuthOptions.ClientId;
+        configuration.GetSection("GoogleAuth:ClientSecret").Value = googleAuthOptions.ClientSecret;
+
+        // Register services after configuration is updated
+        services.Configure<SecretOptions>(options => configuration.GetSection(SecretOptions.Key).Bind(options));
+        services.AddSingleton<ISecretClient>(secretClient);
+        services.AddSingleton<ISecretsManager, CachedSecretsManager>();
+
+        services.AddSingleton(configuration);
+
+        return services;
+    }
+
+    private static string GetFirstNonNull(this string? currentValue, string newValue) => string.IsNullOrEmpty(currentValue) ? newValue : currentValue;
+}
