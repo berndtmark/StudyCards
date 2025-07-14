@@ -23,7 +23,7 @@ public static class SecretsConfiguration
         var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(secrets[Secrets.GoogleAuthOptions])!;
 
         // Update configuration
-        configuration.GetSection("ConnectionStrings")["CosmosDb"] = configuration.GetSection("ConnectionStrings")["CosmosDb"].GetFirstNonNull(secrets[Secrets.CosmosDbConnectionString]);
+        configuration.GetSection("ConnectionStrings")["CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
         configuration.GetSection("GoogleAuth:ClientId").Value = googleAuthOptions.ClientId;
         configuration.GetSection("GoogleAuth:ClientSecret").Value = googleAuthOptions.ClientSecret;
 
