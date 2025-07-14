@@ -16,15 +16,15 @@ RUN npm install -g @angular/cli
 FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["StudyCards.Server/StudyCards.Server.csproj", "StudyCards.Server/"]
-RUN dotnet restore "./StudyCards.Server/StudyCards.Server.csproj"
+COPY ["StudyCards.Api/StudyCards.Api.csproj", "StudyCards.Api/"]
+RUN dotnet restore "./StudyCards.Api/StudyCards.Api.csproj"
 COPY . .
-WORKDIR "/src/StudyCards.Server"
-RUN dotnet build "./StudyCards.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/StudyCards.Api"
+RUN dotnet build "./StudyCards.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./StudyCards.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./StudyCards.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 ## UI ##
 
@@ -42,4 +42,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY --from=buildui /src/studycards.client/dist/studycardsui/browser wwwroot/
-ENTRYPOINT ["dotnet", "StudyCards.Server.dll"]
+ENTRYPOINT ["dotnet", "StudyCards.Api.dll"]
