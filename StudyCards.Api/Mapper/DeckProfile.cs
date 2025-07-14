@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using StudyCards.Api.Models.Response;
 using StudyCards.Domain.Entities;
-using StudyCards.Server.Models.Response;
 
-namespace StudyCards.Server.Mapper;
+namespace StudyCards.Api.Mapper;
 
 public class DeckProfile : Profile
 {

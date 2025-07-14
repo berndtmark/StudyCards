@@ -1,6 +1,6 @@
+using StudyCards.Api.Configuration;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
-using StudyCards.Server.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

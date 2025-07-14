@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Server.Configuration.Options;
+﻿namespace StudyCards.Api.Configuration.Options;
 
 public class GoogleAuthOptions
 {

@@ -2,12 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyCards.Api.Models.Request;
+using StudyCards.Api.Models.Response;
 using StudyCards.Application.UseCases.CardManagement.Commands;
 using StudyCards.Application.UseCases.CardManagement.Queries;
-using StudyCards.Server.Models.Request;
-using StudyCards.Server.Models.Response;
 
-namespace StudyCards.Server.Controllers;
+namespace StudyCards.Api.Controllers;
 
 [Authorize]
 [ApiController]

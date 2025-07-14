@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Server.Models.Request;
+﻿namespace StudyCards.Api.Models.Request;
 
 public class AddDeckRequest
 {

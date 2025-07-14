@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace StudyCards.Server.Configuration;
+namespace StudyCards.Api.Configuration;
 
 public static class LoggingConfiguration
 {

@@ -1,10 +1,10 @@
-﻿using StudyCards.Application.Configuration;
+﻿using StudyCards.Api.Configuration.Options;
+using StudyCards.Application.Configuration;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.SecretsManager;
-using StudyCards.Server.Configuration.Options;
 using System.Text.Json;
 
-namespace StudyCards.Server.Configuration;
+namespace StudyCards.Api.Configuration;
 
 public static class SecretsConfiguration
 {
@@ -23,7 +23,7 @@ public static class SecretsConfiguration
         var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(secrets[Secrets.GoogleAuthOptions])!;
 
         // Update configuration
-        configuration.GetSection("ConnectionStrings")["CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
+        configuration.GetSection("ConnectionStrings")["CosmosDb"] = configuration.GetSection("ConnectionStrings")["CosmosDb"].GetFirstNonNull(secrets[Secrets.CosmosDbConnectionString]);
         configuration.GetSection("GoogleAuth:ClientId").Value = googleAuthOptions.ClientId;
         configuration.GetSection("GoogleAuth:ClientSecret").Value = googleAuthOptions.ClientSecret;
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using StudyCards.Server.Configuration.Options;
+using StudyCards.Api.Configuration.Options;
 
-namespace StudyCards.Server.Configuration;
+namespace StudyCards.Api.Configuration;
 
 public static class SecurityConfiguration
 {

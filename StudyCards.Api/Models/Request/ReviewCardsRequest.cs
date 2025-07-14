@@ -1,6 +1,6 @@
 ﻿using StudyCards.Domain.Enums;
 
-namespace StudyCards.Server.Models.Request;
+namespace StudyCards.Api.Models.Request;
 
 public class ReviewCardsRequest
 {

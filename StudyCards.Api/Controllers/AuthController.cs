@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
-using StudyCards.Domain.Entities;
 
-namespace StudyCards.Server.Controllers;
+namespace StudyCards.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

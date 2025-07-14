@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Server.Models.Response;
+﻿namespace StudyCards.Api.Models.Response;
 
 public class AddCardsResponse
 {

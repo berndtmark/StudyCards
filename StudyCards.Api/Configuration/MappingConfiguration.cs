@@ -1,6 +1,6 @@
-﻿using StudyCards.Server.Mapper;
+﻿using StudyCards.Api.Mapper;
 
-namespace StudyCards.Server.Configuration;
+namespace StudyCards.Api.Configuration;
 
 public static class MappingConfiguration
 {
