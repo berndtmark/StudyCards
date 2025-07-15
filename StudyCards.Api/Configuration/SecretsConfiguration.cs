@@ -8,34 +8,87 @@ namespace StudyCards.Api.Configuration;
 
 public static class SecretsConfiguration
 {
-    public static IServiceCollection AddSecretsConfiguration(this IServiceCollection services, IConfiguration configuration)
+    //public static IServiceCollection AddSecretsConfiguration(this IServiceCollection services, IConfiguration configuration)
+    //{
+    //    if (OpenApiGen.IsOpenApiGeneration())
+    //        return services;
+        
+    //    // Create secrets manager directly
+    //    var secretOptions = configuration.GetSection(SecretOptions.Key).Get<SecretOptions>()!;
+    //    var secretClient = new SecretsClient(Microsoft.Extensions.Options.Options.Create(secretOptions));
+    //    var secretsManager = new SecretsManager(secretClient);
+
+    //    // Load secrets
+    //    var secrets = secretsManager.GetSecrets(Secrets.CosmosDbConnectionString, Secrets.GoogleAuthOptions);
+    //    var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(secrets[Secrets.GoogleAuthOptions])!;
+
+    //    // Update configuration
+    //    configuration.GetSection("ConnectionStrings")["CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
+    //    configuration.GetSection("GoogleAuth:ClientId").Value = googleAuthOptions.ClientId;
+    //    configuration.GetSection("GoogleAuth:ClientSecret").Value = googleAuthOptions.ClientSecret;
+
+    //    // Register services after configuration is updated
+    //    services.Configure<SecretOptions>(options => configuration.GetSection(SecretOptions.Key).Bind(options));
+    //    services.AddSingleton<ISecretClient>(secretClient);
+    //    services.AddSingleton<ISecretsManager, CachedSecretsManager>();
+
+    //    services.AddSingleton(configuration);
+
+    //    return services;
+    //}
+
+    private static string GetFirstNonNull(this string? currentValue, string newValue) => string.IsNullOrEmpty(currentValue) ? newValue : currentValue;
+
+
+    ////
+    // go under Configuration/Provides?
+    public class SecretConfigurationProvider(ISecretsManager secretsManager, IConfiguration configuration) : ConfigurationProvider
+    {
+        private readonly ISecretsManager _secretsManager = secretsManager;
+
+        public override void Load()
+        {
+            var secrets = _secretsManager.GetSecrets(
+                Secrets.CosmosDbConnectionString,
+                Secrets.GoogleAuthOptions
+            );
+
+            Data["ConnectionStrings:CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
+
+            var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(
+                secrets[Secrets.GoogleAuthOptions]
+            )!;
+
+            Data["GoogleAuth:ClientId"] = googleAuthOptions.ClientId;
+            Data["GoogleAuth:ClientSecret"] = googleAuthOptions.ClientSecret;
+        }
+    }
+
+    public class SecretConfigurationSource(ISecretsManager secretsManager, IConfiguration configuration) : IConfigurationSource
+    {
+        public IConfigurationProvider Build(IConfigurationBuilder builder)
+        {
+            return new SecretConfigurationProvider(secretsManager, configuration);
+        }
+    }
+
+    public static void AddSecretsConfiguration2(this IHostBuilder host, IConfiguration configuration, IServiceCollection services)
     {
         if (OpenApiGen.IsOpenApiGeneration())
-            return services;
+            return;
 
         // Create secrets manager directly
         var secretOptions = configuration.GetSection(SecretOptions.Key).Get<SecretOptions>()!;
         var secretClient = new SecretsClient(Microsoft.Extensions.Options.Options.Create(secretOptions));
         var secretsManager = new SecretsManager(secretClient);
 
-        // Load secrets
-        var secrets = secretsManager.GetSecrets(Secrets.CosmosDbConnectionString, Secrets.GoogleAuthOptions);
-        var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(secrets[Secrets.GoogleAuthOptions])!;
+        host.ConfigureAppConfiguration(config =>
+        {
+            config.Add(new SecretConfigurationSource(secretsManager, configuration));
+        });
 
-        // Update configuration
-        configuration.GetSection("ConnectionStrings")["CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
-        configuration.GetSection("GoogleAuth:ClientId").Value = googleAuthOptions.ClientId;
-        configuration.GetSection("GoogleAuth:ClientSecret").Value = googleAuthOptions.ClientSecret;
-
-        // Register services after configuration is updated
-        services.Configure<SecretOptions>(options => configuration.GetSection(SecretOptions.Key).Bind(options));
         services.AddSingleton<ISecretClient>(secretClient);
         services.AddSingleton<ISecretsManager, CachedSecretsManager>();
-
-        services.AddSingleton(configuration);
-
-        return services;
     }
 
-    private static string GetFirstNonNull(this string? currentValue, string newValue) => string.IsNullOrEmpty(currentValue) ? newValue : currentValue;
 }

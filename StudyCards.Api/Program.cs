@@ -7,6 +7,7 @@ using StudyCards.Api.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureLogging();
+builder.Host.AddSecretsConfiguration2(builder.Configuration, builder.Services);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddMemoryCache();
@@ -14,7 +15,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
 
-builder.Services.AddSecretsConfiguration(builder.Configuration);
+//builder.Services.AddSecretsConfiguration(builder.Configuration);
 builder.Services.AddSecurityConfiguration(builder.Configuration);
 builder.Services.AddMappingConfiguration();
 
