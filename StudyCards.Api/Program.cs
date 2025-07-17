@@ -7,7 +7,7 @@ using StudyCards.Api.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureLogging();
-builder.Host.AddSecretsConfiguration2(builder.Configuration, builder.Services);
+builder.AddSecretsConfiguration();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddMemoryCache();
@@ -15,16 +15,15 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
 
-//builder.Services.AddSecretsConfiguration(builder.Configuration);
 builder.Services.AddSecurityConfiguration(builder.Configuration);
 builder.Services.AddMappingConfiguration();
 
+// Configure Application Layers
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure static files and default files
 app.UseDefaultFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -38,7 +37,6 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.MapStaticAssets();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
