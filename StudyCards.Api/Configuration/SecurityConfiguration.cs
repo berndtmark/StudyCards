@@ -30,7 +30,7 @@ public static class SecurityConfiguration
             options.AccessDeniedPath = "/todo";
         });
 
-        // services.AddTransient<IClaimsTransformation, AdminClaimsTransformation>();
+        // services.AddTransient<IClaimsTransformation, AdminClaimTransformation>();
 
         return services;
     }
