@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace StudyCards.Api.Configuration.ClaimTransforms;
 
-public class AdminClaimsTransformation(ISecretsManager secretsManager) : IClaimsTransformation
+public class AdminClaimTransformation(ISecretsManager secretsManager) : IClaimsTransformation
 {
     public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
     {
