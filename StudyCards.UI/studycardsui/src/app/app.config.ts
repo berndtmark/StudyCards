@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { ApiConfiguration } from './@api/api-configuration';
+import { SIGNALR_URL } from './shared/services/hub.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
         config.rootUrl = environment.apiBase; // Set your custom URL here
         return config;
       }
-    }
+    },
+    { provide: SIGNALR_URL, useValue: environment.chatHubUrl }
   ],
 };

@@ -53,6 +53,6 @@ app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
 
-app.MapHub<ChatHub>("/chat-hub");    
+app.MapHub<ChatHub>("/hub/chat-hub");    
 
 app.Run();
