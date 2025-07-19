@@ -1,5 +1,6 @@
 ﻿using StudyCards.Api.Configuration.Options;
 using StudyCards.Application.Configuration;
+using StudyCards.Application.Configuration.Options;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.SecretsManager;
 using System.Text.Json;

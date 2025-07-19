@@ -17,6 +17,7 @@ builder.Services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
 
 builder.Services.AddSecurityConfiguration(builder.Configuration);
 builder.Services.AddMappingConfiguration();
+builder.Services.AddOptionsConfiguration(builder.Configuration);
 
 // Configure Application Layers
 builder.Services.ConfigureApplicationServices();

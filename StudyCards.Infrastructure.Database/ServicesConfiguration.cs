@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Azure.Cosmos;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using StudyCards.Application.Configuration;
+using StudyCards.Application.Configuration.Options;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Infrastructure.Database.Context;
@@ -18,10 +22,13 @@ public static class ServicesConfiguration
 
         var dbConnectionString = configuration.GetConnectionString("CosmosDb")
             ?? throw new InvalidOperationException("CosmosDB connection string not found.");
-        
-        services.AddDbContextFactory<DataBaseContext>(optionsBuilder =>
-            optionsBuilder
-    .           UseCosmos(dbConnectionString, databaseName: "StudyCards"));
+
+        services.AddDbContextFactory<DataBaseContext>((sp, optionsBuilder) =>
+        {
+            var options = sp.GetRequiredService<IOptions<CosmosDbOptions>>().Value;
+
+            optionsBuilder.UseCosmos(dbConnectionString, databaseName: "StudyCards", BuildCosmosOptions(options));
+        });
 
         services.AddScoped<ICardRepository, CardRepository>();
         services.AddScoped<IDeckRepository, DeckRepository>();
@@ -39,5 +46,22 @@ public static class ServicesConfiguration
 
             await dbContext.Database.EnsureCreatedAsync();
         }
+    }
+
+    private static Action<CosmosDbContextOptionsBuilder> BuildCosmosOptions(CosmosDbOptions options)
+    {
+        return cosmosOptions =>
+        {
+            if (!string.IsNullOrWhiteSpace(options.ConnectionMode))
+            {
+                var mode = Enum.Parse<ConnectionMode>(options.ConnectionMode);
+                cosmosOptions.ConnectionMode(mode);
+            }
+
+            if (options.LimitToEndpoint.HasValue)
+            {
+                cosmosOptions.LimitToEndpoint(options.LimitToEndpoint.Value);
+            }
+        };
     }
 }
