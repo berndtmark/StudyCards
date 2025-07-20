@@ -41,7 +41,7 @@ app.MapStaticAssets();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    // await app.Services.CreateDatabaseForLocal(app.Configuration);
+    await app.Services.CreateDatabaseForLocal(app.Configuration);
 }
 
 app.UseHttpsRedirection();

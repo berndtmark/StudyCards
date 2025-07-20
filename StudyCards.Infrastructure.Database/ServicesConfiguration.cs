@@ -41,6 +41,8 @@ public static class ServicesConfiguration
     {
         if (configuration.GetConnectionString("CosmosDb")!.Contains("localhost"))
         {
+            Console.WriteLine("Initializing CosmosDB database for local development...");
+
             using var scope = serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<DataBaseContext>();
 
