@@ -33,7 +33,7 @@ public class RelearningStateTests
         var status = CreateInitialStatus();
 
         // Act
-        var (newStatus, phase) = state.Schedule(status, CardDifficulty.Hard, 0, DefaultConfig);
+        var (newStatus, phase) = state.Schedule(status, [], CardDifficulty.Hard, 0, DefaultConfig);
 
         // Assert
         Assert.AreEqual(0, newStatus.LearningStep);
@@ -50,7 +50,7 @@ public class RelearningStateTests
         var status = CreateInitialStatus();
 
         // Act
-        var (newStatus, phase) = state.Schedule(status, CardDifficulty.Hard, 2, DefaultConfig);
+        var (newStatus, phase) = state.Schedule(status, [], CardDifficulty.Hard, 2, DefaultConfig);
 
         // Assert
         Assert.AreEqual(0, newStatus.LearningStep);
@@ -67,7 +67,7 @@ public class RelearningStateTests
         var status = CreateInitialStatus();
 
         // Act
-        var (newStatus, phase) = state.Schedule(status, CardDifficulty.Medium, 0, DefaultConfig);
+        var (newStatus, phase) = state.Schedule(status, [], CardDifficulty.Medium, 0, DefaultConfig);
 
         // Assert
         Assert.AreEqual(1, newStatus.LearningStep);
@@ -83,7 +83,7 @@ public class RelearningStateTests
         var status = CreateInitialStatus() with { LearningStep = 1 };
 
         // Act
-        var (newStatus, phase) = state.Schedule(status, CardDifficulty.Medium, 0, DefaultConfig);
+        var (newStatus, phase) = state.Schedule(status, [], CardDifficulty.Medium, 0, DefaultConfig);
 
         // Assert
         Assert.IsNull(newStatus.LearningStep);
@@ -99,7 +99,7 @@ public class RelearningStateTests
         var status = CreateInitialStatus() with { EaseFactor = 1.4 };
 
         // Act
-        var (newStatus, phase) = state.Schedule(status, CardDifficulty.Hard, 2, DefaultConfig);
+        var (newStatus, phase) = state.Schedule(status, [], CardDifficulty.Hard, 2, DefaultConfig);
 
         // Assert
         Assert.AreEqual(1.3, newStatus.EaseFactor); // MIN_EASE

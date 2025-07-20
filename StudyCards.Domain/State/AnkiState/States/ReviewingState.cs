@@ -6,12 +6,12 @@ namespace StudyCards.Domain.State.AnkiState.States;
 
 public class ReviewingState : ICardReviewState
 {
-    public (CardReviewStatus, ReviewPhase) Schedule(CardReviewStatus cardStatus, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
+    public (CardReviewStatus, ReviewPhase) Schedule(CardReviewStatus cardStatus, CardReview[] pastCardReviews, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
     {
         // Go to the relearning phase
-        if (difficulty == CardDifficulty.Hard || repeatCount > 0)
+        if (IsCardForgotten(pastCardReviews, difficulty, repeatCount, configuration))
         {
-            var (updatedCard, _) = new RelearningState().Schedule(cardStatus, difficulty, repeatCount, configuration);
+            var (updatedCard, _) = new RelearningState().Schedule(cardStatus, pastCardReviews, difficulty, repeatCount, configuration);
             return (updatedCard, ReviewPhase.Relearning);
         }
 
@@ -44,5 +44,23 @@ public class ReviewingState : ICardReviewState
             },
             ReviewPhase.Reviewing
         );
+    }
+
+    private static bool IsCardForgotten(CardReview[] pastCardReviews, CardDifficulty currentDifficulty, int repeatCount, AnkiScheduleConfiguration config)
+    {
+        var lastReview = pastCardReviews?.LastOrDefault();
+
+        // Condition 1: Two consecutive Hard ratings
+        bool sustainedHard = currentDifficulty == CardDifficulty.Hard &&
+                             lastReview?.CardDifficulty == CardDifficulty.Hard;
+
+        // Condition 2: Card was repeated AND current rating is Hard (not Medium)
+        bool repeatAndStruggled = repeatCount > 0 && currentDifficulty == CardDifficulty.Hard;
+
+        // Condition 3: Card was repeated too many times
+        bool tooManyRepeats = repeatCount >= config.FORGET_REPEAT_THRESHOLD &&
+                      currentDifficulty != CardDifficulty.Easy;
+
+        return sustainedHard || repeatAndStruggled || tooManyRepeats;
     }
 }
