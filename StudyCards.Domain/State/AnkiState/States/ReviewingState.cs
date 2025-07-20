@@ -48,7 +48,9 @@ public class ReviewingState : ICardReviewState
 
     private static bool IsCardForgotten(CardReview[] pastCardReviews, CardDifficulty currentDifficulty, int repeatCount, AnkiScheduleConfiguration config)
     {
-        var lastReview = pastCardReviews?.LastOrDefault();
+        var lastReview = pastCardReviews?
+            .OrderByDescending(r => r.ReviewDate)
+            .FirstOrDefault();
 
         // Condition 1: Two consecutive Hard ratings
         bool sustainedHard = currentDifficulty == CardDifficulty.Hard &&
