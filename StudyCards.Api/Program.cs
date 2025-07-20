@@ -1,24 +1,30 @@
 using StudyCards.Api.Configuration;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
+using Microsoft.AspNetCore.SignalR;
+using StudyCards.Api.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureLogging();
+builder.AddSecretsConfiguration();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddMemoryCache();
 
-builder.Services.AddSecretsConfiguration(builder.Configuration);
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
+
 builder.Services.AddSecurityConfiguration(builder.Configuration);
 builder.Services.AddMappingConfiguration();
+builder.Services.AddOptionsConfiguration(builder.Configuration);
 
+// Configure Application Layers
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure static files and default files
 app.UseDefaultFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -32,11 +38,10 @@ app.UseStaticFiles(new StaticFileOptions
 });
 app.MapStaticAssets();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    // await app.Services.CreateDatabaseForLocal(app.Configuration);
+    await app.Services.CreateDatabaseForLocal(app.Configuration);
 }
 
 app.UseHttpsRedirection();
@@ -46,5 +51,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+app.MapHub<ChatHub>("/hub/chat-hub");    
 
 app.Run();

@@ -6,7 +6,7 @@ namespace StudyCards.Domain.State.AnkiState.States;
 
 public class RelearningState : ICardReviewState
 {
-    public (CardReviewStatus, ReviewPhase) Schedule(CardReviewStatus cardStatus, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
+    public (CardReviewStatus, ReviewPhase) Schedule(CardReviewStatus cardStatus, CardReview[] pastCardReviews, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
     {
         var step = cardStatus.LearningStep ?? 0;
 

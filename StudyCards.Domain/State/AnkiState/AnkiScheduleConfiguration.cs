@@ -13,6 +13,7 @@ public class AnkiScheduleConfiguration
     public double LAPSE_EASE_PENALTY = 0.2;
     public int MAX_REPEATS_TO_CONSIDER = 3;
     public double RELEARNING_GRADUATED_INTERVAL = 2.0;
+    public double FORGET_REPEAT_THRESHOLD = 3;
 
     public double[] LEARNING_STEPS = [1, 2];
     public double[] RELEARNING_STEPS = [1, 3];

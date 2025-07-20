@@ -6,5 +6,5 @@ namespace StudyCards.Domain.Interfaces;
 
 public interface ICardReviewState
 {
-    (CardReviewStatus UpdatedCardStatus, ReviewPhase NextPhase) Schedule(CardReviewStatus cardStatus, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration);
+    (CardReviewStatus UpdatedCardStatus, ReviewPhase NextPhase) Schedule(CardReviewStatus cardStatus, CardReview[] pastCardReviews, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration);
 }

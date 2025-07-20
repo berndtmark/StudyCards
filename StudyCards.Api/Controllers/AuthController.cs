@@ -25,7 +25,7 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
 
     [HttpGet]
     [Route("callback")]
-    public async Task<IActionResult> LoginCallback(string returnUrl)
+    public IActionResult LoginCallback(string returnUrl)
     {
         // put any code after login here. e.g. adding claims, roles, user db
 

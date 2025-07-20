@@ -25,7 +25,7 @@ public class AnkiStateMachine
             _ => throw new InvalidOperationException("Unknown review phase")
         };
 
-        var (updatedCardStatus, nextPhase) = state.Schedule(card.CardReviewStatus, difficulty, repeatCount, configuration);
+        var (updatedCardStatus, nextPhase) = state.Schedule(card.CardReviewStatus, [..card.CardReviews], difficulty, repeatCount, configuration);
 
         card = card with
         {

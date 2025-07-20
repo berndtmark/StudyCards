@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Application.Configuration;
+﻿namespace StudyCards.Application.Configuration.Options;
 
 public class SecretOptions
 {

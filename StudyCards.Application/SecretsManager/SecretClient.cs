@@ -1,6 +1,7 @@
 ﻿using Bitwarden.Sdk;
 using Microsoft.Extensions.Options;
 using StudyCards.Application.Configuration;
+using StudyCards.Application.Configuration.Options;
 using StudyCards.Application.Interfaces;
 
 namespace StudyCards.Application.SecretsManager;
