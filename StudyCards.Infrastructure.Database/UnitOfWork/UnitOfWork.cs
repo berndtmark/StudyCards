@@ -1,12 +1,14 @@
-﻿using StudyCards.Application.Interfaces.Repositories;
-using StudyCards.Infrastructure.Database.Context;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
-using StudyCards.Infrastructure.Database.Repositories;
+using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.Interfaces.UnitOfWork;
+using StudyCards.Domain.Entities;
+using StudyCards.Infrastructure.Database.Context;
+using StudyCards.Infrastructure.Database.Repositories;
 
 namespace StudyCards.Infrastructure.Database.UnitOfWork;
 
-public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContextAccessor) : IUnitOfWork
+public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContextAccessor, IMediator mediator) : IUnitOfWork
 {
     private ICardRepository? _cardRepository;
     private IDeckRepository? _deckRepository;
@@ -32,7 +34,28 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        // before SaveChanges so its included in the same transaction
+        // can be after too if that is needed
+        await HandleDomainEvents(cancellationToken);
+
         await context.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task HandleDomainEvents(CancellationToken cancellationToken)
+    {
+        var domainEvents = context.ChangeTracker.Entries<EntityBase>()
+            .SelectMany(e => e.Entity.DomainEvents)
+            .ToList();
+
+        foreach (var domainEvent in domainEvents)
+        {
+            await mediator.Publish(domainEvent, cancellationToken);
+        }
+
+        foreach (var entity in context.ChangeTracker.Entries<EntityBase>())
+        {
+            entity.Entity.ClearDomainEvents();
+        }
     }
 
     protected virtual void Dispose(bool disposing)

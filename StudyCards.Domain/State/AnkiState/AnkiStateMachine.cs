@@ -27,16 +27,7 @@ public class AnkiStateMachine
 
         var (updatedCardStatus, nextPhase) = state.Schedule(card.CardReviewStatus, [..card.CardReviews], difficulty, repeatCount, configuration);
 
-        card = card with
-        {
-            CardReviewStatus = updatedCardStatus with
-            {
-                CurrentPhase = nextPhase,
-                ReviewCount = updatedCardStatus.ReviewCount + 1,
-            }
-        };
-
-        return card;
+        return card.AddCardReviewStatus(updatedCardStatus, nextPhase);
     }
 
     // Used for existing cards that dont have phase set

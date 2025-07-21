@@ -1,4 +1,5 @@
-﻿using StudyCards.Domain.Enums;
+﻿using StudyCards.Domain.DomainEvents;
+using StudyCards.Domain.Enums;
 
 namespace StudyCards.Domain.Entities;
 
@@ -16,6 +17,21 @@ public record Card : EntityBase
         {
             CardReviews = [.. CardReviews.Prepend(newReview).Take(maxReviewsToKeep)]
         };
+    }
+
+    public Card AddCardReviewStatus(CardReviewStatus updatedCardStatus, ReviewPhase nextPhase)
+    {
+        var result = this with
+        {
+            CardReviewStatus = updatedCardStatus with
+            {
+                CurrentPhase = nextPhase,
+                ReviewCount = updatedCardStatus.ReviewCount + 1,
+            }
+        };
+
+        Raise(new CardReviewedDomainEvent(Id, CardReviewStatus.CurrentPhase, result.CardReviewStatus));
+        return result;
     }
 }
 
