@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Application.SecretsManager;
+﻿namespace StudyCards.Infrastructure.Secrets;
 
 public static class Secrets
 {

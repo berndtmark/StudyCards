@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.SecretsManager;
+using StudyCards.Infrastructure.Secrets;
 using System.Security.Claims;
 
 namespace StudyCards.Api.Configuration.ClaimTransforms;

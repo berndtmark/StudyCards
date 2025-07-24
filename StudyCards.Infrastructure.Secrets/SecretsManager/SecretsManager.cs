@@ -1,7 +1,8 @@
 ﻿using StudyCards.Application.Interfaces;
+using StudyCards.Infrastructure.Secrets.Interfaces;
 using System.Text.Json;
 
-namespace StudyCards.Application.SecretsManager;
+namespace StudyCards.Infrastructure.Secrets.SecretsManager;
 
 public class SecretsManager(ISecretClient secretClient) : ISecretsManager
 {

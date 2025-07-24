@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Options;
 using StudyCards.Application.Configuration;
 using StudyCards.Application.Configuration.Options;
-using StudyCards.Application.Interfaces;
+using StudyCards.Infrastructure.Secrets.Interfaces;
 
-namespace StudyCards.Application.SecretsManager;
+namespace StudyCards.Infrastructure.Secrets.SecretsManager;
 
 public class SecretsClient(IOptions<SecretOptions> options) : ISecretClient
 {

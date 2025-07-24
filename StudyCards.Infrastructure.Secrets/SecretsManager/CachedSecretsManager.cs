@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using StudyCards.Application.Interfaces;
+using StudyCards.Infrastructure.Secrets.Interfaces;
 using System.Text.Json;
 
-namespace StudyCards.Application.SecretsManager;
+namespace StudyCards.Infrastructure.Secrets.SecretsManager;
 
 public class CachedSecretsManager(ISecretClient secretClient, IMemoryCache memoryCache) : SecretsManager(secretClient), ISecretsManager
 {
-    private MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions { SlidingExpiration = new TimeSpan(1, 0, 0) };
+    private readonly MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions { SlidingExpiration = new TimeSpan(1, 0, 0) };
 
     public override string GetSecret(string key)
     {
