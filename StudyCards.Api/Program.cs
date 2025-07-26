@@ -1,12 +1,16 @@
+using Microsoft.AspNetCore.SignalR;
 using StudyCards.Api.Configuration;
+using StudyCards.Api.Configuration.ExceptionHandlers;
+using StudyCards.Api.Hubs;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
-using Microsoft.AspNetCore.SignalR;
-using StudyCards.Api.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureLogging();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.AddSecretsConfiguration();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -24,6 +28,8 @@ builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.UseDefaultFiles();
 app.UseStaticFiles(new StaticFileOptions

@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyCards.Api.Tests", "Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyCards.Domain.Tests", "Tests\StudyCards.Domain.Tests\StudyCards.Domain.Tests.csproj", "{1BD8E4C8-57F3-4977-96FC-E9A53635DFD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyCards.Infrastructure.Secrets.Tests", "Tests\StudyCards.Infrastructure.Secrets\StudyCards.Infrastructure.Secrets.Tests.csproj", "{B299C397-3FD6-4700-8550-8584F02C7DC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyCards.Infrastructure.Secrets", "StudyCards.Infrastructure.Secrets\StudyCards.Infrastructure.Secrets.csproj", "{3FB1C6D7-9B62-8B7F-12A9-65D7BC832422}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,14 @@ Global
 		{1BD8E4C8-57F3-4977-96FC-E9A53635DFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BD8E4C8-57F3-4977-96FC-E9A53635DFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BD8E4C8-57F3-4977-96FC-E9A53635DFD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B299C397-3FD6-4700-8550-8584F02C7DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B299C397-3FD6-4700-8550-8584F02C7DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B299C397-3FD6-4700-8550-8584F02C7DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B299C397-3FD6-4700-8550-8584F02C7DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FB1C6D7-9B62-8B7F-12A9-65D7BC832422}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FB1C6D7-9B62-8B7F-12A9-65D7BC832422}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FB1C6D7-9B62-8B7F-12A9-65D7BC832422}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FB1C6D7-9B62-8B7F-12A9-65D7BC832422}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +73,7 @@ Global
 		{D1357B99-22AD-42A7-AA91-E87039C5C16D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{400D7CA3-32CF-4171-B2ED-10BE9D513856} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{1BD8E4C8-57F3-4977-96FC-E9A53635DFD1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B299C397-3FD6-4700-8550-8584F02C7DC2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1E4DC7E-1B1B-446C-B4A3-298025EA76E1}

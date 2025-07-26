@@ -2,5 +2,5 @@
 
 public static class ClaimRole
 {
-    public static string Admin => "Admin";
+    public const string Admin = "Admin";
 }

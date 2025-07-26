@@ -2,12 +2,12 @@ services:
   myapp:
     build:
       context: ./../
-      dockerfile: ./StudyCards.Server/Dockerfile
+      dockerfile: ./StudyCards.Api/Dockerfile
       args:
         - BUILD_CONFIGURATION=Release
     image: myapp:latest
     ports:
       - "8080:8080"
-      - "8081:8081"
     environment:
-      ASPNETCORE_ENVIRONMENT: 
+      ASPNETCORE_ENVIRONMENT:
+      SECRETS_APIKEY: 

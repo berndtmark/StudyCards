@@ -34,6 +34,15 @@ public class DeckRepository(DataBaseContext dbContext, IHttpContextAccessor http
             .ToListAsync(cancellationToken);
     }
 
+    // WARNING: This method returns all Decks, including those that do not belong to the current user.
+    public async Task<IEnumerable<Deck>> GetDecksForAllUsers(CancellationToken cancellationToken = default)
+    {
+        return await DbContext
+            .Deck
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Deck> Add(Deck deck)
     {
         var entity = await AddEntity(deck);

@@ -1,6 +1,6 @@
 ﻿using Bitwarden.Sdk;
 
-namespace StudyCards.Application.Interfaces;
+namespace StudyCards.Infrastructure.Secrets.Interfaces;
 
 public interface ISecretClient
 {

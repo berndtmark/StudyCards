@@ -2,7 +2,9 @@
 using StudyCards.Application.Configuration;
 using StudyCards.Application.Configuration.Options;
 using StudyCards.Application.Interfaces;
-using StudyCards.Application.SecretsManager;
+using StudyCards.Infrastructure.Secrets;
+using StudyCards.Infrastructure.Secrets.Interfaces;
+using StudyCards.Infrastructure.Secrets.SecretsManager;
 using System.Text.Json;
 
 namespace StudyCards.Api.Configuration;

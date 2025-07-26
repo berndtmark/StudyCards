@@ -1,6 +1,8 @@
-﻿namespace StudyCards.Domain.Entities;
+﻿using StudyCards.Domain.DomainEvents;
 
-public abstract record EntityBase
+namespace StudyCards.Domain.Entities;
+
+public abstract record EntityBase : DomainEventBase
 {
     public Guid Id { get; init; }
     public DateTime CreatedDate { get; init; } = DateTime.UtcNow;

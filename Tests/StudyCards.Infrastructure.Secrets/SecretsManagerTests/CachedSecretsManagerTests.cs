@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Moq;
-using StudyCards.Application.Interfaces;
-using StudyCards.Application.SecretsManager;
+using StudyCards.Infrastructure.Secrets.Interfaces;
+using StudyCards.Infrastructure.Secrets.SecretsManager;
 
-namespace StudyCard.Application.Tests.SecretManagerTests;
+namespace StudyCards.Infrastructure.Secrets.Tests.SecretsManagerTests;
 
 [TestClass]
 public class CachedSecretsManagerTests
