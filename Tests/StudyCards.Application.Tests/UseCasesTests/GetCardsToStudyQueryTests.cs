@@ -1,12 +1,11 @@
 ﻿using Moq;
+using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
+using StudyCards.Application.UseCases.CardStudy.Queries;
 using StudyCards.Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
-using StudyCards.Application.UseCases.CardStudy.Queries;
-using StudyCards.Application.Exceptions;
 
 namespace StudyCard.Application.Tests.UseCasesTests;
 
@@ -15,7 +14,6 @@ public class GetCardsToStudyQueryTests
 {
     private Mock<IDeckRepository> _deckRepositoryMock = default!;
     private Mock<ICardRepository> _cardRepositoryMock = default!;
-    private Mock<IHttpContextAccessor> _httpContextAccessorMock = default!;
     private Mock<ICardsToStudyStrategyContext> _cardStrategyContextMock = default!;
     private Mock<ICardSelectionStudyFactory> _cardSelectionStudyFactoryMock = default!;
     private GetCardsToStudyQueryHandler _useCase = default!;
@@ -25,14 +23,12 @@ public class GetCardsToStudyQueryTests
     {
         _deckRepositoryMock = new Mock<IDeckRepository>();
         _cardRepositoryMock = new Mock<ICardRepository>();
-        _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
         _cardStrategyContextMock = new Mock<ICardsToStudyStrategyContext>();
         _cardSelectionStudyFactoryMock = new Mock<ICardSelectionStudyFactory>();
 
         _useCase = new GetCardsToStudyQueryHandler(
             _deckRepositoryMock.Object,
             _cardRepositoryMock.Object,
-            _httpContextAccessorMock.Object,
             _cardStrategyContextMock.Object,
             _cardSelectionStudyFactoryMock.Object
         );
@@ -42,15 +38,12 @@ public class GetCardsToStudyQueryTests
     public async Task Handle_ValidRequest_ReturnsCards()
     {
         // Arrange
-        var userEmail = "test@example.com";
         var deckId = Guid.NewGuid();
         var deck = new Deck { Id = deckId, DeckSettings = new DeckSettings { ReviewsPerDay = 10 } };
         var cards = new List<Card> { new(), new() };
         var strategy = Mock.Of<ICardsToStudyStrategy>();
 
-        _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(It.IsAny<string>()))
-            .Returns(new System.Security.Claims.Claim("email", userEmail));
-        _deckRepositoryMock.Setup(x => x.Get(deckId, userEmail, CancellationToken.None))
+        _deckRepositoryMock.Setup(x => x.Get(deckId, CancellationToken.None))
             .ReturnsAsync(deck);
         _cardRepositoryMock.Setup(x => x.GetByDeck(deckId, CancellationToken.None))
             .ReturnsAsync(cards);
@@ -79,12 +72,9 @@ public class GetCardsToStudyQueryTests
     public async Task Handle_DeckNotFound_ThrowsArgumentException()
     {
         // Arrange
-        var userEmail = "test@example.com";
         var deckId = Guid.NewGuid();
 
-        _httpContextAccessorMock.Setup(x => x.HttpContext.User.FindFirst(It.IsAny<string>()))
-            .Returns(new System.Security.Claims.Claim("email", userEmail));
-        _deckRepositoryMock.Setup(x => x.Get(deckId, userEmail, CancellationToken.None))
+        _deckRepositoryMock.Setup(x => x.Get(deckId, CancellationToken.None))
             .ReturnsAsync((Deck)null!);
 
         var request = new GetCardsToStudyQuery

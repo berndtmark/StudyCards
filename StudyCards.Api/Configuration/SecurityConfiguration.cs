@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using StudyCards.Api.Configuration.ClaimTransforms;
 using StudyCards.Api.Configuration.Options;
 
 namespace StudyCards.Api.Configuration;
@@ -30,7 +32,7 @@ public static class SecurityConfiguration
             options.AccessDeniedPath = "/todo";
         });
 
-        // services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
+        services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
 
         return services;
     }

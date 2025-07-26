@@ -5,6 +5,18 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/api/Admin/getdeckusage": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Auth/login": {
       "get": {
         "tags": [
@@ -911,6 +923,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Admin"
+    },
     {
       "name": "Auth"
     },
