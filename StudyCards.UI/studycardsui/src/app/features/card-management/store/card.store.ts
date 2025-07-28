@@ -91,14 +91,14 @@ export const CardStore = signalStore(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((card) => cardService.addCard(store.deckId(), card.cardFront, card.cardBack).pipe(
                         tap((newCard) => {
-                            patchState(store, (state) => ({ 
-                                cards: [...state.cards, newCard],
+                            patchState(store, {
+                                cards: [...store.cards(), newCard],
                                 loadingState: LoadingState.Success,
                                 pagination: {
-                                    ...state.pagination,
-                                    totalCount: ++state.pagination.totalCount
+                                    ...store.pagination(),
+                                    totalCount: store.pagination().totalCount + 1
                                 }
-                            }));
+                            });
                             snackBar.open("Card added successfully");
                         }),
                         catchError(() => {
@@ -114,15 +114,11 @@ export const CardStore = signalStore(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((card) => cardService.updateCard(store.deckId(), card.cardId, card.cardFront, card.cardBack).pipe(
                         tap((updatedCard) => {
-                            patchState(store, (state) => {
-                                const updatedCards = state.cards.map((card) =>
+                            patchState(store, {
+                                cards: store.cards().map(card =>
                                     card.id === updatedCard.id ? updatedCard : card
-                                );
-                                return {
-                                    ...state,
-                                    cards: updatedCards,
-                                    loadingState: LoadingState.Success
-                                };
+                                ),
+                                loadingState: LoadingState.Success
                             });
                             snackBar.open("Card updated successfully");
                         }),
@@ -139,17 +135,13 @@ export const CardStore = signalStore(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((cardId) => cardService.removeCard(store.deckId(), cardId).pipe(
                         tap(() => {
-                            patchState(store, (state) => {
-                                const updatedCards = state.cards.filter(card => card.id !== cardId);
-                                return {
-                                    ...state,
-                                    cards: updatedCards,
-                                    loadingState: LoadingState.Success,
-                                    pagination: {
-                                        ...state.pagination,
-                                        totalCount: --state.pagination.totalCount
-                                    }
-                                };
+                            patchState(store, {
+                                cards: store.cards().filter(card => card.id !== cardId),
+                                loadingState: LoadingState.Success,
+                                pagination: {
+                                    ...store.pagination(),
+                                    totalCount: store.pagination().totalCount - 1
+                                }
                             });
                             snackBar.open("Card removed successfully");
                         }),
