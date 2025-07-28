@@ -62,12 +62,9 @@
         </td>
     </tr>
 </table>
+<app-card-list-paginator class="bottom-border-radius"></app-card-list-paginator>
 
 @if(displayedColumns.includes('reviewphase'))
 {
-    <div class="legend">
-        <div>Learning: <span class="status-dot learning" title="Learning"></span></div>
-        <div>Reviewing: <span class="status-dot reviewing" title="Reviewing"></span></div>
-        <div>Relearning: <span class="status-dot relearning" title="Relearning"></span></div>
-    </div>
+    <app-card-list-legend></app-card-list-legend>
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Infrastructure.Database.Context;
@@ -33,6 +34,30 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
             .AsNoTracking()
             .Where(c => c.DeckId == deckId)
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<PagedResult<Card>> GetByDeck(Guid deckId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, CancellationToken cancellationToken = default)
+    {
+        var query = DbContext.Card
+            .AsNoTracking()
+            .Where(c => c.DeckId == deckId);
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            var loweredTerm = searchTerm.ToLowerInvariant();
+            query = query.Where(c =>
+                c.CardFront.ToLower().Contains(loweredTerm) ||
+                c.CardBack.ToLower().Contains(loweredTerm));
+        }
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return new PagedResult<Card>(items, totalCount, pageNumber, pageSize);
     }
 
     public async Task<Card> Add(Card card)

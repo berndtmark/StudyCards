@@ -2,27 +2,29 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import { LoadingState } from 'app/shared/models/loading-state';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, of, pipe, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, of, pipe, switchMap, tap } from 'rxjs';
 import { CardService } from '../services/card.service';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
 import { CardResponse } from 'app/@api/models/card-response';
 import { ImportCard } from '../models/import-card';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { FileService } from 'app/shared/services/file.service';
-import { CardText } from 'app/@api/models/card-text';
+import { Pagination } from 'app/shared/models/pagination';
 
 type CardState = {
     loadingState: LoadingState
     cards: CardResponse[];
     deckId: string;
     importCards: { file?: ImportCard[], success?: ImportCard[], existing?: ImportCard[] };
+    pagination: Pagination;
 };
 
 const initialState: CardState = {
     loadingState: LoadingState.Initial,
     cards: [],
     deckId: '',
-    importCards: {}
+    importCards: {},
+    pagination: new Pagination(0, 1, 25)
 };
 
 export const CardStore = signalStore(
@@ -37,24 +39,51 @@ export const CardStore = signalStore(
         snackBar = inject(SnackbarService),
         dialogService = inject(DialogService),
         fileService = inject(FileService)) => ({
-            loadCards: rxMethod<string>(
+            loadCards: rxMethod<{deckId: string, pageNumber?: number, pageSize?: number, searchTerm?: string}>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
-                    switchMap((deckId) => {
-                        return cardService.getCards(deckId).pipe(
-                            tap((cards) => {
-                                patchState(store, {
-                                    cards,
-                                    loadingState: LoadingState.Success,
-                                    deckId
-                                });
-                            }),
-                            catchError(() => {
-                                patchState(store, { loadingState: LoadingState.Error });
-                                return of([]);
-                            })
-                        );
+                    switchMap(({deckId, pageNumber, pageSize, searchTerm}) => {
+                        return cardService.getCards(
+                                deckId, 
+                                pageNumber ?? store.pagination.pageNumber(), 
+                                pageSize ?? store.pagination.pageSize(),
+                                searchTerm)
+                            .pipe(
+                                tap((cards) => {
+                                    patchState(store, {
+                                        cards: cards.items,
+                                        loadingState: LoadingState.Success,
+                                        deckId,
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                    });
+                                }),
+                                catchError(() => {
+                                    patchState(store, { loadingState: LoadingState.Error });
+                                    return of([]);
+                                })
+                            );
                     })
+                )
+            ),
+            search: rxMethod<{ searchTerm: string }>(
+                pipe(
+                    debounceTime(300),
+                    switchMap(({ searchTerm }) =>
+                        cardService.getCards(store.deckId(), initialState.pagination.pageNumber, initialState.pagination.pageSize, searchTerm)
+                            .pipe(
+                                tap((cards) => {
+                                    patchState(store, {
+                                        cards: cards.items,
+                                        loadingState: LoadingState.Success,
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                    });
+                                }),
+                                catchError(() => {
+                                    patchState(store, { loadingState: LoadingState.Error });
+                                    return of([]);
+                                })
+                            )
+                    )
                 )
             ),
             addCard: rxMethod<{ cardFront: string, cardBack: string }>(
@@ -62,10 +91,14 @@ export const CardStore = signalStore(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((card) => cardService.addCard(store.deckId(), card.cardFront, card.cardBack).pipe(
                         tap((newCard) => {
-                            patchState(store, (state) => ({ 
-                                cards: [...state.cards, newCard],
-                                loadingState: LoadingState.Success 
-                            }));
+                            patchState(store, {
+                                cards: [...store.cards(), newCard],
+                                loadingState: LoadingState.Success,
+                                pagination: {
+                                    ...store.pagination(),
+                                    totalCount: store.pagination().totalCount + 1
+                                }
+                            });
                             snackBar.open("Card added successfully");
                         }),
                         catchError(() => {
@@ -81,15 +114,11 @@ export const CardStore = signalStore(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((card) => cardService.updateCard(store.deckId(), card.cardId, card.cardFront, card.cardBack).pipe(
                         tap((updatedCard) => {
-                            patchState(store, (state) => {
-                                const updatedCards = state.cards.map((card) =>
+                            patchState(store, {
+                                cards: store.cards().map(card =>
                                     card.id === updatedCard.id ? updatedCard : card
-                                );
-                                return {
-                                    ...state,
-                                    cards: updatedCards,
-                                    loadingState: LoadingState.Success
-                                };
+                                ),
+                                loadingState: LoadingState.Success
                             });
                             snackBar.open("Card updated successfully");
                         }),
@@ -106,13 +135,13 @@ export const CardStore = signalStore(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
                     switchMap((cardId) => cardService.removeCard(store.deckId(), cardId).pipe(
                         tap(() => {
-                            patchState(store, (state) => {
-                                const updatedCards = state.cards.filter(card => card.id !== cardId);
-                                return {
-                                    ...state,
-                                    cards: updatedCards,
-                                    loadingState: LoadingState.Success
-                                };
+                            patchState(store, {
+                                cards: store.cards().filter(card => card.id !== cardId),
+                                loadingState: LoadingState.Success,
+                                pagination: {
+                                    ...store.pagination(),
+                                    totalCount: store.pagination().totalCount - 1
+                                }
                             });
                             snackBar.open("Card removed successfully");
                         }),
@@ -184,7 +213,13 @@ export const CardStore = signalStore(
     withMethods((store) => ({
         loadDeckIfNot: (deckId: string) => {
             if (store.deckId() !== deckId)
-                store.loadCards(deckId);
+                store.loadCards({deckId});
+        },
+        paginate: (pageNumber: number, pageSize: number) => {
+            if (!store.deckId())
+                throw "Load Deck Before Paginating"
+
+            store.loadCards({deckId: store.deckId(), pageNumber, pageSize});
         }
     })),
 );

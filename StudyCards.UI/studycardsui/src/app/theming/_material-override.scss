@@ -18,3 +18,8 @@ mat-progress-bar {
 mat-error {
   font-size: 12px;
 }
+
+.bottom-border-radius mat-paginator {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}

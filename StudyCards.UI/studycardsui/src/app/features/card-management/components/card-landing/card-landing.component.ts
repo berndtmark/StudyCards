@@ -52,4 +52,8 @@ export class CardLandingComponent implements OnInit {
   export(): void {
     this.store.export();
   }
+
+  search(searchTerm: string): void {
+    this.store.search({searchTerm});
+  }
 }
