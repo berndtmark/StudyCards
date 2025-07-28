@@ -1,8 +1,10 @@
-<mat-paginator class="container"
-    (page)="handlePageEvent($event)"
-    [length]="store.pagination.totalCount()"
-    [pageSize]="store.pagination.pageSize()"
-    [showFirstLastButtons]="true"
-    [pageSizeOptions]="pageSizeOptions"
-    [pageIndex]="store.pagination.pageNumber() - 1">
-</mat-paginator>
+@if(totalPages() > 1) {
+    <mat-paginator class="container"
+        (page)="handlePageEvent($event)"
+        [length]="store.pagination.totalCount()"
+        [pageSize]="store.pagination.pageSize()"
+        [showFirstLastButtons]="true"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageIndex]="store.pagination.pageNumber() - 1">
+    </mat-paginator>
+}
