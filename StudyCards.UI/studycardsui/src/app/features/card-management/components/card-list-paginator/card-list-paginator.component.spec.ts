@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CardListPaginatorComponent } from './card-list-paginator.component';
+import { CardStore } from '../../store/card.store';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('CardListPaginatorComponent', () => {
   let component: CardListPaginatorComponent;
@@ -8,7 +11,12 @@ describe('CardListPaginatorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardListPaginatorComponent]
+      imports: [CardListPaginatorComponent],
+      providers: [
+        CardStore,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
     })
     .compileComponents();
 

@@ -69,19 +69,20 @@ export const CardStore = signalStore(
                 pipe(
                     debounceTime(300),
                     switchMap(({ searchTerm }) =>
-                        cardService.getCards(store.deckId(), initialState.pagination.pageNumber, initialState.pagination.pageSize, searchTerm).pipe(
-                            tap((cards) => {
-                                patchState(store, {
-                                    cards: cards.items,
-                                    loadingState: LoadingState.Success,
-                                    pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
-                                });
-                            }),
-                            catchError(() => {
-                                patchState(store, { loadingState: LoadingState.Error });
-                                return of([]);
-                            })
-                        )
+                        cardService.getCards(store.deckId(), initialState.pagination.pageNumber, initialState.pagination.pageSize, searchTerm)
+                            .pipe(
+                                tap((cards) => {
+                                    patchState(store, {
+                                        cards: cards.items,
+                                        loadingState: LoadingState.Success,
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                    });
+                                }),
+                                catchError(() => {
+                                    patchState(store, { loadingState: LoadingState.Error });
+                                    return of([]);
+                                })
+                            )
                     )
                 )
             ),
