@@ -13,8 +13,8 @@ import { PagedResultOfCardResponse } from 'app/@api/models/paged-result-of-card-
 export class CardService {
   cardServiceApi = inject(CardServiceApi);
 
-  getCards(deckId: string): Observable<PagedResultOfCardResponse> {
-    return this.cardServiceApi.apiCardGetcardsGet$Json({ deckId, pageNumber: 1, pageSize: 50 });
+  getCards(deckId: string, pageNumber: number, pageSize: number): Observable<PagedResultOfCardResponse> {
+    return this.cardServiceApi.apiCardGetcardsGet$Json({ deckId, pageNumber, pageSize });
   }
 
   addCard(deckId: string, cardFront: string, cardBack: string): Observable<CardResponse> {

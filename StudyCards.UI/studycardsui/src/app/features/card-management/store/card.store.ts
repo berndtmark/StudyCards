@@ -9,20 +9,22 @@ import { CardResponse } from 'app/@api/models/card-response';
 import { ImportCard } from '../models/import-card';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { FileService } from 'app/shared/services/file.service';
-import { CardText } from 'app/@api/models/card-text';
+import { Pagination } from 'app/shared/models/pagination';
 
 type CardState = {
     loadingState: LoadingState
     cards: CardResponse[];
     deckId: string;
     importCards: { file?: ImportCard[], success?: ImportCard[], existing?: ImportCard[] };
+    pagination: Pagination;
 };
 
 const initialState: CardState = {
     loadingState: LoadingState.Initial,
     cards: [],
     deckId: '',
-    importCards: {}
+    importCards: {},
+    pagination: new Pagination(0, 1, 25)
 };
 
 export const CardStore = signalStore(
@@ -37,16 +39,17 @@ export const CardStore = signalStore(
         snackBar = inject(SnackbarService),
         dialogService = inject(DialogService),
         fileService = inject(FileService)) => ({
-            loadCards: rxMethod<string>(
+            loadCards: rxMethod<{deckId: string, pageNumber?: number, pageSize?: number}>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
-                    switchMap((deckId) => {
-                        return cardService.getCards(deckId).pipe(
+                    switchMap(({deckId, pageNumber, pageSize}) => {
+                        return cardService.getCards(deckId, pageNumber ?? store.pagination.pageNumber(), pageSize ?? store.pagination.pageSize()).pipe(
                             tap((cards) => {
                                 patchState(store, {
                                     cards: cards.items,
                                     loadingState: LoadingState.Success,
-                                    deckId
+                                    deckId,
+                                    pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
                                 });
                             }),
                             catchError(() => {
@@ -64,7 +67,11 @@ export const CardStore = signalStore(
                         tap((newCard) => {
                             patchState(store, (state) => ({ 
                                 cards: [...state.cards, newCard],
-                                loadingState: LoadingState.Success 
+                                loadingState: LoadingState.Success,
+                                pagination: {
+                                    ...state.pagination,
+                                    totalCount: ++state.pagination.totalCount
+                                }
                             }));
                             snackBar.open("Card added successfully");
                         }),
@@ -111,7 +118,11 @@ export const CardStore = signalStore(
                                 return {
                                     ...state,
                                     cards: updatedCards,
-                                    loadingState: LoadingState.Success
+                                    loadingState: LoadingState.Success,
+                                    pagination: {
+                                        ...state.pagination,
+                                        totalCount: --state.pagination.totalCount
+                                    }
                                 };
                             });
                             snackBar.open("Card removed successfully");
@@ -184,7 +195,13 @@ export const CardStore = signalStore(
     withMethods((store) => ({
         loadDeckIfNot: (deckId: string) => {
             if (store.deckId() !== deckId)
-                store.loadCards(deckId);
+                store.loadCards({deckId});
+        },
+        paginate: (pageNumber: number, pageSize: number) => {
+            if (!store.deckId())
+                throw "Load Deck Before Paginating"
+
+            store.loadCards({deckId: store.deckId(), pageNumber, pageSize});
         }
     })),
 );
