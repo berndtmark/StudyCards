@@ -1,18 +1,21 @@
-﻿using StudyCards.Application.Interfaces.CQRS;
+﻿using StudyCards.Application.Common;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.CardManagement.Queries;
 
-public class GetCardsQuery : IQuery<IEnumerable<Card>>
+public class GetCardsQuery : IQuery<PagedResult<Card>>
 {
     public Guid DeckId { get; set; }
+    public int PageNumber { get; set; } = 1;
+    public int PageSize { get; set; } = 50;
 }
 
-public class GetCardsQueryHandler(ICardRepository cardRepository) : IQueryHandler<GetCardsQuery, IEnumerable<Card>>
+public class GetCardsQueryHandler(ICardRepository cardRepository) : IQueryHandler<GetCardsQuery, PagedResult<Card>>
 {
-    public async Task<IEnumerable<Card>> Handle(GetCardsQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<Card>> Handle(GetCardsQuery request, CancellationToken cancellationToken)
     {
-        return await cardRepository.GetByDeck(request.DeckId, cancellationToken);
+        return await cardRepository.GetByDeck(request.DeckId, request.PageNumber, request.PageSize, cancellationToken);
     }
 }

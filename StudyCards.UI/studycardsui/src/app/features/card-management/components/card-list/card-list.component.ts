@@ -6,10 +6,11 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { CardResponse } from 'app/@api/models/card-response';
 import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { DatePipe } from '@angular/common';
+import { CardListPaginatorComponent } from "../card-list-paginator/card-list-paginator.component";
 
 @Component({
   selector: 'app-card-list',
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatIconModule, MatSlideToggleModule, DatePipe],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatIconModule, MatSlideToggleModule, DatePipe, CardListPaginatorComponent],
   templateUrl: './card-list.component.html',
   styleUrl: './card-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

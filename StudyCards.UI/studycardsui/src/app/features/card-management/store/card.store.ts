@@ -44,7 +44,7 @@ export const CardStore = signalStore(
                         return cardService.getCards(deckId).pipe(
                             tap((cards) => {
                                 patchState(store, {
-                                    cards,
+                                    cards: cards.items,
                                     loadingState: LoadingState.Success,
                                     deckId
                                 });
