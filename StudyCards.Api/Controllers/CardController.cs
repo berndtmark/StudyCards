@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
+using StudyCards.Application.Common;
 using StudyCards.Application.UseCases.CardManagement.Commands;
 using StudyCards.Application.UseCases.CardManagement.Queries;
 
@@ -16,12 +17,18 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
 {
     [HttpGet]
     [Route("getcards")]
-    [ProducesResponseType(typeof(IEnumerable<CardResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get(Guid deckId)
+    [ProducesResponseType(typeof(PagedResult<CardResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(Guid deckId, int pageNumber, int pageSize, string? searchTerm = null)
     {
-        var result = await sender.Send(new GetCardsQuery { DeckId = deckId });
+        var result = await sender.Send(new GetCardsQuery 
+        { 
+            DeckId = deckId, 
+            PageNumber = pageNumber, 
+            PageSize = pageSize,
+            SearchTerm = searchTerm
+        });
 
-        var response = mapper.Map<IEnumerable<CardResponse>>(result);
+        var response = mapper.Map<PagedResult<CardResponse>>(result);
         return Ok(response);
     }
 

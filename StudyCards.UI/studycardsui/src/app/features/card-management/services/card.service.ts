@@ -5,6 +5,7 @@ import { CardResponse } from 'app/@api/models/card-response';
 import { CardText } from 'app/@api/models/card-text';
 import { AddCardsResponse } from 'app/@api/models/add-cards-response';
 import { ImportCard } from '../models/import-card';
+import { PagedResultOfCardResponse } from 'app/@api/models/paged-result-of-card-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ import { ImportCard } from '../models/import-card';
 export class CardService {
   cardServiceApi = inject(CardServiceApi);
 
-  getCards(deckId: string): Observable<CardResponse[]> {
-    return this.cardServiceApi.apiCardGetcardsGet$Json({ deckId });
+  getCards(deckId: string, pageNumber: number, pageSize: number, searchTerm?: string): Observable<PagedResultOfCardResponse> {
+    return this.cardServiceApi.apiCardGetcardsGet$Json({ deckId, pageNumber, pageSize, searchTerm });
   }
 
   addCard(deckId: string, cardFront: string, cardBack: string): Observable<CardResponse> {

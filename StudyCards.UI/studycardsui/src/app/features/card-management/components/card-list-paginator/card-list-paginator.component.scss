@@ -1,0 +1,5 @@
+@use '../../../../theming/colour' as colour;
+
+.container {
+    box-shadow: 0 2px 8px colour.$grey-800;
+}
