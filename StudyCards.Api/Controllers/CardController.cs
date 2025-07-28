@@ -18,13 +18,14 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
     [HttpGet]
     [Route("getcards")]
     [ProducesResponseType(typeof(PagedResult<CardResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get(Guid deckId, int pageNumber, int pageSize)
+    public async Task<IActionResult> Get(Guid deckId, int pageNumber, int pageSize, string? searchTerm = null)
     {
         var result = await sender.Send(new GetCardsQuery 
         { 
             DeckId = deckId, 
             PageNumber = pageNumber, 
-            PageSize = pageSize 
+            PageSize = pageSize,
+            SearchTerm = searchTerm
         });
 
         var response = mapper.Map<PagedResult<CardResponse>>(result);

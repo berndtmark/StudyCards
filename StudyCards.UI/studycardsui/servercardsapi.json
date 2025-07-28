@@ -151,6 +151,14 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "searchTerm",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
           }
         ],
         "responses": {

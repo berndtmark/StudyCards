@@ -36,11 +36,19 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<PagedResult<Card>> GetByDeck(Guid deckId, int pageNumber = 1, int pageSize = 10, CancellationToken cancellationToken = default)
+    public async Task<PagedResult<Card>> GetByDeck(Guid deckId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, CancellationToken cancellationToken = default)
     {
         var query = DbContext.Card
             .AsNoTracking()
             .Where(c => c.DeckId == deckId);
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            var loweredTerm = searchTerm.ToLowerInvariant();
+            query = query.Where(c =>
+                c.CardFront.ToLower().Contains(loweredTerm) ||
+                c.CardBack.ToLower().Contains(loweredTerm));
+        }
 
         var totalCount = await query.CountAsync(cancellationToken);
 

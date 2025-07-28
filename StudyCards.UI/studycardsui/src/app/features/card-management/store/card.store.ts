@@ -2,7 +2,7 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import { LoadingState } from 'app/shared/models/loading-state';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, of, pipe, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, of, pipe, switchMap, tap } from 'rxjs';
 import { CardService } from '../services/card.service';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
 import { CardResponse } from 'app/@api/models/card-response';
@@ -39,16 +39,41 @@ export const CardStore = signalStore(
         snackBar = inject(SnackbarService),
         dialogService = inject(DialogService),
         fileService = inject(FileService)) => ({
-            loadCards: rxMethod<{deckId: string, pageNumber?: number, pageSize?: number}>(
+            loadCards: rxMethod<{deckId: string, pageNumber?: number, pageSize?: number, searchTerm?: string}>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
-                    switchMap(({deckId, pageNumber, pageSize}) => {
-                        return cardService.getCards(deckId, pageNumber ?? store.pagination.pageNumber(), pageSize ?? store.pagination.pageSize()).pipe(
+                    switchMap(({deckId, pageNumber, pageSize, searchTerm}) => {
+                        return cardService.getCards(
+                                deckId, 
+                                pageNumber ?? store.pagination.pageNumber(), 
+                                pageSize ?? store.pagination.pageSize(),
+                                searchTerm)
+                            .pipe(
+                                tap((cards) => {
+                                    patchState(store, {
+                                        cards: cards.items,
+                                        loadingState: LoadingState.Success,
+                                        deckId,
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                    });
+                                }),
+                                catchError(() => {
+                                    patchState(store, { loadingState: LoadingState.Error });
+                                    return of([]);
+                                })
+                            );
+                    })
+                )
+            ),
+            search: rxMethod<{ searchTerm: string }>(
+                pipe(
+                    debounceTime(300),
+                    switchMap(({ searchTerm }) =>
+                        cardService.getCards(store.deckId(), initialState.pagination.pageNumber, initialState.pagination.pageSize, searchTerm).pipe(
                             tap((cards) => {
                                 patchState(store, {
                                     cards: cards.items,
                                     loadingState: LoadingState.Success,
-                                    deckId,
                                     pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
                                 });
                             }),
@@ -56,8 +81,8 @@ export const CardStore = signalStore(
                                 patchState(store, { loadingState: LoadingState.Error });
                                 return of([]);
                             })
-                        );
-                    })
+                        )
+                    )
                 )
             ),
             addCard: rxMethod<{ cardFront: string, cardBack: string }>(

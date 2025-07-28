@@ -7,10 +7,11 @@ import { CardResponse } from 'app/@api/models/card-response';
 import {MatSlideToggleChange, MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { DatePipe } from '@angular/common';
 import { CardListPaginatorComponent } from "../card-list-paginator/card-list-paginator.component";
+import { CardListLegendComponent } from "../card-list-legend/card-list-legend.component";
 
 @Component({
   selector: 'app-card-list',
-  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatIconModule, MatSlideToggleModule, DatePipe, CardListPaginatorComponent],
+  imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatIconModule, MatSlideToggleModule, DatePipe, CardListPaginatorComponent, CardListLegendComponent],
   templateUrl: './card-list.component.html',
   styleUrl: './card-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -23,6 +24,7 @@ export class CardListComponent {
     }
   });
   updateCard = output<string>();
+  search = output<string>();
 
   private defaultColumns = ['cardfront', 'cardback'];
   private extendedColumns =  ['reviewphase', 'cardfront', 'cardback', 'nextstudy', 'studycount'];
@@ -31,7 +33,8 @@ export class CardListComponent {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const searchTerm = filterValue.trim().toLowerCase();
+    this.search.emit(searchTerm);
   }
 
   showMoreToggle(change: MatSlideToggleChange) {

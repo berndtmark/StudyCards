@@ -1,0 +1,27 @@
+@use '../../../../theming/colour' as colour;
+
+.legend {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: default;
+
+    &.learning {
+        background-color: colour.$blue-300;
+    }
+
+    &.relearning {
+        background-color: colour.$red-100;
+    }
+
+    &.reviewing {
+        background-color: colour.$green-300;
+    }
+}
