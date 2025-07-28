@@ -1,42 +1,39 @@
 @use '../../../../theming/colour' as colour;
 @use '../../../../theming/responsive' as responsive;
 
-.table-container {
+.table {
+    --mat-sys-surface: colour.$off-white;
+    width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    overflow: hidden;
     box-shadow: 0 2px 8px colour.$grey-800;
-    border-radius: 8px;
+    
+    th {
+        background-color: colour.$blue-100;
+    }
 
-    .table {
-        --mat-sys-surface: colour.$off-white;
-        width: 100%;
-        border-radius: 8px;
-        overflow: hidden;
-        
-        th {
-            background-color: colour.$blue-100;
+    @include responsive.responsive('mobile') {
+        th, td {
+            padding: 0.4rem;
         }
+    }
 
-        @include responsive.responsive('mobile') {
-            th, td {
-                padding: 0.75rem;
-            }
+    .mat-mdc-row {
+        &:hover {
+            background-color: colour.$white-100;
+            cursor: pointer;
         }
+    }
 
-        .mat-mdc-row {
-            &:hover {
-                background-color: colour.$white-100;
-                cursor: pointer;
-            }
-        }
+    .mat-column-studycount {
+        width: 6%;
+        text-align: center;
+    }
 
-        .mat-column-studycount {
-            width: 6%;
-            text-align: center;
-        }
-
-        .mat-column-reviewphase {
-            width: 2%;
-            text-align: center;
-        }
+    .mat-column-reviewphase {
+        width: 2%;
+        text-align: center;
     }
 }
 
