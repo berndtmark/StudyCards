@@ -116,6 +116,7 @@ export const CardStore = signalStore(
                                 loadingState: LoadingState.Success
                             });
                             snackBar.open("Card updated successfully");
+                            router.navigate(['/cards', store.deckId()]);
                         }),
                         catchError(errorHandler.handleStoreError(store, "Failed to update card"))
                     ))
@@ -135,6 +136,7 @@ export const CardStore = signalStore(
                                 }
                             });
                             snackBar.open("Card removed successfully");
+                            router.navigate(['/cards', store.deckId()]);
                         }),
                         catchError(errorHandler.handleStoreError(store, "Failed to remove card"))
                     ))
