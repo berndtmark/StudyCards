@@ -2,7 +2,7 @@ import { patchState, signalStore, withComputed, withMethods, withState } from '@
 import { LoadingState } from 'app/shared/models/loading-state';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { catchError, debounceTime, of, pipe, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, pipe, switchMap, tap } from 'rxjs';
 import { CardService } from '../services/card.service';
 import { SnackbarService } from 'app/shared/services/snackbar.service';
 import { CardResponse } from 'app/@api/models/card-response';
@@ -10,6 +10,8 @@ import { ImportCard } from '../models/import-card';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { FileService } from 'app/shared/services/file.service';
 import { Pagination } from 'app/shared/models/pagination';
+import { ErrorHandlerService } from 'app/shared/services/error-handler.service';
+import { Router } from '@angular/router';
 
 type CardState = {
     loadingState: LoadingState
@@ -17,6 +19,7 @@ type CardState = {
     deckId: string;
     importCards: { file?: ImportCard[], success?: ImportCard[], existing?: ImportCard[] };
     pagination: Pagination;
+    searchTerm: string;
 };
 
 const initialState: CardState = {
@@ -24,7 +27,8 @@ const initialState: CardState = {
     cards: [],
     deckId: '',
     importCards: {},
-    pagination: new Pagination(0, 1, 25)
+    pagination: new Pagination(0, 1, 25),
+    searchTerm: ''
 };
 
 export const CardStore = signalStore(
@@ -38,7 +42,9 @@ export const CardStore = signalStore(
         cardService = inject(CardService),
         snackBar = inject(SnackbarService),
         dialogService = inject(DialogService),
-        fileService = inject(FileService)) => ({
+        fileService = inject(FileService),
+        errorHandler = inject(ErrorHandlerService),
+        router = inject(Router)) => ({
             loadCards: rxMethod<{deckId: string, pageNumber?: number, pageSize?: number, searchTerm?: string}>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
@@ -54,13 +60,11 @@ export const CardStore = signalStore(
                                         cards: cards.items,
                                         loadingState: LoadingState.Success,
                                         deckId,
-                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize),
+                                        searchTerm
                                     });
                                 }),
-                                catchError(() => {
-                                    patchState(store, { loadingState: LoadingState.Error });
-                                    return of([]);
-                                })
+                                catchError(errorHandler.handleStoreError(store, "Failed to load cards"))
                             );
                     })
                 )
@@ -75,13 +79,11 @@ export const CardStore = signalStore(
                                     patchState(store, {
                                         cards: cards.items,
                                         loadingState: LoadingState.Success,
-                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize),
+                                        searchTerm
                                     });
                                 }),
-                                catchError(() => {
-                                    patchState(store, { loadingState: LoadingState.Error });
-                                    return of([]);
-                                })
+                                catchError(errorHandler.handleStoreError(store, "Failed to find card"))
                             )
                     )
                 )
@@ -100,12 +102,9 @@ export const CardStore = signalStore(
                                 }
                             });
                             snackBar.open("Card added successfully");
+                            router.navigate(['/cards', store.deckId()]);
                         }),
-                        catchError(() => {
-                            patchState(store, { loadingState: LoadingState.Error });
-                            snackBar.open("Failed to add card");
-                            return of(null);
-                        })
+                        catchError(errorHandler.handleStoreError(store, "Failed to add card"))
                     ))
                 )
             ),
@@ -121,12 +120,9 @@ export const CardStore = signalStore(
                                 loadingState: LoadingState.Success
                             });
                             snackBar.open("Card updated successfully");
+                            router.navigate(['/cards', store.deckId()]);
                         }),
-                        catchError(() => {
-                            patchState(store, { loadingState: LoadingState.Error });
-                            snackBar.open("Failed to update card");
-                            return of(null);
-                        })
+                        catchError(errorHandler.handleStoreError(store, "Failed to update card"))
                     ))
                 )
             ),
@@ -144,12 +140,9 @@ export const CardStore = signalStore(
                                 }
                             });
                             snackBar.open("Card removed successfully");
+                            router.navigate(['/cards', store.deckId()]);
                         }),
-                        catchError(() => {
-                            patchState(store, { loadingState: LoadingState.Error });
-                            snackBar.open("Failed to remove card");
-                            return of(null);
-                        })
+                        catchError(errorHandler.handleStoreError(store, "Failed to remove card"))
                     ))
                 )
             ),
@@ -196,11 +189,7 @@ export const CardStore = signalStore(
                                     });
                                     snackBar.open("Cards import ran successfully");
                                 }),
-                                catchError(() => {
-                                    patchState(store, { loadingState: LoadingState.Error });
-                                    snackBar.open("Failed to import cards");
-                                    return of(null);
-                                })
+                                catchError(errorHandler.handleStoreError(store, "Failed to import cards"))
                         )}
                     )
                 )

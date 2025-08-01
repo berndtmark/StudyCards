@@ -89,5 +89,17 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
             .AsNoTracking()
             .CountAsync(c => c.DeckId == deckId, cancellationToken);
     }
+
+    public async Task<IEnumerable<Card>?> Search(Guid deckId, string searchTerm, CancellationToken cancellationToken = default)
+    {
+        var loweredTerm = searchTerm.ToLowerInvariant();
+
+        return await DbContext
+            .Card
+            .WithPartitionKey(deckId)
+            .AsNoTracking()
+            .Where(c => c.CardFront.ToLower() == loweredTerm)
+            .ToListAsync(cancellationToken);
+    }
 }
 

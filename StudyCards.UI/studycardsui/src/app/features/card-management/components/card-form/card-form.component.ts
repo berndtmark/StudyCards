@@ -24,9 +24,9 @@ export class CardFormComponent implements OnInit {
       this.patchForm(value);
       return value;
     }
-  })
+  });
 
-  submit = output<{cardFront: string, cardBack: string}>();
+  submitted = output<{cardFront: string, cardBack: string}>();
   
   ngOnInit(): void {
     this.initForm();
@@ -35,12 +35,10 @@ export class CardFormComponent implements OnInit {
   onSubmit(): void {
     if (this.cardForm.valid) {
         const form = this.cardForm.value;
-        this.submit.emit({
+        this.submitted.emit({
           cardFront: form.front,
           cardBack: form.back
         });
-        
-        this.cardForm.reset();
       }
   }
 
