@@ -19,6 +19,7 @@ type CardState = {
     deckId: string;
     importCards: { file?: ImportCard[], success?: ImportCard[], existing?: ImportCard[] };
     pagination: Pagination;
+    searchTerm: string;
 };
 
 const initialState: CardState = {
@@ -26,7 +27,8 @@ const initialState: CardState = {
     cards: [],
     deckId: '',
     importCards: {},
-    pagination: new Pagination(0, 1, 25)
+    pagination: new Pagination(0, 1, 25),
+    searchTerm: ''
 };
 
 export const CardStore = signalStore(
@@ -58,7 +60,8 @@ export const CardStore = signalStore(
                                         cards: cards.items,
                                         loadingState: LoadingState.Success,
                                         deckId,
-                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize),
+                                        searchTerm
                                     });
                                 }),
                                 catchError(errorHandler.handleStoreError(store, "Failed to load cards"))
@@ -76,7 +79,8 @@ export const CardStore = signalStore(
                                     patchState(store, {
                                         cards: cards.items,
                                         loadingState: LoadingState.Success,
-                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize)
+                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize),
+                                        searchTerm
                                     });
                                 }),
                                 catchError(errorHandler.handleStoreError(store, "Failed to find card"))

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, OnChanges, output, SimpleChanges } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +16,8 @@ import { CardListLegendComponent } from "../card-list-legend/card-list-legend.co
   styleUrl: './card-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardListComponent {
+export class CardListComponent implements OnChanges {
+  searchTerm = input<string>();
   cards = input([], {
     transform: (value: CardResponse[]) => {
       this.dataSource.data = value;
@@ -30,6 +31,17 @@ export class CardListComponent {
   private extendedColumns =  ['reviewphase', 'cardfront', 'cardback', 'nextstudy', 'studycount'];
   displayedColumns: string[] = this.defaultColumns;
   dataSource = new MatTableDataSource<CardResponse>([]);
+  searchValue: string = '';
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const seachTermChanges = changes['searchTerm'];
+    
+    if (seachTermChanges && seachTermChanges.isFirstChange()) {
+      this.searchValue = this.searchTerm() ?? '';
+    } else if (seachTermChanges && seachTermChanges.currentValue === undefined) {
+      this.searchValue = '';
+    }    
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

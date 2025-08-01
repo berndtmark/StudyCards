@@ -10,5 +10,5 @@
         <app-my-button title="Export" (action)="export()" icon="download_2"></app-my-button>
     </div>
 
-    <app-card-list [cards]="store.cards()" (updateCard)="updateCard($event)" (search)="search($event)"></app-card-list>
+    <app-card-list [cards]="store.cards()" [searchTerm]="store.searchTerm()" (updateCard)="updateCard($event)" (search)="search($event)"></app-card-list>
 </div>
