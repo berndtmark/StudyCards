@@ -4,7 +4,7 @@
     <app-card-form
         [title]="'Update Card'"
         [card]="store.getCardById(cardId)!"
-        (submit)="onCardSubmit($event)">
+        (submitted)="onCardSubmit($event)">
             <button button-content mat-raised-button color="primary" type="button" (click)="onRemovedCard()">Remove Card</button>
     </app-card-form>
 </div>

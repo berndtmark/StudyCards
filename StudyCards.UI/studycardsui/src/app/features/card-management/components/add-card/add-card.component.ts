@@ -27,8 +27,6 @@ export class AddCardComponent implements OnInit {
         cardFront: form.cardFront, 
         cardBack: form.cardBack
     });
-
-    this.goBackToCardList();
   }
 
   goBackToCardList(): void {

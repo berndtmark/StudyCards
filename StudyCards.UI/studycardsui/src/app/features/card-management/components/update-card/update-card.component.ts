@@ -35,8 +35,6 @@ export class UpdateCardComponent implements OnInit {
         cardFront: form.cardFront, 
         cardBack: form.cardBack,
     });
-
-    this.goBackToCardList();
   }
 
   goBackToCardList(): void {
@@ -48,7 +46,6 @@ export class UpdateCardComponent implements OnInit {
     this.dialogService.confirm('Delete Card', 'Are you sure you want to remove this Card?', 'Yes')
         .subscribe(() => {
             this.store.removeCard(this.cardId!);
-            this.goBackToCardList();
         });
   }
 }
