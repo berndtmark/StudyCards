@@ -52,6 +52,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
     [HttpPost]
     [Route("addcard")]
     [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add(AddCardRequest request)
     {
         var result = await sender.Send(new AddCardCommand
@@ -61,8 +62,9 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
             CardBack = request.CardBack
         });
 
-        var response = mapper.Map<CardResponse>(result);
-        return Ok(response);
+        return result.IsSuccess
+            ? Ok(mapper.Map<CardResponse>(result.Data))
+            : BadRequest(result.ErrorMessage);
     }
 
     [HttpPost]

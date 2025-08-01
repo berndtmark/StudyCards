@@ -3,6 +3,7 @@ import { CardFormComponent } from "../card-form/card-form.component";
 import { CardStore } from '../../store/card.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
+import { LoadingState } from 'app/shared/models/loading-state';
 
 @Component({
   selector: 'app-add-card',
@@ -16,6 +17,8 @@ export class AddCardComponent implements OnInit {
   protected activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
 
+  loadingState = LoadingState;
+
   ngOnInit(): void {
     // ensure the deck cards is loaded before trying to get a card by id
     const deckId = this.activatedRoute.snapshot.paramMap.get('deckid') || '';
@@ -27,8 +30,6 @@ export class AddCardComponent implements OnInit {
         cardFront: form.cardFront, 
         cardBack: form.cardBack
     });
-
-    this.goBackToCardList();
   }
 
   goBackToCardList(): void {
