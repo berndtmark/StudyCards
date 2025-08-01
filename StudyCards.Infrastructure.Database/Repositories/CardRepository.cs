@@ -92,7 +92,7 @@ public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor http
 
     public async Task<IEnumerable<Card>?> Search(Guid deckId, string searchTerm, CancellationToken cancellationToken = default)
     {
-        var loweredTerm = searchTerm.ToLowerInvariant();
+        var loweredTerm = searchTerm.ToLowerInvariant().Trim();
 
         return await DbContext
             .Card
