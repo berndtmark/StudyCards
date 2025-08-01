@@ -29,7 +29,7 @@ public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardComman
         try
         {
             // Check if the card already exists in the deck
-            var isExisting = await ValidateExisting(card);
+            var isExisting = await ValidateExisting(card, cancellationToken);
             if (isExisting)
                 return Result<Card>.Failure("Card is already in the Deck");
 
@@ -46,12 +46,12 @@ public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardComman
             logger.LogError(ex, "Failed to add card to deck {DeckId}", request.DeckId);
             throw;
         }
+    }
 
-        async Task<bool> ValidateExisting(Card card)
-        {
-            var existingCard = await unitOfWork.CardRepository.Search(card.DeckId, card.CardFront, cancellationToken);
+    private async Task<bool> ValidateExisting(Card card, CancellationToken cancellationToken)
+    {
+        var existingCard = await unitOfWork.CardRepository.Search(card.DeckId, card.CardFront, cancellationToken);
 
-            return existingCard?.Any() ?? false;
-        }
+        return existingCard?.Any() ?? false;
     }
 }
