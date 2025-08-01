@@ -18,7 +18,10 @@ export class ErrorHandlerService {
       if (!this.handleValidationError(err)) {
         patchState(store, { loadingState: LoadingState.Error });
         this.snackBar.open(action);
+      } else {
+        patchState(store, { loadingState: LoadingState.Success });
       }
+
       return of(null);
     };
   }
