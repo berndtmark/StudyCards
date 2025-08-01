@@ -24,15 +24,7 @@ export class CardFormComponent implements OnInit {
       this.patchForm(value);
       return value;
     }
-  })
-  resetForm = input(null, {
-      transform: (value: boolean) => {
-        if (value) {
-          this.cardForm?.reset();
-        }
-        return value;
-      }
-  })
+  });
 
   submitted = output<{cardFront: string, cardBack: string}>();
   

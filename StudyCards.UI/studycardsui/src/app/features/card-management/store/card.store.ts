@@ -11,6 +11,7 @@ import { DialogService } from 'app/shared/services/dialog.service';
 import { FileService } from 'app/shared/services/file.service';
 import { Pagination } from 'app/shared/models/pagination';
 import { ErrorHandlerService } from 'app/shared/services/error-handler.service';
+import { Router } from '@angular/router';
 
 type CardState = {
     loadingState: LoadingState
@@ -40,7 +41,8 @@ export const CardStore = signalStore(
         snackBar = inject(SnackbarService),
         dialogService = inject(DialogService),
         fileService = inject(FileService),
-        errorHandler = inject(ErrorHandlerService)) => ({
+        errorHandler = inject(ErrorHandlerService),
+        router = inject(Router)) => ({
             loadCards: rxMethod<{deckId: string, pageNumber?: number, pageSize?: number, searchTerm?: string}>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
@@ -96,6 +98,7 @@ export const CardStore = signalStore(
                                 }
                             });
                             snackBar.open("Card added successfully");
+                            router.navigate(['/cards', store.deckId()]);
                         }),
                         catchError(errorHandler.handleStoreError(store, "Failed to add card"))
                     ))

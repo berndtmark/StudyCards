@@ -3,7 +3,6 @@
 
     <app-card-form
         [title]="'Add Card'"
-        [resetForm]="store.loadingState() === loadingState.Success"
         (submitted)="onCardSubmit($event)">
     </app-card-form>
 </div>
