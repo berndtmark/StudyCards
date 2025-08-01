@@ -28,7 +28,7 @@ export class ErrorHandlerService {
 
   private handleValidationError(err: HttpErrorResponse): boolean {
       if (err.status === 400) {
-          this.dialogService.info('Validation Error', err.error);
+          this.dialogService.info('Validation', err.error);
           return true;
       }
 
