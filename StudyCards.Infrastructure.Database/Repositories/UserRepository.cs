@@ -19,12 +19,12 @@ public class UserRepository(DataBaseContext dbContext, IHttpContextAccessor http
     {
         return await DbContext.User
             .AsNoTracking()
-            .Where(c => c.UserEmail == userEmail)
-            .FirstOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(u => u.UserEmail == userEmail, cancellationToken);
     }
 
     public User Update(User user)
     {
+        EmailAddress = user.UserEmail;
         var entity = UpdateEntity(user);
         return entity;
     }

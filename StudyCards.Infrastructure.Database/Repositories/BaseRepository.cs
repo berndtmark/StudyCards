@@ -34,7 +34,6 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpCo
     {
         var newEntity = entity with
         {
-            CreatedDate = DateTime.UtcNow,
             CreatedBy = EmailAddress
         };
 

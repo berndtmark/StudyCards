@@ -20,18 +20,18 @@ public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCo
                 throw new ApplicationException("User Email Not Found!");
 
             var user = await unitOfWork.UserRepository.Get(request.UserEmail, cancellationToken);
-
+            
             if (user == null)
             {
                 // Create new user
-                user = User.CreateUser(request.UserEmail);
-                user.UserLogin();
+                var newUser = User.CreateUser(request.UserEmail)
+                    .UserLogin();
 
-                await unitOfWork.UserRepository.Add(user, cancellationToken);
+                await unitOfWork.UserRepository.Add(newUser, cancellationToken);
             }
             else
             {
-                user.UserLogin();
+                user = user.UserLogin();
                 unitOfWork.UserRepository.Update(user);
             }
 

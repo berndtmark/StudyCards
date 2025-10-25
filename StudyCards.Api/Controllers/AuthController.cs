@@ -27,11 +27,11 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
 
     [HttpGet]
     [Route("callback")]
-    public IActionResult LoginCallback(string returnUrl)
+    public async Task<IActionResult> LoginCallback(string returnUrl)
     {
         var userEmail = httpContextAccessor.GetEmail();
 
-        sender.Send(new UserLoginCommand
+        await sender.Send(new UserLoginCommand
         {
             UserEmail = userEmail
         });

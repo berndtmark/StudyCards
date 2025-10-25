@@ -4,12 +4,14 @@ public record User : EntityBase
 {
     public string UserEmail { get; init; } = string.Empty;
     public DateTime LastLogin { get; init; }
+    public int LoginCount { get; init; } = 0;
 
     public User UserLogin()
     {
         return this with
         {
-            LastLogin = DateTime.UtcNow
+            LastLogin = DateTime.UtcNow,
+            LoginCount = LoginCount + 1
         };
     }
 
