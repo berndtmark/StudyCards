@@ -8,7 +8,13 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) where TEntity : EntityBase
 {
-    protected string EmailAddress => httpContextAccessor.GetEmail();
+    private string? _emailAddress;
+    protected virtual string EmailAddress
+    {
+        get => _emailAddress ?? httpContextAccessor.GetEmail();
+        set => _emailAddress = value;
+    }
+
     protected DataBaseContext DbContext => dbContext;
 
     protected virtual TEntity UpdateEntity(TEntity entity)
@@ -24,14 +30,15 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpCo
         return updateEntity;
     }
 
-    protected virtual async Task<TEntity> AddEntity(TEntity entity)
+    protected virtual async Task<TEntity> AddEntity(TEntity entity, CancellationToken cancellationToken = default)
     {
         var newEntity = entity with
         {
+            CreatedDate = DateTime.UtcNow,
             CreatedBy = EmailAddress
         };
 
-        await dbContext.AddAsync(newEntity);
+        await dbContext.AddAsync(newEntity, cancellationToken);
         return newEntity;
     }
 

@@ -1,15 +1,17 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
+using StudyCards.Application.UseCases.Admin.Commands;
 
 namespace StudyCards.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<AuthController> logger) : ControllerBase
+public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<AuthController> logger, ISender sender) : ControllerBase
 {
     [HttpGet]
     [Route("login")]
@@ -27,9 +29,14 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
     [Route("callback")]
     public IActionResult LoginCallback(string returnUrl)
     {
-        // put any code after login here. e.g. adding claims, roles, user db
+        var userEmail = httpContextAccessor.GetEmail();
 
-        logger.LogInformation("User Logged In {Email}", httpContextAccessor.GetEmail());
+        sender.Send(new UserLoginCommand
+        {
+            UserEmail = userEmail
+        });
+
+        logger.LogInformation("User Logged In {Email}", userEmail);
         return LocalRedirect(returnUrl);
     }
 
