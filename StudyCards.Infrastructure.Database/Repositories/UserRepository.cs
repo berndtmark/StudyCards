@@ -22,6 +22,13 @@ public class UserRepository(DataBaseContext dbContext, IHttpContextAccessor http
             .SingleOrDefaultAsync(u => u.UserEmail == userEmail, cancellationToken);
     }
 
+    public async Task<IEnumerable<User>> GetAll(CancellationToken cancellationToken)
+    {
+        return await DbContext.User
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
     public User Update(User user)
     {
         EmailAddress = user.UserEmail;

@@ -8,7 +8,8 @@ public static class MappingConfiguration
     {
         services.AddAutoMapper(
             typeof(CardProfile),
-            typeof(DeckProfile)
+            typeof(DeckProfile),
+            typeof(AdminProfile)
         );
 
         return services;
