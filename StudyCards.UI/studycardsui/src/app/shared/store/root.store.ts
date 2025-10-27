@@ -7,10 +7,12 @@ import { Claims } from '../constants/claims';
 
 type RootState = {
     userName: string;
+    isAdmin: boolean;
 };
 
 const initialState: RootState = {
-    userName: ''
+    userName: '',
+    isAdmin: false
 };
 
 export const RootStore = signalStore(
@@ -20,7 +22,10 @@ export const RootStore = signalStore(
             loadUser: rxMethod<void>(
                 pipe(
                     switchMap(() => authService.claims().pipe(
-                        tap(claims => patchState(store, { userName: claims.get(Claims.Name) }))
+                        tap(claims => patchState(store, { 
+                            userName: claims.get(Claims.Name),
+                            isAdmin: claims.get(Claims.Role) === "Admin" 
+                        }))
                     ))
                 )
             )
