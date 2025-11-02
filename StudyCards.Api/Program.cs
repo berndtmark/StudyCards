@@ -7,6 +7,8 @@ using StudyCards.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Host.ConfigureLogging();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -28,6 +30,8 @@ builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseExceptionHandler();
 

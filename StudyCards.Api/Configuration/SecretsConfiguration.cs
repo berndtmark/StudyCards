@@ -47,7 +47,7 @@ public class SecretConfigurationProvider(ISecretsManager secretsManager, IConfig
             Secrets.GoogleAuthOptions
         );
 
-        Data["ConnectionStrings:CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
+        Data["ConnectionStrings:cosmos-db"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["cosmos-db"], secrets[Secrets.CosmosDbConnectionString]);
 
         var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(
             secrets[Secrets.GoogleAuthOptions]
