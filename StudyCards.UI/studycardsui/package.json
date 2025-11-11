@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "npm run generate-api && npm run test -- --no-watch --no-progress --browsers=ChromeHeadless",
-    "generate-api": "npx ng-openapi-gen --input servercardsapi.json --output src/app/@api",
+    "generate-api": "npx ng-openapi-gen --services true --promises false --input servercardsapi.json --output src/app/@api",
     "start-api": "dotnet run --project ../../StudyCards.Server/StudyCards.Server.csproj --launch-profile https"
   },
   "private": true,
@@ -40,7 +40,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "ng-openapi-gen": "^0.52.0",
+    "ng-openapi-gen": "^1.0.4",
     "typescript": "~5.8.3"
   }
 }
