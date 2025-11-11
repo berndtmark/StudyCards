@@ -6,10 +6,10 @@ public static class MappingConfiguration
 {
     public static IServiceCollection AddMappingConfiguration(this IServiceCollection services)
     {
-        services.AddAutoMapper(
-            typeof(CardProfile),
-            typeof(DeckProfile)
-        );
+        services.AddAutoMapper(cfg => {
+            cfg.AddProfile<CardProfile>();
+            cfg.AddProfile<DeckProfile>();
+        });
 
         return services;
     }
