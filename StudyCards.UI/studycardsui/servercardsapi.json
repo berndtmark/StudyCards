@@ -17,6 +17,18 @@
         }
       }
     },
+    "/api/Admin/getuserdetails": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Auth/login": {
       "get": {
         "tags": [

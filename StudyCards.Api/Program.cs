@@ -7,6 +7,8 @@ using StudyCards.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Host.ConfigureLogging();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -29,6 +31,8 @@ builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
+
 app.UseExceptionHandler();
 
 app.UseDefaultFiles();
@@ -47,7 +51,7 @@ app.MapStaticAssets();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    await app.Services.CreateDatabaseForLocal(app.Configuration);
+    // await app.Services.CreateDatabaseForLocal(app.Configuration);
 }
 
 app.UseHttpsRedirection();

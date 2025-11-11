@@ -9,6 +9,7 @@ public static class MappingConfiguration
         services.AddAutoMapper(cfg => {
             cfg.AddProfile<CardProfile>();
             cfg.AddProfile<DeckProfile>();
+            cfg.AddProfile<AdminProfile>();
         });
 
         return services;
