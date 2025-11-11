@@ -1,5 +1,4 @@
 ARG DOTNET_VERSION=10.0
-ARG NODE_VERSION=24
 
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS base
 USER $APP_UID
@@ -10,7 +9,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS with-node
 RUN apt-get update
 RUN apt-get -y install curl
-RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_24.x | bash
 RUN apt-get -y install nodejs
 RUN npm install -g @angular/cli
 
