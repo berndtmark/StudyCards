@@ -20,8 +20,8 @@ public static class ServicesConfiguration
         if (OpenApiGen.IsOpenApiGeneration())
             return services;
 
-        var dbConnectionString = configuration.GetConnectionString("CosmosDb")
-            ?? throw new InvalidOperationException("CosmosDB connection string not found.");
+        var dbConnectionString = configuration.GetConnectionString("cosmos-db")
+            ?? throw new InvalidOperationException("cosmos-db connection string not found.");
 
         services.AddDbContextFactory<DataBaseContext>((sp, optionsBuilder) =>
         {
@@ -32,6 +32,7 @@ public static class ServicesConfiguration
 
         services.AddScoped<ICardRepository, CardRepository>();
         services.AddScoped<IDeckRepository, DeckRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
         return services;
@@ -39,7 +40,7 @@ public static class ServicesConfiguration
 
     public static async Task CreateDatabaseForLocal(this IServiceProvider serviceProvider, IConfiguration configuration)
     {
-        if (configuration.GetConnectionString("CosmosDb")!.Contains("localhost"))
+        if (configuration.GetConnectionString("cosmos-db")!.Contains("localhost"))
         {
             Console.WriteLine("Initializing CosmosDB database for local development...");
 

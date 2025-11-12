@@ -8,7 +8,6 @@ export interface Deck {
     description?: string | null;
     hasReviewsToday?: boolean;
     updatedDate?: string;
-    userEmail?: string;
 }
 
 export interface DeckSettings {

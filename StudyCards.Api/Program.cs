@@ -7,27 +7,48 @@ using StudyCards.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
+// LOGGING
 builder.Host.ConfigureLogging();
+
+// EXCEPTION HANDLING
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+// SECRETS (FOR CONFIGURATION)
 builder.AddSecretsConfiguration();
+
+// CONTROLLERS
 builder.Services.AddControllers();
+
+// OPENAPI
 builder.Services.AddOpenApi();
+
+// CACHE
 builder.Services.AddMemoryCache();
 
+// SIGNAL R
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, EmailUserIdProvider>();
 
+// SECURITY
 builder.Services.AddSecurityConfiguration(builder.Configuration);
+
+// MAPPERS
 builder.Services.AddMappingConfiguration();
+
+// OPTIONS
 builder.Services.AddOptionsConfiguration(builder.Configuration);
 
-// Configure Application Layers
+// BOOTSTRAP APPLICATION LAYERS
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
 
+// BUILD
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.UseExceptionHandler();
 
@@ -47,7 +68,7 @@ app.MapStaticAssets();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    await app.Services.CreateDatabaseForLocal(app.Configuration);
+    // await app.Services.CreateDatabaseForLocal(app.Configuration);
 }
 
 app.UseHttpsRedirection();

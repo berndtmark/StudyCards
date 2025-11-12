@@ -7,7 +7,7 @@ using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
 
-namespace StudyCard.Application.Tests.UseCasesTests;
+namespace StudyCardy.Application.Tests.UseCases;
 
 [TestClass]
 public class GetCardsToStudyQueryTests
@@ -84,7 +84,8 @@ public class GetCardsToStudyQueryTests
         };
 
         // Act & Assert
-        await Assert.ThrowsExceptionAsync<EntityNotFoundException>(async () => await _useCase.Handle(request, CancellationToken.None));
+        await Assert.ThrowsAsync<EntityNotFoundException>(() => _useCase.Handle(request, CancellationToken.None));
+
     }
 }
 

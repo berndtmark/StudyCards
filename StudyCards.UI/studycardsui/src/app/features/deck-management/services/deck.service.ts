@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { DeckService as DeckServiceApi } from '../../../@api/services';
 import { UpdateDeckRequest } from 'app/@api/models/update-deck-request';
 import { Deck } from '../models/deck';
 import { DateFuctions } from 'app/shared/functions/date-functions';
+import { DeckResponse } from 'app/@api/models/deck-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class DeckService {
   deckServiceApi = inject(DeckServiceApi);
 
   getDecks(): Observable<Deck[]> {
-    return this.deckServiceApi.apiDeckGetdecksGet$Json();
+    return this.deckServiceApi.apiDeckGetdecksGet$Json().pipe(
+      map(response => response.map(item => this.mapToDeck(item)))
+    );
   }
 
   addDeck(deck: Deck): Observable<Deck> {
@@ -23,7 +26,9 @@ export class DeckService {
       reviewsPerDay: deck.deckSettings?.reviewsPerDay
     }
 
-    return this.deckServiceApi.apiDeckAdddeckPost$Json({ body: request })
+    return this.deckServiceApi.apiDeckAdddeckPost$Json({ body: request }).pipe(
+      map(response => this.mapToDeck(response))
+    );
   }
 
   updateDeck(deck: Deck): Observable<Deck> {
@@ -35,7 +40,9 @@ export class DeckService {
       reviewsPerDay: deck.deckSettings?.reviewsPerDay
     }
 
-    return this.deckServiceApi.apiDeckUpdatedeckPut$Json({ body: request });
+    return this.deckServiceApi.apiDeckUpdatedeckPut$Json({ body: request }).pipe(
+      map(response => this.mapToDeck(response))
+    );
   }
 
   removeDeck(deckId: string): Observable<boolean> {
@@ -50,5 +57,25 @@ export class DeckService {
     }
 
     return reviewsToday < Math.min(deck.deckSettings!.reviewsPerDay!, deck.cardCount!)
+  }
+
+  private mapToDeck(response: DeckResponse): Deck {
+    return {
+      id: response.id,
+      deckName: response.deckName,
+      description: response.description,
+      cardCount: response.cardCount ? Number(response.cardCount) : undefined,
+      updatedDate: response.updatedDate,
+      createdDate: response.createdDate,
+      hasReviewsToday: response.hasReviewsToday,
+      deckSettings: {
+        newCardsPerDay: response.deckSettings?.newCardsPerDay ? Number(response.deckSettings.newCardsPerDay) : undefined,
+        reviewsPerDay: response.deckSettings?.reviewsPerDay ? Number(response.deckSettings.reviewsPerDay) : undefined
+      },
+      deckReviewStatus: {
+        lastReview: response.deckReviewStatus?.lastReview,
+        reviewCount: response.deckReviewStatus?.reviewCount ? Number(response.deckReviewStatus.reviewCount) : undefined
+      }
+    };
   }
 }
