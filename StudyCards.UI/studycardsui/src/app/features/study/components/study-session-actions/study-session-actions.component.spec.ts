@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { StudySessionActionsComponent } from './study-session-actions.component';
 
@@ -8,13 +9,14 @@ describe('StudySessionActionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StudySessionActionsComponent]
+      imports: [StudySessionActionsComponent],
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(StudySessionActionsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { UpdateCardComponent } from './update-card.component';
 import { CardStore } from '../../store/card.store';
@@ -20,13 +21,14 @@ describe('UpdateCardComponent', () => {
         CardStore,
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection()
       ]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(UpdateCardComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

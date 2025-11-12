@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { AddCardComponent } from './add-card.component';
 import { RouterModule } from '@angular/router';
 import { CardStore } from '../../store/card.store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AddCardComponent', () => {
   let component: AddCardComponent;

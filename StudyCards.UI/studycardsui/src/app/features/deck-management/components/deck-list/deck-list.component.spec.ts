@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { DeckListComponent } from './deck-list.component';
 import { provideHttpClient } from '@angular/common/http';
@@ -15,14 +16,15 @@ describe('DeckListComponent', () => {
       providers: [
         DeckStore,
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        provideZonelessChangeDetection()
       ]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(DeckListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
