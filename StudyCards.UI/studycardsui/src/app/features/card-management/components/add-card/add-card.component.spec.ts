@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { CardStore } from '../../store/card.store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('AddCardComponent', () => {
   let component: AddCardComponent;
@@ -17,6 +18,7 @@ describe('AddCardComponent', () => {
         RouterModule.forRoot([])
       ],
       providers: [
+        provideZonelessChangeDetection(),
         CardStore,
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -26,7 +28,7 @@ describe('AddCardComponent', () => {
 
     fixture = TestBed.createComponent(AddCardComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable()
   });
 
   it('should create', () => {
