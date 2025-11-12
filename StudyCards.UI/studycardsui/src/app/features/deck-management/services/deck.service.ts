@@ -65,6 +65,9 @@ export class DeckService {
       deckName: response.deckName,
       description: response.description,
       cardCount: response.cardCount ? Number(response.cardCount) : undefined,
+      updatedDate: response.updatedDate,
+      createdDate: response.createdDate,
+      hasReviewsToday: response.hasReviewsToday,
       deckSettings: {
         newCardsPerDay: response.deckSettings?.newCardsPerDay ? Number(response.deckSettings.newCardsPerDay) : undefined,
         reviewsPerDay: response.deckSettings?.reviewsPerDay ? Number(response.deckSettings.reviewsPerDay) : undefined
