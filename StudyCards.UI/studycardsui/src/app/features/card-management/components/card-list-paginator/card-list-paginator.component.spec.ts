@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { CardListPaginatorComponent } from './card-list-paginator.component';
 import { CardStore } from '../../store/card.store';
@@ -15,14 +16,15 @@ describe('CardListPaginatorComponent', () => {
       providers: [
         CardStore,
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        provideZonelessChangeDetection()
       ]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(CardListPaginatorComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

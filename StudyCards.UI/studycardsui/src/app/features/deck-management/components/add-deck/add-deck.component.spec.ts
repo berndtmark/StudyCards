@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { AddDeckComponent } from './add-deck.component';
 import { RouterModule } from '@angular/router';
@@ -20,13 +21,14 @@ describe('AddDeckComponent', () => {
         DeckStore,
         provideHttpClient(),
         provideHttpClientTesting(),
+        provideZonelessChangeDetection()
       ]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(AddDeckComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

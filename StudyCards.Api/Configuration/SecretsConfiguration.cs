@@ -11,7 +11,7 @@ namespace StudyCards.Api.Configuration;
 
 public static class SecretsConfiguration
 {
-    public static void AddSecretsConfiguration(this WebApplicationBuilder builder)
+    public static void AddSecretsConfiguration(this IHostApplicationBuilder builder)
     {
         if (OpenApiGen.IsOpenApiGeneration())
             return;
@@ -21,7 +21,7 @@ public static class SecretsConfiguration
         var secretClient = new SecretsClient(Microsoft.Extensions.Options.Options.Create(secretOptions));
         var secretsManager = new SecretsManager(secretClient);
 
-        ((IConfigurationBuilder)builder.Configuration).Add(new SecretConfigurationSource(secretsManager, builder.Configuration));
+        builder.Configuration.Add(new SecretConfigurationSource(secretsManager, builder.Configuration));
 
         builder.Services.AddSingleton<ISecretClient>(secretClient);
         builder.Services.AddSingleton<ISecretsManager, CachedSecretsManager>();
@@ -47,7 +47,7 @@ public class SecretConfigurationProvider(ISecretsManager secretsManager, IConfig
             Secrets.GoogleAuthOptions
         );
 
-        Data["ConnectionStrings:CosmosDb"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["CosmosDb"], secrets[Secrets.CosmosDbConnectionString]);
+        Data["ConnectionStrings:cosmos-db"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["cosmos-db"], secrets[Secrets.CosmosDbConnectionString]);
 
         var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(
             secrets[Secrets.GoogleAuthOptions]

@@ -1,10 +1,12 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+ARG DOTNET_VERSION=10.0
+
+FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS with-node
+FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS with-node
 RUN apt-get update
 RUN apt-get -y install curl
 RUN curl -sL https://deb.nodesource.com/setup_24.x | bash

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { HubService, SIGNALR_URL } from './hub.service';
 
@@ -9,7 +10,8 @@ describe('HubService', () => {
     TestBed.configureTestingModule({
       providers: [
         HubService,
-        { provide: SIGNALR_URL, useValue: 'http://localhost/chatHub' }
+        { provide: SIGNALR_URL, useValue: 'http://localhost/chatHub' },
+        provideZonelessChangeDetection()
       ]
     });
     service = TestBed.inject(HubService);

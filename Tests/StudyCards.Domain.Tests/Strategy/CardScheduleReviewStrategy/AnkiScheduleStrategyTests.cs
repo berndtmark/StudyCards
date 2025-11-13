@@ -49,6 +49,6 @@ public class AnkiScheduleStrategyTests
 
         // Assert
         Assert.AreEqual(20, card.CardReviewStatus.ReviewCount);
-        Assert.IsFalse(card.CardReviewStatus.IntervalInDays > 365);
+        Assert.IsLessThanOrEqualTo(365, card.CardReviewStatus.IntervalInDays);
     }
 }

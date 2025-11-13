@@ -60,7 +60,7 @@ export const CardStore = signalStore(
                                         cards: cards.items,
                                         loadingState: LoadingState.Success,
                                         deckId,
-                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize),
+                                        pagination: new Pagination(+cards.totalCount, +cards.pageNumber, +cards.pageSize),
                                         searchTerm
                                     });
                                 }),
@@ -79,7 +79,7 @@ export const CardStore = signalStore(
                                     patchState(store, {
                                         cards: cards.items,
                                         loadingState: LoadingState.Success,
-                                        pagination: new Pagination(cards.totalCount, cards.pageNumber, cards.pageSize),
+                                        pagination: new Pagination(+cards.totalCount, +cards.pageNumber, +cards.pageSize),
                                         searchTerm
                                     });
                                 }),

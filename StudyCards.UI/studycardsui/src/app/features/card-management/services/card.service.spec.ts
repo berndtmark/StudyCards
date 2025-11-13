@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { CardService } from './card.service';
 import { provideHttpClient } from '@angular/common/http';
@@ -11,7 +12,8 @@ describe('CardService', () => {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        provideZonelessChangeDetection()
       ]
     });
     service = TestBed.inject(CardService);

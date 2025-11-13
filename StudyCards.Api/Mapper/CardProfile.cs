@@ -15,7 +15,7 @@ public class CardProfile : Profile
             .ForMember(dest => dest.NextReviewDate, src => src.MapFrom(p => p.CardReviewStatus.NextReviewDate))
             .ForMember(dest => dest.ReviewPhase, src => src.MapFrom(p => p.CardReviewStatus.CurrentPhase.ToString()));
 
-        CreateMap(typeof(PagedResult<>), typeof(PagedResult<>))
-            .ConvertUsing(typeof(PagedResultConverter<,>));
+        CreateMap<PagedResult<Card>, PagedResult<CardResponse>>()
+            .ConvertUsing(new PagedResultConverter<Card, CardResponse>());
     }
 }

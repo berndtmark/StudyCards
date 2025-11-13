@@ -7,6 +7,7 @@ public class DataBaseContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<Deck> Deck { get; set; }
     public DbSet<Card> Card { get; set; }
+    public DbSet<User> User { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +20,12 @@ public class DataBaseContext(DbContextOptions options) : DbContext(options)
 
         modelBuilder.Entity<Deck>()
             .ToContainer("Deck")
+            .HasNoDiscriminator()
+            .HasPartitionKey(x => x.UserEmail)
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<User>()
+            .ToContainer("User")
             .HasNoDiscriminator()
             .HasPartitionKey(x => x.UserEmail)
             .HasKey(x => x.Id);
