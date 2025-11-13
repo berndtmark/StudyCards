@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { DeterminateProgressSpinnerComponent } from './determinate-progress-spinner.component';
 
@@ -8,13 +9,14 @@ describe('DeterminateProgressSpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeterminateProgressSpinnerComponent]
+      imports: [DeterminateProgressSpinnerComponent],
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(DeterminateProgressSpinnerComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
