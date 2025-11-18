@@ -5,6 +5,7 @@ import { UpdateDeckRequest } from 'app/@api/models/update-deck-request';
 import { Deck } from '../models/deck';
 import { DateFuctions } from 'app/shared/functions/date-functions';
 import { DeckResponse } from 'app/@api/models/deck-response';
+import { AddDeckRequest } from 'app/@api/models/add-deck-request';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,11 @@ export class DeckService {
   }
 
   addDeck(deck: Deck): Observable<Deck> {
-    const request: UpdateDeckRequest = { 
-      deckName: deck.deckName,
+    const request: AddDeckRequest = { 
+      deckName: deck.deckName!,
       description: deck.description,
-      newCardsPerDay: deck.deckSettings?.newCardsPerDay,
-      reviewsPerDay: deck.deckSettings?.reviewsPerDay
+      newCardsPerDay: deck.deckSettings?.newCardsPerDay ?? 0,
+      reviewsPerDay: deck.deckSettings?.reviewsPerDay ?? 0
     }
 
     return this.deckServiceApi.apiDeckAdddeckPost$Json({ body: request }).pipe(
@@ -33,11 +34,11 @@ export class DeckService {
 
   updateDeck(deck: Deck): Observable<Deck> {
     const request: UpdateDeckRequest = { 
-      deckId: deck.id,
-      deckName: deck.deckName,
+      deckId: deck.id!,
+      deckName: deck.deckName!,
       description: deck.description,
-      newCardsPerDay: deck.deckSettings?.newCardsPerDay,
-      reviewsPerDay: deck.deckSettings?.reviewsPerDay
+      newCardsPerDay: deck.deckSettings?.newCardsPerDay ?? 0,
+      reviewsPerDay: deck.deckSettings?.reviewsPerDay ?? 0
     }
 
     return this.deckServiceApi.apiDeckUpdatedeckPut$Json({ body: request }).pipe(
