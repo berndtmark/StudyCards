@@ -15,4 +15,5 @@ public interface ICardRepository
     void RemoveRange(Card[] cards);
     Task<int> CountByDeck(Guid deckId, CancellationToken cancellationToken = default);
     Task<IEnumerable<Card>?> Search(Guid deckId, string searchTerm, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Card>> GetCardsToStudy(Guid deckId, int noCardsToSelect, int noNewCardsToSelect, bool fillUnmet, CancellationToken cancellationToken = default);
 }
