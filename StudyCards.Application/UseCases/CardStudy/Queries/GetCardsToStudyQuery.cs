@@ -1,10 +1,8 @@
 ﻿using StudyCards.Application.Exceptions;
-using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
-using StudyCards.Domain.Interfaces;
 
 namespace StudyCards.Application.UseCases.CardStudy.Queries;
 
@@ -16,28 +14,20 @@ public class GetCardsToStudyQuery : IQuery<IEnumerable<Card>>
 
 public class GetCardsToStudyQueryHandler(
     IDeckRepository deckRepository, 
-    ICardRepository cardRepository, 
-    ICardsToStudyStrategyContext cardStrategyContext, 
-    ICardSelectionStudyFactory cardSelectionStudyFactory) : IQueryHandler<GetCardsToStudyQuery, IEnumerable<Card>>
+    ICardRepository cardRepository) : IQueryHandler<GetCardsToStudyQuery, IEnumerable<Card>>
 {
     public async Task<IEnumerable<Card>> Handle(GetCardsToStudyQuery request, CancellationToken cancellationToken)
     {
         var deck = await deckRepository.Get(request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
-        var cards = await cardRepository.GetByDeck(request.DeckId, cancellationToken);
 
-        var cardStrategy = cardSelectionStudyFactory.Create(request.StudyMethodology);
-
-        cardStrategyContext.SetStrategy(cardStrategy);
-        cardStrategyContext.AddCards(cards);
-
-        // Random strategy always lets you study cards
-        var cardsToStudy = request.StudyMethodology switch
+        var (cardsToStudy, fillUnmet) = request.StudyMethodology switch
         {
-            CardStudyMethodology.Random => Math.Min(deck.DeckSettings.ReviewsPerDay, deck.CardCount ?? deck.DeckSettings.ReviewsPerDay),
-            _ => deck.CardNoToReview
-        };    
+            CardStudyMethodology.ContinuedReview => (Math.Min(deck.DeckSettings.ReviewsPerDay, deck.CardCount ?? deck.DeckSettings.ReviewsPerDay), false),
+            CardStudyMethodology.Anki => (deck.CardNoToReview, true),
+            _ => throw new NotImplementedException($"Study methodology {request.StudyMethodology} is not currently supported."),
+        };
 
-        var result = cardStrategyContext.GetStudyCards(cardsToStudy, deck.DeckSettings.NewCardsPerDay);
+        var result = await cardRepository.GetCardsToStudy(request.DeckId, cardsToStudy, deck.DeckSettings.NewCardsPerDay, fillUnmet, cancellationToken);
 
         return result;
     }

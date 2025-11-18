@@ -1,4 +1,5 @@
 export enum StudyMethodology {
     Random,
-    Anki
+    Anki,
+    ContinuedReview
 }

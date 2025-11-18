@@ -14,7 +14,7 @@ namespace StudyCards.Application.UseCases.CardStudy.Commands;
 public class ReviewCardsCommand : ICommand<IList<Card>>
 {
     public Guid DeckId { get; set; }
-    public IList<CardReviewed> CardReviews { get; set; } = new List<CardReviewed>();
+    public IList<CardReviewed> CardReviews { get; set; } = [];
 
     public class CardReviewed
     {   

@@ -706,6 +706,11 @@
   "components": {
     "schemas": {
       "AddCardRequest": {
+        "required": [
+          "deckId",
+          "cardFront",
+          "cardBack"
+        ],
         "type": "object",
         "properties": {
           "deckId": {
@@ -721,6 +726,10 @@
         }
       },
       "AddCardsRequest": {
+        "required": [
+          "deckId",
+          "cards"
+        ],
         "type": "object",
         "properties": {
           "deckId": {
@@ -753,6 +762,11 @@
         }
       },
       "AddDeckRequest": {
+        "required": [
+          "deckName",
+          "reviewsPerDay",
+          "newCardsPerDay"
+        ],
         "type": "object",
         "properties": {
           "deckName": {
@@ -1038,6 +1052,11 @@
         }
       },
       "ReviewCardRequest": {
+        "required": [
+          "cardId",
+          "cardDifficulty",
+          "repeatCount"
+        ],
         "type": "object",
         "properties": {
           "cardId": {
@@ -1059,6 +1078,10 @@
         }
       },
       "ReviewCardsRequest": {
+        "required": [
+          "deckId",
+          "cards"
+        ],
         "type": "object",
         "properties": {
           "deckId": {
@@ -1074,6 +1097,12 @@
         }
       },
       "UpdateCardRequest": {
+        "required": [
+          "cardId",
+          "deckId",
+          "cardFront",
+          "cardBack"
+        ],
         "type": "object",
         "properties": {
           "cardId": {
@@ -1093,6 +1122,12 @@
         }
       },
       "UpdateDeckRequest": {
+        "required": [
+          "deckId",
+          "deckName",
+          "reviewsPerDay",
+          "newCardsPerDay"
+        ],
         "type": "object",
         "properties": {
           "deckId": {
