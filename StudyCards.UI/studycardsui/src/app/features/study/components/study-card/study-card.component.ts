@@ -1,11 +1,11 @@
-import { NgIf } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { StudyCardActionsComponent } from "../study-card-actions/study-card-actions.component";
 import { CardDifficulty } from 'app/shared/models/card-difficulty';
 
 @Component({
   selector: 'app-study-card',
-  imports: [NgIf, StudyCardActionsComponent],
+  imports: [StudyCardActionsComponent],
   templateUrl: './study-card.component.html',
   styleUrls: ['./study-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
