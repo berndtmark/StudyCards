@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CardService as CardServiceApi } from '../../../@api/services';
-import { CardResponse } from 'app/@api/models/card-response';
-import { CardText } from 'app/@api/models/card-text';
-import { AddCardsResponse } from 'app/@api/models/add-cards-response';
 import { ImportCard } from '../models/import-card';
-import { PagedResultOfCardResponse } from 'app/@api/models/paged-result-of-card-response';
+import { CardResponse } from '../../../@api/models/card-response';
+import { AddCardsResponse } from '../../../@api/models/add-cards-response';
+import { CardText } from '../../../@api/models/card-text';
+import { PagedResultOfCardResponse } from '../../../@api/models/paged-result-of-card-response';
 
 @Injectable({
   providedIn: 'root'

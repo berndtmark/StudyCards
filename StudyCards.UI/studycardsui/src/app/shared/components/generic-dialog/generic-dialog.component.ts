@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogModule } from '@angular/material/dialog';
-import { DialogData } from 'app/shared/services/dialog.service';
+import { DialogData } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-generic-dialog',

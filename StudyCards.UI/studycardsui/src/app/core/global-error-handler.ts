@@ -1,5 +1,5 @@
 import { ErrorHandler, inject } from "@angular/core";
-import { DialogService } from "app/shared/services/dialog.service";
+import { DialogService } from "../shared/services/dialog.service";
 
 export class GlobalErrorHandler implements ErrorHandler {
   private readonly dialog = inject(DialogService);

@@ -1,17 +1,17 @@
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { LoadingState } from 'app/shared/models/loading-state';
 import { computed, inject } from '@angular/core';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { catchError, debounceTime, pipe, switchMap, tap } from 'rxjs';
 import { CardService } from '../services/card.service';
-import { SnackbarService } from 'app/shared/services/snackbar.service';
-import { CardResponse } from 'app/@api/models/card-response';
 import { ImportCard } from '../models/import-card';
-import { DialogService } from 'app/shared/services/dialog.service';
-import { FileService } from 'app/shared/services/file.service';
-import { Pagination } from 'app/shared/models/pagination';
-import { ErrorHandlerService } from 'app/shared/services/error-handler.service';
 import { Router } from '@angular/router';
+import { LoadingState } from '../../../shared/models/loading-state';
+import { CardResponse } from '../../../@api/models/card-response';
+import { Pagination } from '../../../shared/models/pagination';
+import { SnackbarService } from '../../../shared/services/snackbar.service';
+import { DialogService } from '../../../shared/services/dialog.service';
+import { FileService } from '../../../shared/services/file.service';
+import { ErrorHandlerService } from '../../../shared/services/error-handler.service';
 
 type CardState = {
     loadingState: LoadingState

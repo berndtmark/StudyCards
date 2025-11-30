@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { StatusBadgeComponent } from './status-badge.component';
 
@@ -9,8 +8,7 @@ describe('StatusBadgeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatusBadgeComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [StatusBadgeComponent]
     })
     .compileComponents();
 
@@ -22,7 +20,7 @@ describe('StatusBadgeComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it.only('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

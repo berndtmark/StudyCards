@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { ShellPageComponent } from './shell-page.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { RootStore } from 'app/shared/store/root.store';
+import { RootStore } from '../../store/root.store';
 
 describe('ShellPageComponent', () => {
   let component: ShellPageComponent;
@@ -16,8 +15,7 @@ describe('ShellPageComponent', () => {
       providers: [
         RootStore,
         provideHttpClient(),
-        provideHttpClientTesting(),
-        provideZonelessChangeDetection()
+        provideHttpClientTesting()
       ]
     })
     .compileComponents();
@@ -27,7 +25,7 @@ describe('ShellPageComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

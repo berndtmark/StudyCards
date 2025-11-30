@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { GenericDialogComponent } from './generic-dialog.component';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -12,9 +11,8 @@ describe('GenericDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [GenericDialogComponent],
       providers: [
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        provideZonelessChangeDetection()
-    ]
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+      ]
     })
     .compileComponents();
 
@@ -23,7 +21,7 @@ describe('GenericDialogComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

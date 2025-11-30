@@ -8,38 +8,45 @@
     "build:prod": "npm run generate-api && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "test:ci": "npm run generate-api && npm run test -- --no-watch --no-progress --browsers=ChromeHeadless",
+    "test:ci": "npm run generate-api && npm run test -- --watch=false",
     "generate-api": "npx ng-openapi-gen --services true --promises false --input servercardsapi.json --output src/app/@api",
     "start-api": "dotnet run --project ../../StudyCards.Server/StudyCards.Server.csproj --launch-profile https"
   },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": "*.html",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
+  },
   "private": true,
+  "packageManager": "npm@11.6.2",
   "dependencies": {
     "@angular/cdk": "^21.0.1",
-    "@angular/common": "^21.0.1",
-    "@angular/compiler": "^21.0.1",
-    "@angular/core": "^21.0.1",
-    "@angular/forms": "^21.0.1",
+    "@angular/common": "^21.0.0",
+    "@angular/compiler": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/forms": "^21.0.0",
     "@angular/material": "^21.0.1",
-    "@angular/platform-browser": "^21.0.1",
-    "@angular/platform-browser-dynamic": "^21.0.1",
-    "@angular/router": "^21.0.1",
-    "@microsoft/signalr": "^8.0.7",
-    "@ngrx/signals": "^20.0.0",
+    "@angular/platform-browser": "^21.0.0",
+    "@angular/router": "^21.0.0",
+    "@microsoft/signalr": "^10.0.0",
+    "@ngrx/signals": "^20.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "^21.0.1",
     "@angular/cli": "^21.0.1",
-    "@angular/compiler-cli": "^21.0.1",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.6.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
-    "ng-openapi-gen": "^1.0.4",
-    "typescript": "~5.9.3"
+    "@angular/compiler-cli": "^21.0.0",
+    "jsdom": "^27.1.0",
+    "ng-openapi-gen": "^1.0.5",
+    "typescript": "~5.9.2",
+    "vitest": "^4.0.8"
   }
 }

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { ImportCodeSnippetComponent } from './import-code-snippet.component';
 
@@ -9,8 +8,7 @@ describe('ImportCodeSnippetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ImportCodeSnippetComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [ImportCodeSnippetComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('ImportCodeSnippetComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

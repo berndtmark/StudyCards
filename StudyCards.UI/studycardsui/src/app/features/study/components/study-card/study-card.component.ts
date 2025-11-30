@@ -1,7 +1,7 @@
 
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { StudyCardActionsComponent } from "../study-card-actions/study-card-actions.component";
-import { CardDifficulty } from 'app/shared/models/card-difficulty';
+import { CardDifficulty } from '../../../../shared/models/card-difficulty';
 
 @Component({
   selector: 'app-study-card',

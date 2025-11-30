@@ -2,11 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { CardStore } from '../../store/card.store';
 import { CardListComponent } from "../card-list/card-list.component";
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingState } from 'app/shared/models/loading-state';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
+import { LoadingState } from '../../../../shared/models/loading-state';
 
 @Component({
   selector: 'app-card-landing',
