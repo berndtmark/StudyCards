@@ -20,7 +20,7 @@ describe('StatusBadgeComponent', () => {
     await fixture.whenStable();
   });
 
-  it.only('should create', async () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });
