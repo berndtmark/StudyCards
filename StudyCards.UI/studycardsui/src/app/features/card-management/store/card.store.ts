@@ -194,10 +194,24 @@ export const CardStore = signalStore(
                     )
                 )
             ),
-            export: () => {
-                const data = store.cards().map(c => ({ cardFront: c.cardFront, cardBack: c.cardBack }));
-                fileService.downloadJson(data, 'studycards.json');
-            }
+            export: rxMethod(
+                pipe(
+                    switchMap(() => {
+                        const maxExportCardNo = 2000;
+                        return cardService.getCards(store.deckId(), 1, maxExportCardNo)
+                            .pipe(
+                                tap((cards) => {
+                                    const data = cards.items.map(c => ({ cardFront: c.cardFront, cardBack: c.cardBack }));
+                                    fileService.downloadJson(data, 'studycards.json');
+
+                                    if (cards.hasNextPage) {
+                                        dialogService.info("Warning", `Too many cards to export. First ${maxExportCardNo} exported.`);
+                                    }
+                            }),
+                            catchError(errorHandler.handleStoreError(store, "Failed to export cards")))
+                    })
+                )
+            )
     })),
     withMethods((store) => ({
         loadDeckIfNot: (deckId: string) => {

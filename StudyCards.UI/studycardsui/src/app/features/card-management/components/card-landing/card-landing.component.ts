@@ -50,7 +50,7 @@ export class CardLandingComponent implements OnInit {
   }
 
   export(): void {
-    this.store.export();
+    this.store.export({});
   }
 
   search(searchTerm: string): void {
