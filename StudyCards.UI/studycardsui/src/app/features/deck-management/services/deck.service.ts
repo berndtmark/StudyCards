@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { DeckService as DeckServiceApi } from '../../../@api/services';
-import { UpdateDeckRequest } from 'app/@api/models/update-deck-request';
 import { Deck } from '../models/deck';
-import { DateFuctions } from 'app/shared/functions/date-functions';
-import { DeckResponse } from 'app/@api/models/deck-response';
-import { AddDeckRequest } from 'app/@api/models/add-deck-request';
+import { AddDeckRequest } from '../../../@api/models/add-deck-request';
+import { UpdateDeckRequest } from '../../../@api/models/update-deck-request';
+import { DateFuctions } from '../../../shared/functions/date-functions';
+import { DeckResponse } from '../../../@api/models/deck-response';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+
 import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
 
 @Component({
@@ -8,7 +8,7 @@ import { MyButtonComponent } from "../../../../shared/components/my-button/my-bu
   templateUrl: './study-complete.component.html',
   styleUrls: ['./study-complete.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatIconModule, MyButtonComponent]
+  imports: [MatIconModule, MyButtonComponent]
 })
 export class StudyCompleteComponent {
     title = input<string>('All Done for Today!');

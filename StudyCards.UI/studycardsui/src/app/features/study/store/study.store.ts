@@ -1,15 +1,15 @@
 import { computed, inject } from "@angular/core";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
-import { CardResponse } from "app/@api/models/card-response";
-import { LoadingState } from "app/shared/models/loading-state";
 import { StudyService } from "../services/study.service";
 import { rxMethod } from "@ngrx/signals/rxjs-interop";
 import { catchError, of, pipe, switchMap, tap } from "rxjs";
-import { StudyMethodology } from "app/shared/models/study-methodology";
-import { CardDifficulty } from "app/shared/models/card-difficulty";
-import { SnackbarService } from "app/shared/services/snackbar.service";
 import { injectDispatch } from "@ngrx/signals/events";
-import { deckEvents } from "app/features/deck-management/store/deck.store";
+import { deckEvents } from "../../deck-management/store/deck.store";
+import { SnackbarService } from "../../../shared/services/snackbar.service";
+import { StudyMethodology } from "../../../shared/models/study-methodology";
+import { CardDifficulty } from "../../../shared/models/card-difficulty";
+import { CardResponse } from "../../../@api/models/card-response";
+import { LoadingState } from "../../../shared/models/loading-state";
 
 type StudyState = {
     loadingState: LoadingState

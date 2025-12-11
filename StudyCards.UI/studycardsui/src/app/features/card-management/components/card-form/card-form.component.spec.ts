@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { CardFormComponent } from './card-form.component';
 
@@ -9,8 +8,7 @@ describe('CardFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardFormComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [CardFormComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('CardFormComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

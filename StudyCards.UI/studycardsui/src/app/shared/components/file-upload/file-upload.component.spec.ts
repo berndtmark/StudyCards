@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { FileUploadComponent } from './file-upload.component';
 
@@ -9,8 +8,7 @@ describe('FileUploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileUploadComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [FileUploadComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('FileUploadComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

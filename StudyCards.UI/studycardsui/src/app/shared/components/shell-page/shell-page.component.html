@@ -1,16 +1,18 @@
 <div class="shell-page-header">
-    <h2>Study Cards</h2>
+  <h2>Study Cards</h2>
 
-    <div class="right-hand-content">
-        <span class="welcome" *ngIf="store.userName()">Welcome {{ store.userName() }}</span>
+  <div class="right-hand-content">
+    @if (store.userName()) {
+      <span class="welcome">Welcome {{ store.userName() }}</span>
+    }
 
-        <button mat-raised-button (click)="logout()">
-            <mat-icon>login</mat-icon>
-            Logout
-        </button>
-    </div>
+    <button mat-raised-button (click)="logout()">
+      <mat-icon>login</mat-icon>
+      Logout
+    </button>
+  </div>
 </div>
 
 <div class="shell-page-content">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

@@ -1,8 +1,10 @@
-<mat-progress-bar mode="indeterminate" *ngIf="store.loadingState() == loadingState.Loading"></mat-progress-bar>
+@if (store.loadingState() == loadingState.Loading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <div class="deck-grid">
-    <app-add-deck (addDeck)="addDeck()"></app-add-deck>
+  <app-add-deck (addDeck)="addDeck()"></app-add-deck>
 
-    @for (deck of store.decks(); track deck.id) {
-      <app-deck-item [deck]="deck"></app-deck-item>
-    }
+  @for (deck of store.decks(); track deck.id) {
+    <app-deck-item [deck]="deck"></app-deck-item>
+  }
 </div>

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import { AuthorizeService } from 'app/shared/services/authorize.service';
+import { AuthorizeService } from '../../services/authorize.service';
 
 @Component({
   selector: 'app-login',

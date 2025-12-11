@@ -1,6 +1,8 @@
 import { Inject, Injectable, InjectionToken, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 
+export const SIGNALR_URL = new InjectionToken<string>('SignalRHubUrl');
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,5 +50,3 @@ export class HubService {
     });
   }
 }
-
-export const SIGNALR_URL = new InjectionToken<string>('SignalRHubUrl');

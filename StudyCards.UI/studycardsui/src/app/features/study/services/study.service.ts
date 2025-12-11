@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { StudyService as StudyServiceApi } from '../../../@api/services';
 import { StudyMethodology } from '../../../shared/models/study-methodology';
-import { CardDifficulty } from 'app/shared/models/card-difficulty';
-import { CardDifficulty as CD } from 'app/@api/models/card-difficulty';
+import { CardDifficulty as CD  } from '../../../@api/models/card-difficulty';
+import { CardDifficulty } from '../../../shared/models/card-difficulty';
 
 @Injectable({
   providedIn: 'root'

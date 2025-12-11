@@ -3,10 +3,10 @@ import { computed, inject } from '@angular/core';
 import { DeckService } from '../services/deck.service';
 import { catchError, of, pipe, switchMap, tap } from 'rxjs';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { LoadingState } from 'app/shared/models/loading-state';
-import { SnackbarService } from 'app/shared/services/snackbar.service';
 import { Deck } from '../models/deck';
 import { eventGroup, on, withReducer } from '@ngrx/signals/events';
+import { LoadingState } from '../../../shared/models/loading-state';
+import { SnackbarService } from '../../../shared/services/snackbar.service';
 
 type DeckState = {
     loadingState: LoadingState

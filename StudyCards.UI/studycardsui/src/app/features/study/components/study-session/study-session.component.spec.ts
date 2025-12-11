@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { StudySessionComponent } from './study-session.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
 import { StudyStore } from '../../store/study.store';
 import { RouterModule } from '@angular/router';
 
@@ -18,10 +15,7 @@ describe('StudySessionComponent', () => {
         RouterModule.forRoot([]),
       ],
       providers: [
-        StudyStore,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        provideZonelessChangeDetection()
+        StudyStore
       ]
     })
     .compileComponents();
@@ -31,7 +25,7 @@ describe('StudySessionComponent', () => {
   await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

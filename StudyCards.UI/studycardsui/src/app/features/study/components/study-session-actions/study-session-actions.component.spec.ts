@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { StudySessionActionsComponent } from './study-session-actions.component';
 
@@ -9,8 +8,7 @@ describe('StudySessionActionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StudySessionActionsComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [StudySessionActionsComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('StudySessionActionsComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

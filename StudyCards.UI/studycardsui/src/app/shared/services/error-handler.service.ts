@@ -19,7 +19,7 @@ export class ErrorHandlerService {
         patchState(store, { loadingState: LoadingState.Error });
         this.snackBar.open(action);
       } else {
-        patchState(store, { loadingState: LoadingState.Success });
+        patchState(store, { loadingState: LoadingState.Success }); // Its a bad request, let the app continue as normal
       }
 
       return of(null);

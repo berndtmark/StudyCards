@@ -4,9 +4,9 @@ import { DeckStore } from '../../store/deck.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Deck } from '../../models/deck';
 import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
-import { DialogService } from 'app/shared/services/dialog.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { DialogService } from '../../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-update-deck',

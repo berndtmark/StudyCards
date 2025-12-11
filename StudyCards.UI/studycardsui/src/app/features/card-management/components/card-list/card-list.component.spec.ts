@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { CardListComponent } from './card-list.component';
 import { CardStore } from '../../store/card.store';
-import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('CardListComponent', () => {
   let component: CardListComponent;
@@ -14,10 +11,7 @@ describe('CardListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CardListComponent],
       providers: [
-        CardStore,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        provideZonelessChangeDetection()
+        CardStore
       ]
     })
     .compileComponents();
@@ -27,7 +21,7 @@ describe('CardListComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

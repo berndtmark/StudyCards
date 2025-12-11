@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { StudyLandingComponent } from './study-landing.component';
 import { RouterModule } from '@angular/router';
@@ -13,8 +12,7 @@ describe('StudyLandingComponent', () => {
       imports: [
         StudyLandingComponent,
         RouterModule.forRoot([])
-      ],
-      providers: [provideZonelessChangeDetection()]
+      ]
     })
     .compileComponents();
 
@@ -23,7 +21,7 @@ describe('StudyLandingComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

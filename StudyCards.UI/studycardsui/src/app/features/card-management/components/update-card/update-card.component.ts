@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { CardStore } from '../../store/card.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CardFormComponent } from "../card-form/card-form.component";
-import { DialogService } from 'app/shared/services/dialog.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
+import { DialogService } from '../../../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-update-card',

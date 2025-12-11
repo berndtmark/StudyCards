@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { CardListLegendComponent } from './card-list-legend.component';
 
@@ -9,8 +8,7 @@ describe('CardListLegendComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardListLegendComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [CardListLegendComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('CardListLegendComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

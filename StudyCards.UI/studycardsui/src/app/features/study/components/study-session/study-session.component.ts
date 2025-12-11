@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
 import { StudyStore } from '../../store/study.store';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudyMethodology } from 'app/shared/models/study-methodology';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { LoadingState } from 'app/shared/models/loading-state';
 import { CardsToStudyComponent } from "../cards-to-study/cards-to-study.component";
 import { StudyCompleteComponent } from '../study-complete/study-complete.component';
-import { CardDifficulty } from 'app/shared/models/card-difficulty';
 import { StudySessionActionsComponent } from '../study-session-actions/study-session-actions.component';
+import { LoadingState } from '../../../../shared/models/loading-state';
+import { StudyMethodology } from '../../../../shared/models/study-methodology';
+import { CardDifficulty } from '../../../../shared/models/card-difficulty';
 
 @Component({
   selector: 'app-study-session',

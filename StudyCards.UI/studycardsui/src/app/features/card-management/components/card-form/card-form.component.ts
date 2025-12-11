@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { CardResponse } from 'app/@api/models/card-response';
+import { CardResponse } from '../../../../@api/models/card-response';
 
 @Component({
   selector: 'app-card-form',

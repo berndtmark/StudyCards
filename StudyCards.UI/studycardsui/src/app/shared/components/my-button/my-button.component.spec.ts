@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { MyButtonComponent } from './my-button.component';
 
@@ -9,8 +8,7 @@ describe('MyButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MyButtonComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [MyButtonComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('MyButtonComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

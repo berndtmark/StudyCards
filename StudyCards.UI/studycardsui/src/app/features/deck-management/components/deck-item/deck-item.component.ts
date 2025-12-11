@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeckStore } from '../../store/deck.store';
-import { StatusBadgeComponent } from 'app/shared/components/status-badge/status-badge.component';
 import { Deck } from '../../models/deck';
+import { StatusBadgeComponent } from '../../../../shared/components/status-badge/status-badge.component';
 
 @Component({
   selector: 'app-deck-item',

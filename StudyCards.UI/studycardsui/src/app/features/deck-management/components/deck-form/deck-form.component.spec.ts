@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { DeckFormComponent } from './deck-form.component';
 
@@ -9,8 +8,7 @@ describe('DeckFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeckFormComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [DeckFormComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('DeckFormComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

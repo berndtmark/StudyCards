@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './shared/guards/auth-guard';
 import { LoginComponent } from './shared/components/login/login.component';
-import { ShellPageComponent } from './shared/components/shell-page/shell-page.component';
 import { RootStore } from './shared/store/root.store';
+import { ShellPageComponent } from './shared/components/shell-page/shell-page.component';
+import { AuthGuard } from './shared/guards/auth-guard';
 
 export const routes: Routes = [
     {
