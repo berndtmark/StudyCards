@@ -1,17 +1,16 @@
-import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, ErrorHandler, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { environment } from '../environments/environment';
-import { ApiConfiguration } from './@api/api-configuration';
 import { SIGNALR_URL } from './shared/services/hub.service';
+import { environment } from '../environments/environment';
+import { GlobalErrorHandler } from './core/global-error-handler';
+import { ApiConfiguration } from './@api/api-configuration';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZonelessChangeDetection(),
+    provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(),
     {
       provide: ApiConfiguration,
       useFactory: () => {
@@ -20,6 +19,7 @@ export const appConfig: ApplicationConfig = {
         return config;
       }
     },
-    { provide: SIGNALR_URL, useValue: environment.chatHubUrl }
-  ],
+    { provide: SIGNALR_URL, useValue: environment.chatHubUrl },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
+  ]
 };

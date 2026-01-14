@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, OnDestroy, output } from '@angular/core';
 import { DeterminateProgressSpinnerComponent } from "../../../../shared/components/determinate-progress-spinner/determinate-progress-spinner.component";
-import { createAutoEvoke } from 'app/shared/functions/auto-evoke';
 import { MatIcon } from '@angular/material/icon';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MyButtonComponent } from "../../../../shared/components/my-button/my-button.component";
+import { createAutoEvoke } from '../../../../shared/functions/auto-evoke';
 
 @Component({
   selector: 'app-study-session-actions',

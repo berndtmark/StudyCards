@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { DeckActionsComponent } from './deck-actions.component';
 
@@ -9,8 +8,7 @@ describe('DeckActionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeckActionsComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [DeckActionsComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('DeckActionsComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

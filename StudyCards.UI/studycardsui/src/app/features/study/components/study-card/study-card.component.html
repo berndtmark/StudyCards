@@ -13,4 +13,6 @@
   </div>
 </div>
 
-<app-study-card-actions *ngIf="isFlipped" (reviewedCard)="onCardCompleted($event)"></app-study-card-actions>
+@if (isFlipped) {
+  <app-study-card-actions (reviewedCard)="onCardCompleted($event)"></app-study-card-actions>
+}
