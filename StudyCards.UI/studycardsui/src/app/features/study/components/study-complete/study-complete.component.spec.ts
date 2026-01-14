@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { StudyCompleteComponent } from './study-complete.component';
 
@@ -11,8 +10,7 @@ describe('StudyCompleteComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         StudyCompleteComponent,
-      ],
-      providers: [provideZonelessChangeDetection()]
+      ]
     })
     .compileComponents();
 
@@ -21,7 +19,7 @@ describe('StudyCompleteComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

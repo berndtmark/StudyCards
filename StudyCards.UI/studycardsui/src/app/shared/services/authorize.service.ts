@@ -1,7 +1,7 @@
 import { inject, Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'app/@api/services';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { AuthService } from '../../@api/services';
 
 @Injectable({
   providedIn: 'root'

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 import { CardImportDisplayComponent } from './card-import-display.component';
 
@@ -9,8 +8,7 @@ describe('CardImportDisplayComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CardImportDisplayComponent],
-      providers: [provideZonelessChangeDetection()]
+      imports: [CardImportDisplayComponent]
     })
     .compileComponents();
 
@@ -19,7 +17,7 @@ describe('CardImportDisplayComponent', () => {
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it('should create', async () => {
     expect(component).toBeTruthy();
   });
 });

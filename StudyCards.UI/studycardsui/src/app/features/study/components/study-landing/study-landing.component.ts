@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
-import { StudyMethodology } from 'app/shared/models/study-methodology';
+import { StudyMethodology } from '../../../../shared/models/study-methodology';
 
 @Component({
   selector: 'app-study-landing',
