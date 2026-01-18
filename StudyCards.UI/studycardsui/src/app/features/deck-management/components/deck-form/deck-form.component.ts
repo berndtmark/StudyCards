@@ -1,78 +1,86 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, input, output, signal } from '@angular/core';
 import { Deck } from '../../models/deck';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { form, FormField, min, required, validate, ValidationError } from '@angular/forms/signals'
 
 @Component({
   selector: 'app-deck-form',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [FormField, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './deck-form.component.html',
   styleUrl: './deck-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DeckFormComponent implements OnInit {
-  private fb = inject(FormBuilder)
-  
-  deckForm!: FormGroup;
+export class DeckFormComponent {  
+  deckModel = signal({
+    id: '',
+    name: '',
+    description: '',
+    maxReviews: 10,
+    maxNew: 2,
+  })
+
+  deckForm = form(this.deckModel, (schemaPath) => {
+    required(schemaPath.name, { message: 'Name is required' }),
+    min(schemaPath.maxNew, 1, { message: 'Max New must be at least 1' }),
+    min(schemaPath.maxReviews, 1, { message: 'Max New must be at least 1' }),
+    validate(schemaPath.maxNew, ({value, valueOf}) => {
+      const maxNew = value();
+      const maxReviews = valueOf(schemaPath.maxReviews);
+
+      if (maxNew != null && maxReviews != null && maxNew > maxReviews) {
+        return { 
+          kind: 'maxNewExceedsReviews',
+          message: 'Max new cards must be less than or equal to max reviews'
+        };
+      }
+
+      return null;
+    })
+  });
 
   saveButtonName = input<string>('Save Deck');
-  deck = input(null, {
-    transform: (value: Deck) => {
-      this.patchForm(value);
-      return value;
-    }
-  });
+  deck = input<Deck>();
 
   submit = output<Deck>();
 
-  ngOnInit(): void {
-    this.initForm();
+  constructor() {
+    effect(() => {
+      const deckValue = this.deck();
+      if (deckValue) {
+        this.patchForm(deckValue);
+      }
+    });
   }
 
   onSubmit(): void {
-    if (this.deckForm.valid) {
+    if (this.deckForm().valid()) {
         const deck = this.formToDeck();
         this.submit.emit(deck);
         
-        this.deckForm.reset();
+        this.deckForm().reset();
       }
   }
 
-  private initForm(): void {
-    if (this.deckForm)
-      return; // Form already initialized
-
-    this.deckForm = this.fb.group({
-        id: [''],
-        name: ['', Validators.required],
-        description: [''],
-        maxReviews: [10, Validators.min(1)],
-        maxNew: [2, Validators.min(1)]
-      },
-      {
-        validators: this.maxNewLessThanOrEqualValidator
-      }
-    );
+  hasMaxNewExceedsReviewsError(): boolean {
+    return this.deckForm.maxNew().errors().some((error: ValidationError) => error.kind === 'maxNewExceedsReviews');
   }
 
   private patchForm(deck: Deck): void {
     if (deck) {
-      this.initForm();
-
-      this.deckForm.patchValue({
-        id: deck.id,
-        name: deck?.deckName,
-        description: deck.description,
-        maxReviews: deck.deckSettings?.reviewsPerDay,
-        maxNew: deck.deckSettings?.newCardsPerDay
+      this.deckModel.set({
+        id: deck.id!,
+        name: deck?.deckName!,
+        description: deck.description!,
+        maxReviews: deck.deckSettings?.reviewsPerDay!,
+        maxNew: deck.deckSettings?.newCardsPerDay!
       });
     }
   }
 
   private formToDeck(): Deck {
-      const deckForm = this.deckForm.value;
+      const deckForm = this.deckForm().value();
 
       return {
           id: deckForm.id,
@@ -83,16 +91,5 @@ export class DeckFormComponent implements OnInit {
               newCardsPerDay: deckForm.maxNew
           }
       }
-  }
-
-  private maxNewLessThanOrEqualValidator(control: AbstractControl): ValidationErrors | null {
-    const maxNew = control.get('maxNew')?.value;
-    const maxReviews = control.get('maxReviews')?.value;
-
-    if (maxNew != null && maxReviews != null && maxNew > maxReviews) {
-      return { maxNewExceedsReviews: true };
-    }
-
-    return null;
   }
 }
