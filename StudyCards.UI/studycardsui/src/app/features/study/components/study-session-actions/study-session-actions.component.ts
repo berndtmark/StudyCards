@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, OnDestroy, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, OnDestroy, output } from '@angular/core';
 import { DeterminateProgressSpinnerComponent } from "../../../../shared/components/determinate-progress-spinner/determinate-progress-spinner.component";
 import { MatIcon } from '@angular/material/icon';
 import { MatMiniFabButton } from '@angular/material/button';
@@ -16,17 +16,17 @@ export class StudySessionActionsComponent implements OnDestroy {
   autoSaveTimeSeconds = 120;
   autoSave = createAutoEvoke(() => this.save.emit(), this.autoSaveTimeSeconds);
   
-  showSaveGroup = input(false, {
-    transform: (value: boolean) => {
-      if (value) {
+  showSaveGroup = input(false);
+
+  constructor() {
+    effect(() => {
+      if (this.showSaveGroup()) {
         this.autoSave.start();
       } else {
         this.autoSave.clear();
       }
-
-      return value;
-    }
-  });
+    });
+  }
 
   goBack = output<void>();
   save = output<void>();
