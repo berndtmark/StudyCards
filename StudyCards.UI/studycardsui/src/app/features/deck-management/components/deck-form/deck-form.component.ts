@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, linkedSignal, output, signal } from '@angular/core';
 import { Deck } from '../../models/deck';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,12 +13,21 @@ import { form, FormField, min, required, validate, ValidationError } from '@angu
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DeckFormComponent {  
-  deckModel = signal({
-    id: '',
-    name: '',
-    description: '',
-    maxReviews: 10,
-    maxNew: 2,
+  saveButtonName = input<string>('Save Deck');
+  deck = input<Deck>();
+  submit = output<Deck>();
+
+  deckModel = linkedSignal({
+    source: this.deck,
+    computation: (deck) => {
+      return {
+        id: deck?.id ?? '',
+        name: deck?.deckName ?? '',
+        description: deck?.description ?? '',
+        maxReviews: deck?.deckSettings?.reviewsPerDay ?? 10,
+        maxNew: deck?.deckSettings?.newCardsPerDay ?? 2
+      }
+    }
   })
 
   deckForm = form(this.deckModel, (schemaPath) => {
@@ -40,20 +49,6 @@ export class DeckFormComponent {
     })
   });
 
-  saveButtonName = input<string>('Save Deck');
-  deck = input<Deck>();
-
-  submit = output<Deck>();
-
-  constructor() {
-    effect(() => {
-      const deckValue = this.deck();
-      if (deckValue) {
-        this.patchForm(deckValue);
-      }
-    });
-  }
-
   onSubmit(): void {
     if (this.deckForm().valid()) {
         const deck = this.formToDeck();
@@ -65,18 +60,6 @@ export class DeckFormComponent {
 
   hasMaxNewExceedsReviewsError(): boolean {
     return this.deckForm.maxNew().errors().some((error: ValidationError) => error.kind === 'maxNewExceedsReviews');
-  }
-
-  private patchForm(deck: Deck): void {
-    if (deck) {
-      this.deckModel.set({
-        id: deck.id!,
-        name: deck?.deckName!,
-        description: deck.description!,
-        maxReviews: deck.deckSettings?.reviewsPerDay!,
-        maxNew: deck.deckSettings?.newCardsPerDay!
-      });
-    }
   }
 
   private formToDeck(): Deck {
