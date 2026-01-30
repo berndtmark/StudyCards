@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, OnInit, output } from '@angular/core';
 import { ImportCard } from '../../models/import-card';
 import { MatTableModule } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -12,19 +12,21 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardImportDisplayComponent implements OnInit {
-  cards = input([], {
-    transform: (value: ImportCard[]) => {
-      this.selection.clear();
-      this.updateEmitter();
-      return value;
-    }
-  });
+  cards = input<ImportCard[]>([]);
   title = input<string>();
   includeSelector = input<boolean>();
   selectedIds = output<string[]>();
 
   displayedColumns = ['cardfront', 'cardback'];
   selection = new SelectionModel<ImportCard>(true, []);
+
+  constructor() {
+    effect(() => {
+      this.cards();
+      this.selection.clear();
+      this.updateEmitter();
+    });
+  }
 
   ngOnInit() {
     if (this.includeSelector()) {

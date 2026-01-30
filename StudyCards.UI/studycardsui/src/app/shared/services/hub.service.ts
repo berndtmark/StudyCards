@@ -36,6 +36,11 @@ export class HubService {
     this.hubConnection.start().catch(err => console.error('SignalR Error:', err));
   }
 
+  destroy() {
+    if (this.hubConnection)
+      this.hubConnection.stop().catch(err => console.error('SignalR Error:', err));
+  }
+
   sendMessage(user: string, message: string) {
     if (!this.hubConnection)
       throw "SignalR connection not initialized. Call init()"

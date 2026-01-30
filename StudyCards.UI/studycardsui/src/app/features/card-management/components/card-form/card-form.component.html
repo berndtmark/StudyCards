@@ -1,18 +1,21 @@
 <div class="form-card">
     <h3 class="title">{{title()}}</h3>
-    <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+    <form>
         <mat-form-field>
             <mat-label>Front</mat-label>
-            <input matInput formControlName="front" required>
+            <input matInput [formField]="cardForm.front">
         </mat-form-field>
     
         <mat-form-field>
             <mat-label>Back</mat-label>
-            <input matInput formControlName="back" required>
+            <input matInput [formField]="cardForm.back">
         </mat-form-field>
     
         <div class="action-buttons">
-            <button mat-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">{{saveButtonName()}}</button>
+            <button mat-raised-button color="primary" type="button" 
+                [disabled]="!cardForm().valid()" (click)="onSubmit()">
+                    {{saveButtonName()}}
+            </button>
             <ng-content select="[button-content]"></ng-content>
         </div>
     </form>
