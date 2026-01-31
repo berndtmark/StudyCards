@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
 using StudyCards.Application.UseCases.CardStudy.Commands;
@@ -13,7 +13,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class StudyController(IMapper mapper, ISender sender) : ControllerBase
+public class StudyController(CardMapper cardMapper, ISender sender) : ControllerBase
 {
     [HttpGet]
     [Route("getcardstostudy/deck/{deckId}/methodology/{methodology}", Name = "getstudycard")]
@@ -25,7 +25,7 @@ public class StudyController(IMapper mapper, ISender sender) : ControllerBase
             StudyMethodology = methodology 
         });
 
-        var response = mapper.Map<IEnumerable<CardResponse>>(result);
+        var response = cardMapper.Map(result);
         return Ok(response);
     }
 
@@ -45,7 +45,7 @@ public class StudyController(IMapper mapper, ISender sender) : ControllerBase
             })]
         });
 
-        var response = mapper.Map<IList<CardResponse>>(result);
+        var response = cardMapper.Map(result);
         return Ok(response);
     }
 }

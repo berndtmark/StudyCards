@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
 using StudyCards.Application.Common;
@@ -13,7 +13,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class CardController(IMapper mapper, ISender sender) : ControllerBase
+public class CardController(ISender sender, CardMapper cardMapper) : ControllerBase
 {
     [HttpGet]
     [Route("getcards")]
@@ -28,7 +28,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
             SearchTerm = searchTerm
         });
 
-        var response = mapper.Map<PagedResult<CardResponse>>(result);
+        var response = cardMapper.Map(result);
         return Ok(response);
     }
 
@@ -45,7 +45,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
             CardBack = request.CardBack
         });
 
-        var response = mapper.Map<CardResponse>(result);
+        var response = cardMapper.Map(result);
         return Ok(response);
     }
 
@@ -63,7 +63,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
         });
 
         return result.IsSuccess
-            ? Ok(mapper.Map<CardResponse>(result.Data))
+            ? Ok(cardMapper.Map(result.Data!))
             : BadRequest(result.ErrorMessage);
     }
 
@@ -78,8 +78,8 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
             Cards = [.. request.Cards.Select(card => (card.CardFront, card.CardBack))]
         });
 
-        var cardsAdded = mapper.Map<IList<CardResponse>>(result.CardsAdded);
-        var cardsSkipped = mapper.Map<IList<CardResponse>>(result.CardsSkipped);
+        var cardsAdded = cardMapper.Map(result.CardsAdded);
+        var cardsSkipped = cardMapper.Map(result.CardsSkipped);
 
         return Ok(new AddCardsResponse
         {

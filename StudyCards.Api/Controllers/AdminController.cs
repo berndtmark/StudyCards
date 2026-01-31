@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Configuration.ClaimTransforms;
+using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Response;
 using StudyCards.Application.UseCases.Admin.Queries;
 
@@ -11,7 +11,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize(Roles = ClaimRole.Admin)]
 [ApiController]
 [Route("api/[controller]")]
-public class AdminController(ISender sender, IMapper mapper) : ControllerBase
+public class AdminController(ISender sender, AdminMapper adminMapper) : ControllerBase
 {
     [HttpGet]
     [Route("getdeckusage")]
@@ -34,7 +34,7 @@ public class AdminController(ISender sender, IMapper mapper) : ControllerBase
         };
         var response = await sender.Send(query, cancellationToken);
 
-        var result = mapper.Map<IList<UserDetails>>(response);
+        var result = adminMapper.Map(response);
         return Ok(result);
     }
 }

@@ -1,7 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
 using StudyCards.Application.Helpers;
@@ -13,7 +13,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper mapper, ISender sender) : ControllerBase
+public class DeckController(IHttpContextAccessor httpContextAccessor, ISender sender, DeckMapper deckMapper) : ControllerBase
 {
     [HttpGet]
     [Route("getdecks")]
@@ -28,7 +28,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
         };
         var result = await sender.Send(query, cancellationToken);
 
-        var response = mapper.Map<IEnumerable<DeckResponse>>(result);
+        var response = deckMapper.Map(result);
         return Ok(response);
     }
 
@@ -48,7 +48,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = mapper.Map<DeckResponse>(result);
+        var response = deckMapper.Map(result);
         return Ok(response);
     }
 
@@ -69,7 +69,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
             EmailAddress = email
         }, cancellationToken);
 
-        var response = mapper.Map<DeckResponse>(result);
+        var response = deckMapper.Map(result);
         return Ok(response);
     }
 
