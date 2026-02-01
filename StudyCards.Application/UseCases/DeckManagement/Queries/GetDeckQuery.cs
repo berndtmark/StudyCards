@@ -1,6 +1,7 @@
 ﻿using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Application.Interfaces.CQRS;
+using StudyCards.Application.Common;
 
 namespace StudyCards.Application.UseCases.DeckManagement.Queries;
 
@@ -11,8 +12,9 @@ public class GetDeckQuery : IQuery<IEnumerable<Deck>>
 
 public class GetDeckQueryHandler(IDeckRepository deckRepository) : IQueryHandler<GetDeckQuery, IEnumerable<Deck>>
 {
-    public async Task<IEnumerable<Deck>> Handle(GetDeckQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<Deck>>> Handle(GetDeckQuery request, CancellationToken cancellationToken)
     {
-        return await deckRepository.GetByEmail(request.EmailAddress, cancellationToken);
+        var result = await deckRepository.GetByEmail(request.EmailAddress, cancellationToken);
+        return Result<IEnumerable<Deck>>.Success(result);
     }
 }

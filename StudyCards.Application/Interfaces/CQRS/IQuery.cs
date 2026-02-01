@@ -1,7 +1,5 @@
-﻿using MediatR;
+﻿namespace StudyCards.Application.Interfaces.CQRS;
 
-namespace StudyCards.Application.Interfaces.CQRS;
-
-public interface IQuery<TResponse> : IRequest<TResponse>
+public interface IQuery<TResponse>
 {
 }

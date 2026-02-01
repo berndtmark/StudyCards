@@ -19,7 +19,7 @@ export class ErrorHandlerService {
         patchState(store, { loadingState: LoadingState.Error });
         this.snackBar.open(action);
       } else {
-        patchState(store, { loadingState: LoadingState.Success }); // Its a bad request, let the app continue as normal
+        patchState(store, { loadingState: LoadingState.Success }); // Its a validation result, let the app continue as normal
       }
 
       return of(null);
@@ -27,8 +27,8 @@ export class ErrorHandlerService {
   }
 
   private handleValidationError(err: HttpErrorResponse): boolean {
-      if (err.status === 400) {
-          this.dialogService.info('Validation', err.error);
+      if ([400, 404, 409].includes(err.status)) {
+          this.dialogService.info('Validation', err?.error?.detail ?? "Unknown Error has occurred");
           return true;
       }
 

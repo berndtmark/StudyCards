@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
@@ -17,7 +18,7 @@ public record AddCardsCommandResponse(IList<Card> CardsAdded, IList<Card> CardsS
 
 public class AddCardsCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardsCommand> logger, IDeckCardCountService deckCardCount) : ICommandHandler<AddCardsCommand, AddCardsCommandResponse>
 {
-    public async Task<AddCardsCommandResponse> Handle(AddCardsCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AddCardsCommandResponse>> Handle(AddCardsCommand request, CancellationToken cancellationToken)
     {
         var currentCardsInDeck = await unitOfWork.CardRepository.GetByDeck(request.DeckId, cancellationToken);
 

@@ -11,6 +11,7 @@ public class CleanArchitectureTests
     private static readonly Assembly ApiAssembly = typeof(Api.Controllers.DeckController).Assembly;
     private static readonly Assembly InfrastructureDatabaseAssembly = typeof(Infrastructure.Database.ServicesConfiguration).Assembly;
     private static readonly Assembly InfrastructureSecretsAssembly = typeof(Infrastructure.Secrets.SecretsManager.SecretsManager).Assembly;
+    private static readonly Assembly InfrastructureSharedAssembly = typeof(Infrastructure.Shared.ServicesConfiguration).Assembly;
 
     #region Domain Layer Tests
 
@@ -47,6 +48,8 @@ public class CleanArchitectureTests
             .NotHaveDependencyOn(InfrastructureDatabaseAssembly.GetName().Name!)
             .And()
             .NotHaveDependencyOn(InfrastructureSecretsAssembly.GetName().Name!)
+            .And()
+            .NotHaveDependencyOn(InfrastructureSharedAssembly.GetName().Name!)
             .GetResult();
 
         Assert.IsTrue(result.IsSuccessful, $"Domain should not depend on Infrastructure layers. Failed types: {string.Join(", ", result.FailingTypes.Select(t => t.FullName))}");
@@ -83,8 +86,16 @@ public class CleanArchitectureTests
             .NotHaveDependencyOn(InfrastructureSecretsAssembly.GetName().Name!)
             .GetResult();
 
-        Assert.IsTrue(databaseResult.IsSuccessful && secretsResult.IsSuccessful,
-            $"Application should not depend on Infrastructure layers. Database: {(databaseResult.IsSuccessful ? "OK" : string.Join(", ", databaseResult.FailingTypes.Select(t => t.FullName)))}. Secrets: {(secretsResult.IsSuccessful ? "OK" : string.Join(", ", secretsResult.FailingTypes.Select(t => t.FullName)))}");
+        var sharedResult = Types
+            .InAssembly(ApplicationAssembly)
+            .Should()
+            .NotHaveDependencyOn(InfrastructureSharedAssembly.GetName().Name!)
+            .GetResult();
+
+        Assert.IsTrue(databaseResult.IsSuccessful && secretsResult.IsSuccessful && sharedResult.IsSuccessful,
+            $"Application should not depend on Infrastructure layers. Database: {(databaseResult.IsSuccessful ? "OK" : string.Join(", ", databaseResult.FailingTypes.Select(t => t.FullName)))}." +
+            $"Secrets: {(secretsResult.IsSuccessful ? "OK" : string.Join(", ", secretsResult.FailingTypes.Select(t => t.FullName)))}" +
+            $".Shared: {(sharedResult.IsSuccessful ? "OK" : string.Join(", ", sharedResult.FailingTypes.Select(t => t.FullName)))}");
     }
 
     [TestMethod]
@@ -121,8 +132,54 @@ public class CleanArchitectureTests
             .NotHaveDependencyOn(ApiAssembly.GetName().Name!)
             .GetResult();
 
-        Assert.IsTrue(databaseResult.IsSuccessful && secretsResult.IsSuccessful, 
+        var sharedResult = Types
+            .InAssembly(InfrastructureSharedAssembly)
+            .Should()
+            .NotHaveDependencyOn(ApiAssembly.GetName().Name!)
+            .GetResult();
+
+        Assert.IsTrue(databaseResult.IsSuccessful && secretsResult.IsSuccessful && sharedResult.IsSuccessful, 
             "Infrastructure layers should not depend on Api layer");
+    }
+
+    [TestMethod]
+    public void InfrastructureLayers_ShouldNotDependOnEachOther()
+    {
+        var dbAssembly = InfrastructureDatabaseAssembly.GetName().Name;
+        var secretsAssembly = InfrastructureSecretsAssembly.GetName().Name;
+        var sharedAssembly = InfrastructureSharedAssembly.GetName().Name;
+
+        // 1. Database should be isolated
+        var databaseResult = Types
+            .InAssembly(InfrastructureDatabaseAssembly)
+            .Should()
+            .NotHaveDependencyOn(secretsAssembly)
+            .And()
+            .NotHaveDependencyOn(sharedAssembly)
+            .GetResult();
+
+        // 2. Secrets should be isolated
+        var secretsResult = Types
+            .InAssembly(InfrastructureSecretsAssembly)
+            .Should()
+            .NotHaveDependencyOn(dbAssembly)
+            .And()
+            .NotHaveDependencyOn(sharedAssembly)
+            .GetResult();
+
+        // 3. Shared should be isolated
+        var sharedResult = Types
+            .InAssembly(InfrastructureSharedAssembly)
+            .Should()
+            .NotHaveDependencyOn(dbAssembly)
+            .And()
+            .NotHaveDependencyOn(secretsAssembly)
+            .GetResult();
+
+        // Assert
+        Assert.IsTrue(databaseResult.IsSuccessful, "Infra.Database has a bad dependency.");
+        Assert.IsTrue(secretsResult.IsSuccessful, "Infra.Secrets has a bad dependency.");
+        Assert.IsTrue(sharedResult.IsSuccessful, "Infra.Shared has a bad dependency.");
     }
 
     #endregion

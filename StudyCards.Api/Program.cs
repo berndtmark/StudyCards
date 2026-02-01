@@ -4,6 +4,7 @@ using StudyCards.Api.Configuration.ExceptionHandlers;
 using StudyCards.Api.Hubs;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
+using StudyCards.Infrastructure.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,7 @@ builder.Services.AddOptionsConfiguration(builder.Configuration);
 // BOOTSTRAP APPLICATION LAYERS
 builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureDatabaseServices(builder.Configuration);
+builder.Services.ConfigureInfrastructureSharedServices();
 
 // BUILD
 var app = builder.Build();

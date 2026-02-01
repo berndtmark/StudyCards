@@ -50,7 +50,7 @@ public class GetCardsToStudyQueryTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(cards.Count, result.Count());
+        Assert.AreEqual(cards.Count, result.Data!.Count());
     }
 
     [TestMethod]
