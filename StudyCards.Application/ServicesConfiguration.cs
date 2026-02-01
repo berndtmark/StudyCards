@@ -6,8 +6,8 @@ using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Services;
 using StudyCards.Domain.Interfaces;
 using StudyCards.Domain.Interfaces.DomainEvent;
-using StudyCards.Domain.Strategy.CardScheduleReviewStrategy;
-using StudyCards.Domain.Strategy.CardsToStudyStrategy;
+using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy;
+using StudyCards.Domain.Study.Strategy.CardsToStudyStrategy;
 
 namespace StudyCards.Application;
 

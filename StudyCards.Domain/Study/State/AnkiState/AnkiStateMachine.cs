@@ -1,9 +1,9 @@
 ﻿using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
-using StudyCards.Domain.State.AnkiState.States;
+using StudyCards.Domain.Study.State.AnkiState.States;
 
-namespace StudyCards.Domain.State.AnkiState;
+namespace StudyCards.Domain.Study.State.AnkiState;
 
 public class AnkiStateMachine
 {

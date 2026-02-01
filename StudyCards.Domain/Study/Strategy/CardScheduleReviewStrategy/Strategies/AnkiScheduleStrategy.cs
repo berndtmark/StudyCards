@@ -1,9 +1,9 @@
 ﻿using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
-using StudyCards.Domain.State.AnkiState;
+using StudyCards.Domain.Study.State.AnkiState;
 
-namespace StudyCards.Domain.Strategy.CardScheduleReviewStrategy.Strategies;
+namespace StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy.Strategies;
 
 public class AnkiScheduleStrategy : ICardScheduleStrategy
 {

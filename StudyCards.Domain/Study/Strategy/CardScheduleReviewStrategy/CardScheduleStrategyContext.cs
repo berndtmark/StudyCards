@@ -1,7 +1,7 @@
 ﻿using StudyCards.Domain.Entities;
 using StudyCards.Domain.Interfaces;
 
-namespace StudyCards.Domain.Strategy.CardScheduleReviewStrategy;
+namespace StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy;
 
 public class CardScheduleStrategyContext : ICardScheduleStrategyContext
 {

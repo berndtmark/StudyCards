@@ -1,7 +1,7 @@
 ﻿using StudyCards.Application.Interfaces;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
-using StudyCards.Domain.Strategy.CardsToStudyStrategy.Strategies;
+using StudyCards.Domain.Study.Strategy.CardsToStudyStrategy.Strategies;
 
 namespace StudyCards.Application.Factory;
 

@@ -1,4 +1,4 @@
-﻿namespace StudyCards.Domain.State.AnkiState;
+﻿namespace StudyCards.Domain.Study.State.AnkiState;
 
 public class AnkiScheduleConfiguration
 {

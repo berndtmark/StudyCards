@@ -1,9 +1,9 @@
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
-using StudyCards.Domain.State.AnkiState;
-using StudyCards.Domain.State.AnkiState.States;
+using StudyCards.Domain.Study.State.AnkiState.States;
+using StudyCards.Domain.Study.State.AnkiState;
 
-namespace StudyCard.Domain.Tests.State;
+namespace StudyCards.Domain.Tests.Study.State;
 
 [TestClass]
 public class ReviewingStateTests

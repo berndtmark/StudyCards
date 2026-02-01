@@ -1,8 +1,8 @@
 ﻿using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
-using StudyCards.Domain.Strategy.CardScheduleReviewStrategy.Strategies;
+using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy.Strategies;
 
-namespace StudyCard.Domain.Tests.Strategy.CardScheduleReviewStrategy;
+namespace StudyCards.Domain.Tests.Study.Strategy.CardScheduleReviewStrategy;
 
 [TestClass]
 public class AnkiScheduleStrategyTests
