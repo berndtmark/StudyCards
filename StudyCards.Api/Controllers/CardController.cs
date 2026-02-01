@@ -4,7 +4,6 @@ using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
 using StudyCards.Application.Common;
-using StudyCards.Application.Helpers;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.CardManagement.Commands;
 using StudyCards.Application.UseCases.CardManagement.Queries;

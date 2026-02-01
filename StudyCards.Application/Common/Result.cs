@@ -2,7 +2,7 @@
 
 public class Result<T>
 {
-    public bool IsSuccess => Data is not null && ErrorMessage is null;
+    public bool IsSuccess => ErrorMessageType == null;
     public string? ErrorMessage { get; }
     public ErrorType? ErrorMessageType { get; }
     public T? Data { get; }
