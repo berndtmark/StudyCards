@@ -6,11 +6,9 @@ public static class MappingConfiguration
 {
     public static IServiceCollection AddMappingConfiguration(this IServiceCollection services)
     {
-        services.AddAutoMapper(cfg => {
-            cfg.AddProfile<CardProfile>();
-            cfg.AddProfile<DeckProfile>();
-            cfg.AddProfile<AdminProfile>();
-        });
+        services.AddSingleton<CardMapper>();
+        services.AddSingleton<AdminMapper>();
+        services.AddSingleton<DeckMapper>();
 
         return services;
     }

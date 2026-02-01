@@ -1,14 +1,14 @@
 <div class="action-container">
     <mat-form-field class="filter">
         <mat-label>Filter cards</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter..." #input [value]="searchValue">
+        <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter..." #input [value]="searchTerm() ?? ''">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
     <mat-slide-toggle (change)="showMoreToggle($event)"><p class="show-more">Show more..</p></mat-slide-toggle>
 </div>
 
-<table mat-table [dataSource]="dataSource" class="table">
+<table mat-table [dataSource]="cards() ?? []" class="table">
 
     <!-- Card Front Column -->
     <ng-container matColumnDef="cardfront">

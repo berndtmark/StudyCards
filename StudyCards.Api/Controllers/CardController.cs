@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
 using StudyCards.Application.Common;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.CardManagement.Commands;
 using StudyCards.Application.UseCases.CardManagement.Queries;
 
@@ -13,14 +13,14 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class CardController(IMapper mapper, ISender sender) : ControllerBase
+public class CardController(ICQRSDispatcher dispatcher, CardMapper cardMapper) : BaseController
 {
     [HttpGet]
     [Route("getcards")]
     [ProducesResponseType(typeof(PagedResult<CardResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid deckId, int pageNumber, int pageSize, string? searchTerm = null)
     {
-        var result = await sender.Send(new GetCardsQuery 
+        var result = await dispatcher.Send(new GetCardsQuery 
         { 
             DeckId = deckId, 
             PageNumber = pageNumber, 
@@ -28,7 +28,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
             SearchTerm = searchTerm
         });
 
-        var response = mapper.Map<PagedResult<CardResponse>>(result);
+        var response = cardMapper.Map(result.Data!);
         return Ok(response);
     }
 
@@ -37,7 +37,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
     [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(UpdateCardRequest request)
     {
-        var result = await sender.Send(new UpdateCardCommand
+        var result = await dispatcher.Send(new UpdateCardCommand
         {
             CardId = request.CardId,
             DeckId = request.DeckId,
@@ -45,7 +45,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
             CardBack = request.CardBack
         });
 
-        var response = mapper.Map<CardResponse>(result);
+        var response = cardMapper.Map(result.Data!);
         return Ok(response);
     }
 
@@ -55,7 +55,7 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add(AddCardRequest request)
     {
-        var result = await sender.Send(new AddCardCommand
+        var result = await dispatcher.Send(new AddCardCommand
         {
             DeckId = request.DeckId,
             CardFront = request.CardFront,
@@ -63,8 +63,8 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
         });
 
         return result.IsSuccess
-            ? Ok(mapper.Map<CardResponse>(result.Data))
-            : BadRequest(result.ErrorMessage);
+            ? Ok(cardMapper.Map(result.Data!))
+            : HandleError(result);
     }
 
     [HttpPost]
@@ -72,14 +72,14 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
     [ProducesResponseType(typeof(AddCardsResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> AddCards(AddCardsRequest request)
     {
-        var result = await sender.Send(new AddCardsCommand
+        var result = await dispatcher.Send(new AddCardsCommand
         {
             DeckId = request.DeckId,
             Cards = [.. request.Cards.Select(card => (card.CardFront, card.CardBack))]
         });
 
-        var cardsAdded = mapper.Map<IList<CardResponse>>(result.CardsAdded);
-        var cardsSkipped = mapper.Map<IList<CardResponse>>(result.CardsSkipped);
+        var cardsAdded = cardMapper.Map(result.Data!.CardsAdded);
+        var cardsSkipped = cardMapper.Map(result.Data!.CardsSkipped);
 
         return Ok(new AddCardsResponse
         {
@@ -93,11 +93,11 @@ public class CardController(IMapper mapper, ISender sender) : ControllerBase
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remove(string deckId, string cardId)
     {
-        var result = await sender.Send(new RemoveCardCommand { 
+        var result = await dispatcher.Send(new RemoveCardCommand { 
             CardId = new Guid(cardId),
             DeckId = new Guid(deckId)
         });
 
-        return Ok(result);
+        return Ok(result.Data);
     }
 }

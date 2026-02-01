@@ -1,6 +1,6 @@
 ﻿using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
-using StudyCards.Domain.State.AnkiState;
+using StudyCards.Domain.Study.State.AnkiState;
 
 namespace StudyCards.Domain.Interfaces;
 

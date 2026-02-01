@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -16,7 +17,7 @@ public class AddDeckCommand : ICommand<Deck>
 
 public class AddDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<AddDeckCommand> logger) : ICommandHandler<AddDeckCommand, Deck>
 {
-    public async Task<Deck> Handle(AddDeckCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Deck>> Handle(AddDeckCommand request, CancellationToken cancellationToken)
     {
         var deck = new Deck
         {

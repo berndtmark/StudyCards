@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
-using StudyCards.Application.Helpers;
+using StudyCards.Application.Extensions;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.DeckManagement.Commands;
 using StudyCards.Application.UseCases.DeckManagement.Queries;
 
@@ -13,7 +13,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper mapper, ISender sender) : ControllerBase
+public class DeckController(IHttpContextAccessor httpContextAccessor, ICQRSDispatcher dispatcher, DeckMapper deckMapper) : ControllerBase
 {
     [HttpGet]
     [Route("getdecks")]
@@ -26,9 +26,9 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
         {
             EmailAddress = email
         };
-        var result = await sender.Send(query, cancellationToken);
+        var result = await dispatcher.Send(query, cancellationToken);
 
-        var response = mapper.Map<IEnumerable<DeckResponse>>(result);
+        var response = deckMapper.Map(result.Data!);
         return Ok(response);
     }
 
@@ -39,7 +39,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
     {
         var email = httpContextAccessor.GetEmail();
 
-        var result = await sender.Send(new AddDeckCommand
+        var result = await dispatcher.Send(new AddDeckCommand
         {
             EmailAddress = email,
             DeckName = request.DeckName,
@@ -48,7 +48,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = mapper.Map<DeckResponse>(result);
+        var response = deckMapper.Map(result.Data!);
         return Ok(response);
     }
 
@@ -59,7 +59,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
     {
         var email = httpContextAccessor.GetEmail();
 
-        var result = await sender.Send(new UpdateDeckCommand
+        var result = await dispatcher.Send(new UpdateDeckCommand
         {
             DeckId = request.DeckId,
             DeckName = request.DeckName,
@@ -69,7 +69,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
             EmailAddress = email
         }, cancellationToken);
 
-        var response = mapper.Map<DeckResponse>(result);
+        var response = deckMapper.Map(result.Data!);
         return Ok(response);
     }
 
@@ -80,12 +80,12 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, IMapper ma
     {
         var email = httpContextAccessor.GetEmail();
 
-        var result = await sender.Send(new RemoveDeckCommand 
+        var result = await dispatcher.Send(new RemoveDeckCommand 
         { 
             DeckId = new Guid(deckId),
             EmailAddress = email
         }, cancellationToken);
 
-        return Ok(result);
+        return Ok(result.Data);
     }
 }

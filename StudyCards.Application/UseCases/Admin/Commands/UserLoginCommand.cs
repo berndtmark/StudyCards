@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -12,7 +13,7 @@ public class UserLoginCommand : ICommand<bool>
 
 public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCommandHandler> logger) : ICommandHandler<UserLoginCommand, bool>
 {
-    public async Task<bool> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
         try
         {

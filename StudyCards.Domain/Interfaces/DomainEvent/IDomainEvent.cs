@@ -1,7 +1,5 @@
-﻿using MediatR;
+﻿namespace StudyCards.Domain.Interfaces.DomainEvent;
 
-namespace StudyCards.Domain.Interfaces.DomainEvent;
-
-public interface IDomainEvent : INotification
+public interface IDomainEvent
 {
 }

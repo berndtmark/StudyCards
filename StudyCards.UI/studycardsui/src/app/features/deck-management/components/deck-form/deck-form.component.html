@@ -1,31 +1,32 @@
 <div class="form-card">
-    <form [formGroup]="deckForm" (ngSubmit)="onSubmit()">
+    <form>
         <mat-form-field>
             <mat-label>Name</mat-label>
-            <input matInput formControlName="name" required>
+            <input matInput [formField]="deckForm.name">      
         </mat-form-field>
-        
+
         <mat-form-field>
             <mat-label>Description</mat-label>
-            <input matInput formControlName="description">
+            <input matInput [formField]="deckForm.description">
         </mat-form-field>
 
         <div class="sub-section">
             <mat-form-field>
                 <mat-label>Max Reviews (per day)</mat-label>
-                <input matInput formControlName="maxReviews" type="number">
+                <input matInput [formField]="deckForm.maxReviews" type="number">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Max New (per day)</mat-label>
-                <input matInput formControlName="maxNew" type="number">
+                <input matInput [formField]="deckForm.maxNew" type="number">
             </mat-form-field>
-            @if(deckForm.errors?.['maxNewExceedsReviews']) {
+            @if(hasMaxNewExceedsReviewsError()) {
                 <mat-error class="max-new-cards-error">Max new cards must be less than or equal to max reviews.</mat-error>
             }
         </div>
 
         <div class="action-buttons">
-            <button mat-raised-button color="primary" type="submit" [disabled]="!deckForm.valid">
+            <button mat-raised-button color="primary" type="button" 
+                [disabled]="!deckForm().valid()" (click)="onSubmit()">
                 {{ saveButtonName() }}
             </button>
             <ng-content type="button" select="[button-content]"></ng-content>

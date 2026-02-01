@@ -1,5 +1,5 @@
 ﻿using StudyCards.Domain.Entities;
-using StudyCards.Domain.Strategy.CardScheduleReviewStrategy;
+using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy;
 
 namespace StudyCards.Domain.Interfaces;
 
