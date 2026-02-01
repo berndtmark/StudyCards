@@ -7,14 +7,14 @@ using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.CardManagement.Commands;
 
-public class AddCardCommand : ICommand<Result<Card>>
+public class AddCardCommand : ICommand<Card>
 {
     public Guid DeckId { get; set; }
     public string CardFront { get; set; } = string.Empty;
     public string CardBack { get; set; } = string.Empty;
 }
 
-public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardCommand> logger, IDeckCardCountService deckCardCount) : ICommandHandler<AddCardCommand, Result<Card>>
+public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardCommand> logger, IDeckCardCountService deckCardCount) : ICommandHandler<AddCardCommand, Card>
 {
     public async Task<Result<Card>> Handle(AddCardCommand request, CancellationToken cancellationToken)
     {
@@ -31,7 +31,7 @@ public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardComman
             // Check if the card already exists in the deck
             var isExisting = await ValidateExisting(card, cancellationToken);
             if (isExisting)
-                return Result<Card>.Failure("Card is already in the Deck");
+                return Result<Card>.Failure("Card is already in the Deck", ErrorType.Existing);
 
             // Add the card to the repository
             var result = await unitOfWork.CardRepository.Add(card);

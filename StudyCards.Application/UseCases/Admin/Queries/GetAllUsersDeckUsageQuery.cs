@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Interfaces.CQRS;
+﻿using StudyCards.Application.Common;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 
 namespace StudyCards.Application.UseCases.Admin.Queries;
@@ -13,13 +14,15 @@ public record GetAllUsersDeckUsageResult(string EmailAddress, string DeckName, D
 
 public class GetAllUsersDeckUsageQueryHandler(IDeckRepository deckRepository) : IQueryHandler<GetAllUsersDeckUsageQuery, IEnumerable<GetAllUsersDeckUsageResult>>
 {
-    public async Task<IEnumerable<GetAllUsersDeckUsageResult>> Handle(GetAllUsersDeckUsageQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<GetAllUsersDeckUsageResult>>> Handle(GetAllUsersDeckUsageQuery request, CancellationToken cancellationToken)
     {
         var response = await deckRepository.GetDecksForAllUsers(cancellationToken) ?? throw new ApplicationException("Decks cannot be acquired");
 
-        return response
+        var usage = response
             .Select(r => new GetAllUsersDeckUsageResult(r.UserEmail, r.DeckName, r.DeckReviewStatus.LastReview, r.CardCount ?? 0))
             .OrderBy(r => r.EmailAddress)
             .ThenBy(r => r.LastReview);
+
+        return Result<IEnumerable<GetAllUsersDeckUsageResult>>.Success(usage);
     }
 }

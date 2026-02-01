@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
@@ -13,7 +14,7 @@ public class RemoveCardCommand : ICommand<bool>
 
 public class RemoveCardCommandHandler(IUnitOfWork unitOfWork, ILogger<RemoveCardCommand> logger, IDeckCardCountService deckCardCount) : ICommandHandler<RemoveCardCommand, bool>
 {
-    public async Task<bool> Handle(RemoveCardCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(RemoveCardCommand request, CancellationToken cancellationToken)
     {
         try
         {

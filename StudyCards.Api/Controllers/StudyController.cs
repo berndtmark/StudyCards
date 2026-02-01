@@ -1,9 +1,9 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.CardStudy.Commands;
 using StudyCards.Application.UseCases.CardStudy.Queries;
 using StudyCards.Domain.Enums;
@@ -13,19 +13,19 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class StudyController(CardMapper cardMapper, ISender sender) : ControllerBase
+public class StudyController(CardMapper cardMapper, ICQRSDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
     [Route("getcardstostudy/deck/{deckId}/methodology/{methodology}", Name = "getstudycard")]
     [ProducesResponseType(typeof(IEnumerable<CardResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid deckId, CardStudyMethodology methodology)
     {
-        var result = await sender.Send(new GetCardsToStudyQuery { 
+        var result = await dispatcher.Send(new GetCardsToStudyQuery { 
             DeckId = deckId, 
             StudyMethodology = methodology 
         });
 
-        var response = cardMapper.Map(result);
+        var response = cardMapper.Map(result.Data!);
         return Ok(response);
     }
 
@@ -34,7 +34,7 @@ public class StudyController(CardMapper cardMapper, ISender sender) : Controller
     [ProducesResponseType(typeof(CardResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> ReviewedCard(ReviewCardsRequest request)
     {
-        var result = await sender.Send(new ReviewCardsCommand
+        var result = await dispatcher.Send(new ReviewCardsCommand
         {
             DeckId = request.DeckId,
             CardReviews = [.. request.Cards.Select(cr => new ReviewCardsCommand.CardReviewed
@@ -45,7 +45,7 @@ public class StudyController(CardMapper cardMapper, ISender sender) : Controller
             })]
         });
 
-        var response = cardMapper.Map(result);
+        var response = cardMapper.Map(result.Data!);
         return Ok(response);
     }
 }

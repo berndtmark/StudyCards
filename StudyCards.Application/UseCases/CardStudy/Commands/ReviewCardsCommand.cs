@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using StudyCards.Application.Common;
 using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
@@ -26,7 +27,7 @@ public class ReviewCardsCommand : ICommand<IList<Card>>
 
 public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStrategyContext cardScheduleStrategy, ILogger<ReviewCardsCommandHandler> logger) : ICommandHandler<ReviewCardsCommand, IList<Card>>
 {
-    public async Task<IList<Card>> Handle(ReviewCardsCommand request, CancellationToken cancellationToken)
+    public async Task<Result<IList<Card>>> Handle(ReviewCardsCommand request, CancellationToken cancellationToken)
     {
         var response = new List<Card>();
 

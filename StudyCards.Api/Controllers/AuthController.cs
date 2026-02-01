@@ -1,17 +1,17 @@
-using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Helpers;
+using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.Admin.Commands;
 
 namespace StudyCards.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<AuthController> logger, ISender sender) : ControllerBase
+public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<AuthController> logger, ICQRSDispatcher dispatcher) : ControllerBase
 {
     [HttpGet]
     [Route("login")]
@@ -31,7 +31,7 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
     {
         var userEmail = httpContextAccessor.GetEmail();
 
-        await sender.Send(new UserLoginCommand
+        await dispatcher.Send(new UserLoginCommand
         {
             UserEmail = userEmail
         });

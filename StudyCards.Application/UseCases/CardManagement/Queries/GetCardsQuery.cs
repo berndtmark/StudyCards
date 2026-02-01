@@ -15,7 +15,7 @@ public class GetCardsQuery : IQuery<PagedResult<Card>>
 
 public class GetCardsQueryHandler(ICardRepository cardRepository) : IQueryHandler<GetCardsQuery, PagedResult<Card>>
 {
-    public async Task<PagedResult<Card>> Handle(GetCardsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PagedResult<Card>>> Handle(GetCardsQuery request, CancellationToken cancellationToken)
     {
         return await cardRepository.GetByDeck(request.DeckId, request.PageNumber, request.PageSize, request.SearchTerm, cancellationToken);
     }

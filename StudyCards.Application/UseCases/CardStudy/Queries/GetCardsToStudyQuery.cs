@@ -1,4 +1,5 @@
-﻿using StudyCards.Application.Exceptions;
+﻿using StudyCards.Application.Common;
+using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
@@ -16,7 +17,7 @@ public class GetCardsToStudyQueryHandler(
     IDeckRepository deckRepository, 
     ICardRepository cardRepository) : IQueryHandler<GetCardsToStudyQuery, IEnumerable<Card>>
 {
-    public async Task<IEnumerable<Card>> Handle(GetCardsToStudyQuery request, CancellationToken cancellationToken)
+    public async Task<Result<IEnumerable<Card>>> Handle(GetCardsToStudyQuery request, CancellationToken cancellationToken)
     {
         var deck = await deckRepository.Get(request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
 
@@ -29,6 +30,6 @@ public class GetCardsToStudyQueryHandler(
 
         var result = await cardRepository.GetCardsToStudy(request.DeckId, cardsToStudy, deck.DeckSettings.NewCardsPerDay, fillUnmet, cancellationToken);
 
-        return result;
+        return Result<IEnumerable<Card>>.Success(result);
     }
 }
