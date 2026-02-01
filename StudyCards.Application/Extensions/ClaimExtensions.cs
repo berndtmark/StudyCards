@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace StudyCards.Application.Helpers;
+namespace StudyCards.Application.Extensions;
 
 public static class ClaimExtensions
 {

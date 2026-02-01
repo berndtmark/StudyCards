@@ -15,4 +15,5 @@
   <Project Path="StudyCards.Domain/StudyCards.Domain.csproj" />
   <Project Path="StudyCards.Infrastructure.Database/StudyCards.Infrastructure.Database.csproj" />
   <Project Path="StudyCards.Infrastructure.Secrets/StudyCards.Infrastructure.Secrets.csproj" />
+  <Project Path="StudyCards.Infrastructure.Shared/StudyCards.Infrastructure.Shared.csproj" Id="d710cc5a-ebc6-40d8-b0df-1fc4c0de0f1d" />
 </Solution>

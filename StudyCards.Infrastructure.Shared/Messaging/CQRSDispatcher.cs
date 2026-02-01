@@ -3,9 +3,9 @@ using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.CQRS;
 using System.Collections.Concurrent;
 
-namespace StudyCards.Application.Helpers;
+namespace StudyCards.Infrastructure.Shared.Messaging;
 
-public class CQRSDispatcher(IServiceProvider serviceProvider) : ICQRSDispatcher
+internal class CQRSDispatcher(IServiceProvider serviceProvider) : ICQRSDispatcher
 {
     private static readonly ConcurrentDictionary<Type, Type> _commandHandlers = new();
     private static readonly ConcurrentDictionary<Type, Type> _queryHandlers = new();

@@ -2,7 +2,7 @@
 using StudyCards.Domain.Interfaces.DomainEvent;
 using System.Collections.Concurrent;
 
-namespace StudyCards.Application.EventHandlers.Dispatcher;
+namespace StudyCards.Infrastructure.Shared.Messaging;
 
 // [source: https://www.milanjovanovic.tech/blog/building-a-custom-domain-events-dispatcher-in-dotnet]
 internal sealed class DomainEventsDispatcher(IServiceProvider serviceProvider) : IDomainEventsDispatcher

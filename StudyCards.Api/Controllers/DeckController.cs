@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
-using StudyCards.Application.Helpers;
+using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.DeckManagement.Commands;
 using StudyCards.Application.UseCases.DeckManagement.Queries;

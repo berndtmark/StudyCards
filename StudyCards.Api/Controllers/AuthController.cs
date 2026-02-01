@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StudyCards.Application.Helpers;
+using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.Admin.Commands;
 

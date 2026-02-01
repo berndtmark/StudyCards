@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using StudyCards.Application.Helpers;
+using StudyCards.Application.Extensions;
 using StudyCards.Domain.Entities;
 using StudyCards.Infrastructure.Database.Context;
 
