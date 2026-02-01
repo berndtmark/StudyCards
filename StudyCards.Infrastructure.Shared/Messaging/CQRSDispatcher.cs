@@ -7,30 +7,92 @@ namespace StudyCards.Infrastructure.Shared.Messaging;
 
 internal class CQRSDispatcher(IServiceProvider serviceProvider) : ICQRSDispatcher
 {
-    private static readonly ConcurrentDictionary<Type, Type> _commandHandlers = new();
-    private static readonly ConcurrentDictionary<Type, Type> _queryHandlers = new();
+    private static readonly ConcurrentDictionary<Type, object> _commandHandlers = new();
+    private static readonly ConcurrentDictionary<Type, object> _queryHandlers = new();
 
     public Task<Result<TResponse>> Send<TResponse>(ICommand<TResponse> command, CancellationToken cancellationToken = default)
     {
-        var type = command.GetType();
+        var commandType = command.GetType();
 
-        // Fast lookup
-        var handlerType = _commandHandlers.GetOrAdd(type, t =>
-            typeof(ICommandHandler<,>).MakeGenericType(t, typeof(TResponse)));
+        // Get or create the wrapper for this specific command type
+        var wrapper = (CommandHandlerWrapper<TResponse>)_commandHandlers.GetOrAdd(commandType, t =>
+        {
+            // Create the specific wrapper type: CommandHandlerWrapperImpl<MyQuery, MyResponse>
+            var wrapperType = typeof(CommandHandlerWrapperImpl<,>)
+                .MakeGenericType(t, typeof(TResponse));
 
-        dynamic handler = serviceProvider.GetRequiredService(handlerType);
-        return handler.Handle((dynamic)command, cancellationToken);
+            // Instantiate the wrapper once and cache it
+            return Activator.CreateInstance(wrapperType)
+                   ?? throw new InvalidOperationException($"Could not create wrapper for {t}");
+        });
+
+        // Invoke
+        return wrapper.Handle(command, serviceProvider, cancellationToken);
     }
 
     public Task<Result<TResponse>> Send<TResponse>(IQuery<TResponse> query, CancellationToken cancellationToken = default)
     {
-        var type = query.GetType();
+        var queryType = query.GetType();
 
-        // Fast lookup
-        var handlerType = _queryHandlers.GetOrAdd(type, t =>
-            typeof(IQueryHandler<,>).MakeGenericType(t, typeof(TResponse)));
+        // Get or create the wrapper for this specific query type
+        var wrapper = (QueryHandlerWrapper<TResponse>)_queryHandlers.GetOrAdd(queryType, t =>
+        {
+            // Create the specific wrapper type: QueryHandlerWrapperImpl<MyQuery, MyResponse>
+            var wrapperType = typeof(QueryHandlerWrapperImpl<,>)
+                .MakeGenericType(t, typeof(TResponse));
 
-        dynamic handler = serviceProvider.GetRequiredService(handlerType);
-        return handler.Handle((dynamic)query, cancellationToken);
+            // Instantiate the wrapper once and cache it
+            return Activator.CreateInstance(wrapperType)
+                   ?? throw new InvalidOperationException($"Could not create wrapper for {t}");
+        });
+
+        // Invoke
+        return wrapper.Handle(query, serviceProvider, cancellationToken);
     }
 }
+
+#region QueryHandlerWrapper
+internal abstract class QueryHandlerWrapper<TResponse>
+{
+    public abstract Task<Result<TResponse>> Handle(
+        IQuery<TResponse> query,
+        IServiceProvider serviceProvider,
+        CancellationToken cancellationToken);
+}
+
+internal class QueryHandlerWrapperImpl<TQuery, TResponse> : QueryHandlerWrapper<TResponse>
+    where TQuery : IQuery<TResponse>
+{
+    public override Task<Result<TResponse>> Handle(
+        IQuery<TResponse> query,
+        IServiceProvider serviceProvider,
+        CancellationToken cancellationToken)
+    {
+        var handler = serviceProvider.GetRequiredService<IQueryHandler<TQuery, TResponse>>();
+        return handler.Handle((TQuery)query, cancellationToken);
+    }
+}
+#endregion
+
+#region CommandHandlerWrapper
+internal abstract class CommandHandlerWrapper<TResponse>
+{
+    public abstract Task<Result<TResponse>> Handle(
+        ICommand<TResponse> command,
+        IServiceProvider serviceProvider,
+        CancellationToken cancellationToken);
+}
+
+internal class CommandHandlerWrapperImpl<TCommand, TResponse> : CommandHandlerWrapper<TResponse>
+    where TCommand : ICommand<TResponse>
+{
+    public override Task<Result<TResponse>> Handle(
+        ICommand<TResponse> command,
+        IServiceProvider serviceProvider,
+        CancellationToken cancellationToken)
+    {
+        var handler = serviceProvider.GetRequiredService<ICommandHandler<TCommand, TResponse>>();
+        return handler.Handle((TCommand)command, cancellationToken);
+    }
+}
+#endregion
