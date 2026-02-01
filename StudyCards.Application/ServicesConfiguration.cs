@@ -20,7 +20,6 @@ public static class ServicesConfiguration
         services.AddTransient<ICardsToStudyStrategyContext, CardsToStudyStrategyContext>();
         services.AddTransient<ICardScheduleStrategyContext, CardScheduleStrategyContext>();
         services.AddTransient<IDeckCardCountService, DeckCardCountService>();
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(ICommand<>)));
 
         // DOMAIN EVENTS
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();

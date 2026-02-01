@@ -19,7 +19,7 @@ public class RemoveCardCommandHandler(IUnitOfWork unitOfWork, ILogger<RemoveCard
         try
         {
             await unitOfWork.CardRepository.Remove(request.CardId, request.DeckId);
-            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork, -1);
+            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork, -1, cancellationToken);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
             return true;
