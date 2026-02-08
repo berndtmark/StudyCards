@@ -1,7 +1,7 @@
 <div class="action-container">
     <mat-form-field class="filter">
         <mat-label>Filter cards</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter..." #input [value]="searchTerm() ?? ''">
+        <input matInput (keyup)="applyFilter($event)" placeholder="Type to filter..." #input [value]="searchTermField()">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 

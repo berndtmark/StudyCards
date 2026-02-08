@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, output, signal, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +16,7 @@ import { CardResponse } from '../../../../@api/models/card-response';
   styleUrl: './card-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardListComponent {
+export class CardListComponent implements OnInit {
   searchTerm = input<string>();
   cards = input<CardResponse[]>();
   updateCard = output<string>();
@@ -25,6 +25,11 @@ export class CardListComponent {
   private defaultColumns = ['cardfront', 'cardback'];
   private extendedColumns =  ['reviewphase', 'cardfront', 'cardback', 'nextstudy', 'studycount'];
   displayedColumns: string[] = this.defaultColumns;
+  searchTermField = signal<string>('');
+
+  ngOnInit() {
+    this.searchTermField.set(this.searchTerm() ?? '');
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
