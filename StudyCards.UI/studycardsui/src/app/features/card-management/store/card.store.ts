@@ -215,8 +215,10 @@ export const CardStore = signalStore(
     })),
     withMethods((store) => ({
         loadDeckIfNot: (deckId: string) => {
-            if (store.deckId() !== deckId)
+            if (store.deckId() !== deckId) {
+                patchState(store, initialState);
                 store.loadCards({deckId});
+            }
         },
         paginate: (pageNumber: number, pageSize: number) => {
             if (!store.deckId())
