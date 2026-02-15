@@ -4,14 +4,12 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Extensions;
-using StudyCards.Application.Interfaces.CQRS;
-using StudyCards.Application.UseCases.Admin.Commands;
 
 namespace StudyCards.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<AuthController> logger, ICQRSDispatcher dispatcher) : ControllerBase
+public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<AuthController> logger) : ControllerBase
 {
     [HttpGet]
     [Route("login")]
@@ -30,11 +28,6 @@ public class AuthController(IHttpContextAccessor httpContextAccessor, ILogger<Au
     public async Task<IActionResult> LoginCallback(string returnUrl)
     {
         var userEmail = httpContextAccessor.GetEmail();
-
-        await dispatcher.Send(new UserLoginCommand
-        {
-            UserEmail = userEmail
-        });
 
         logger.LogInformation("User Logged In {Email}", userEmail);
         return LocalRedirect(returnUrl);
