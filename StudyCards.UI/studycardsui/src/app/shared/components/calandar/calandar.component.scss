@@ -1,0 +1,124 @@
+@use '../../../theming/colour' as colour;
+@use '../../../theming/responsive' as responsive;
+
+:host {
+  display: block;
+  padding: 20px;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  background-color: colour.$white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.weekday-row {
+  display: flex;
+  gap: 0;
+}
+
+.weekday-header {
+  flex: 1;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: colour.$gray-200;
+  font-size: 14px;
+}
+
+.calendar-week {
+  display: flex;
+  gap: 0;
+}
+
+.calendar-cell {
+  flex: 1;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 8px;
+  border: 1px solid colour.$white-100;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+  overflow: hidden;
+}
+
+.calendar-cell:hover {
+  background-color: colour.$blue-100;
+}
+
+.calendar-cell.other-month {
+  color: colour.$gray-100;
+}
+
+.day-number {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.cell-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.calendar-chip {
+  font-size: 11px;
+  min-height: 20px;
+  height: auto;
+  padding: 2px 8px;
+  max-width: 100%;
+}
+
+@include responsive.responsive('tablet') {
+  .calendar {
+    min-width: unset;
+    padding: 10px;
+  }
+
+  .calendar-cell {
+    height: 60px;
+    padding: 4px;
+    font-size: 14px;
+  }
+
+  .calendar-chip {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+
+  :host {
+    padding: 10px;
+  }
+}
