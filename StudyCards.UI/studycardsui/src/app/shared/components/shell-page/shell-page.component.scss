@@ -1,4 +1,3 @@
-// @use '@theming/_colour.scss' as colour;
 @use '../../../theming/colour' as colour;
 @use '../../../theming/_responsive.scss' as responsive;
 
@@ -16,10 +15,31 @@
     box-sizing: border-box;
     z-index: 10;
 
+    .shell-page-header-left {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .menu {
+            transition: color 0.25s ease-in-out;
+
+            &:hover {
+                color: colour.$gray-200;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .shell-page-header-right {
+        display: flex;
+        align-items: center;
+    }
+
     .welcome {
         font-size: 15px;
         font-weight: 200;
         margin-right: 15px;
+        white-space: nowrap;
     }
 
     @include responsive.responsive('mobile') {
@@ -31,4 +51,9 @@
 
 .shell-page-content {
     padding-top: 60px; /* Same height as the header */
+
+    .side-nav {
+        top: 60px;
+        position: fixed;
+    }
 }

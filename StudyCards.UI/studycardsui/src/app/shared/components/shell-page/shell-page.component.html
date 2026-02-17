@@ -1,7 +1,10 @@
 <div class="shell-page-header">
-  <h2>Study Cards</h2>
+  <div class="shell-page-header-left">
+    <mat-icon class="menu" #openButton mat-raised-button (click)="sideNav.opened ? sideNav.close() : sideNav.open()">menu</mat-icon>
+    <h2>Study Cards</h2>
+  </div>
 
-  <div class="right-hand-content">
+  <div class="shell-page-header-right">
     @if (store.userName()) {
       <span class="welcome">Welcome {{ store.userName() }}</span>
     }
@@ -13,6 +16,13 @@
   </div>
 </div>
 
+
 <div class="shell-page-content">
-  <router-outlet></router-outlet>
+  <mat-sidenav-container>
+    <mat-sidenav class="side-nav" #sideNav mode="over">Sidenav content - add as component</mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

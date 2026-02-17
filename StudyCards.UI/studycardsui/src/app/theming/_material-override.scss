@@ -5,6 +5,10 @@
     @include mat.form-field-overrides((
       filled-container-color: colour.$white-off,
     ));
+
+    @include mat.sidenav-overrides((
+      content-background-color: colour.$white,
+    ));
 }
 
 mat-progress-bar {
