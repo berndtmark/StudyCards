@@ -1,0 +1,5 @@
+@use '../../../../theming/colour' as colour;
+
+.active-link {
+    background-color: colour.$blue-100;
+}
