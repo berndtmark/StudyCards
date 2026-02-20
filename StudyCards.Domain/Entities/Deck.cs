@@ -27,7 +27,7 @@ public record Deck : EntityBase
 
     public Deck StudyCompleted(int cardReviewCount)
     {
-        var isFirstReviewToday = DeckReviewStatus.LastReview.Date.IsSameDay();
+        var isFirstReviewToday = !DeckReviewStatus.LastReview.Date.IsSameDay();
 
         var result = this with
         {
