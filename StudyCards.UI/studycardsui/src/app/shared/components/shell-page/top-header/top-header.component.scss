@@ -1,0 +1,52 @@
+@use '../../../../theming/colour' as colour;
+@use '../../../../theming/_responsive.scss' as responsive;
+
+$top-header-height: 60px;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: colour.$blue-100;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 10;
+
+    .header-left {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .menu {
+            transition: color 0.25s ease-in-out;
+
+            &:hover {
+                color: colour.$gray-200;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .welcome {
+        font-size: 15px;
+        font-weight: 200;
+        margin-right: 15px;
+        white-space: nowrap;
+    }
+
+    @include responsive.responsive('mobile') {
+        .welcome {
+            display: none;
+        }
+    }
+}

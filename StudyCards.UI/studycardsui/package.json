@@ -10,7 +10,7 @@
     "test": "ng test",
     "test:ci": "npm run generate-api && npm run test -- --watch=false",
     "generate-api": "npx ng-openapi-gen --services true --promises false --input servercardsapi.json --output src/app/@api",
-    "start-api": "dotnet run --project ../../StudyCards.Server/StudyCards.Server.csproj --launch-profile https"
+    "start-api": "dotnet run --project ../../StudyCards.Api/StudyCards.Api.csproj --launch-profile https"
   },
   "prettier": {
     "printWidth": 100,

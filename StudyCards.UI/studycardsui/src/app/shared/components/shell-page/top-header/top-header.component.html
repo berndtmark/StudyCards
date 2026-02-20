@@ -1,0 +1,22 @@
+<div class="header">
+    <div class="header-left">
+        <mat-icon 
+            matRipple [matRippleCentered]="true" [matRippleUnbounded]="true" [matRippleRadius]="20" 
+            class="menu" (click)="menuSelected.emit()">
+            menu
+        </mat-icon>
+
+        <h2>Study Cards</h2>
+    </div>
+
+    <div class="header-right">
+        @if (userName()) {
+            <span class="welcome">Welcome {{ userName() }}</span>
+        }
+
+        <button mat-raised-button (click)="logout.emit()">
+            <mat-icon>login</mat-icon>
+            Logout
+        </button>
+    </div>
+</div>

@@ -1,32 +1,12 @@
-<div class="shell-page-header">
-  <div class="shell-page-header-left">
-    <mat-icon matRipple [matRippleCentered]="true" [matRippleUnbounded]="true" [matRippleRadius]="20" class="menu" (click)="sideNav.toggle()">
-        menu
-    </mat-icon>
-
-    <h2>Study Cards</h2>
-  </div>
-
-  <div class="shell-page-header-right">
-    @if (store.userName()) {
-      <span class="welcome">Welcome {{ store.userName() }}</span>
-    }
-
-    <button mat-raised-button (click)="logout()">
-      <mat-icon>login</mat-icon>
-      Logout
-    </button>
-  </div>
-</div>
-
+<app-top-header [userName]="store.userName()" (logout)="logout()" (menuSelected)="sideNav.toggle()"></app-top-header>
 
 <div class="shell-page-content">
   <mat-sidenav-container>
-    <mat-sidenav class="side-nav" #sideNav mode="over">
+    <mat-sidenav class="side-nav" #sideNav mode="over" [autoFocus]="false">
       <app-side-nav (menuSelected)="sideNav.close()"></app-side-nav>
     </mat-sidenav>
 
-    <mat-sidenav-content>
+    <mat-sidenav-content class="content">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

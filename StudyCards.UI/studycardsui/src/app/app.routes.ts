@@ -30,6 +30,11 @@ export const routes: Routes = [
                 path: 'study/:deckid',
                 loadChildren: () => import('./features/study/study.routes')
                     .then(m => m.STUDY_ROUTES)
+            },
+            {
+                path: 'statistics',
+                loadChildren: () => import('./features/statistics/statistics.routes')
+                    .then(m => m.STATISTICS_ROUTES)
             }
         ]
     },
