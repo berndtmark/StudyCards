@@ -3,15 +3,13 @@
 
 $top-header-height: 60px;
 
-.shell-page-content {
-    padding-top: $top-header-height;
-
+.shell-page-content {  
     .side-nav {
         top: $top-header-height;
         position: fixed;
     }
 
     .content {
-        height: calc(100vh - $top-header-height);
+        height: calc(100dvh - $top-header-height);
     }
 }
