@@ -8,11 +8,17 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public class StatisticRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Statistic>(dbContext, httpContextAccessor), IStatisticRepository
 {
-    public async Task<IEnumerable<T>> Get<T>(Guid userId, CancellationToken cancellationToken = default) where T : Statistic
+    public async Task<IEnumerable<T>> Get<T>(Guid userId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken = default) where T : Statistic
     {
+        if (dateFrom.Kind != DateTimeKind.Utc || dateTo.Kind != DateTimeKind.Utc)
+        {
+            throw new ArgumentException("Date parameters must be in UTC to query Cosmos DB accurately.");
+        }
+
         return await DbContext
             .Set<T>()
             .WithPartitionKey(userId)
+            .Where(s => s.DateRecorded >= dateFrom && s.DateRecorded < dateTo)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }

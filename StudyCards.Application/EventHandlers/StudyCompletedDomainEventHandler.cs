@@ -15,7 +15,7 @@ public class StudyCompletedDomainEventHandler(ILogger<StudyCompletedDomainEventH
     {
         var userId = httpContextAccessor.GetUserId(); // When Deck changes its SK to UserId, this will be become redundant
 
-        var result = await dispatcher.Send(new AddStudyStatistic
+        var result = await dispatcher.Send(new AddStudyStatisticCommand
         {
             DeckId = domainEvent.DeckId,
             UserId = new Guid(userId),

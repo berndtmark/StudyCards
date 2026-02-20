@@ -6,7 +6,7 @@ using StudyCards.Domain.Extensions;
 
 namespace StudyCards.Application.UseCases.Statistics.Commands;
 
-public class AddStudyStatistic : ICommand<StudyStatistic>
+public class AddStudyStatisticCommand : ICommand<StudyStatistic>
 {
     public Guid UserId { get; set; }
     public Guid DeckId { get; set; }
@@ -14,9 +14,9 @@ public class AddStudyStatistic : ICommand<StudyStatistic>
     public int CardStudyCount { get; set; }
 }
 
-public class AddStudyStatisticHandler(IUnitOfWork unitOfWork) : ICommandHandler<AddStudyStatistic, StudyStatistic>
+public class AddStudyStatisticCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<AddStudyStatisticCommand, StudyStatistic>
 {
-    public async Task<Result<StudyStatistic>> Handle(AddStudyStatistic request, CancellationToken cancellationToken)
+    public async Task<Result<StudyStatistic>> Handle(AddStudyStatisticCommand request, CancellationToken cancellationToken)
     {
         var statistcs = await unitOfWork.StatisticRepository.Get<StudyStatistic>(request.UserId, request.DeckId, cancellationToken);
         var todaysStatistic = statistcs.FirstOrDefault(s => s.DateRecorded.IsSameDay());
