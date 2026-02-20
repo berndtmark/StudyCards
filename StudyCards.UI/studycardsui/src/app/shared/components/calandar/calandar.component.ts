@@ -11,6 +11,7 @@ const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export interface CalendarItem {
   date: Date;
   label: string;
+  colour?: string;
 }
 
 interface CalendarCell {

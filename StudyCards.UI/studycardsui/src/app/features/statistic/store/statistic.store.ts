@@ -1,4 +1,4 @@
-import { patchState, signalStore, withHooks, withMethods, withState } from "@ngrx/signals";
+import { patchState, signalStore, withMethods, withState } from "@ngrx/signals";
 import { LoadingState } from "../../../shared/models/loading-state";
 import { StatisticService } from "../services/statistic.service";
 import { inject } from "@angular/core";
@@ -42,10 +42,5 @@ export const StatisticStore = signalStore(
                     ))
                 )
             ),
-    })),
-    withHooks({
-        onInit(store) {
-            store.loadStudyStatistics();
-        }
-    })
+    }))
 );

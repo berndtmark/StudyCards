@@ -1,1 +1,5 @@
+@if (store.loadingState() == loadingState.Loading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
 <app-calandar [items]="calendarItems()" [minDate]="minDate()" [maxDate]="maxDate()"></app-calandar>

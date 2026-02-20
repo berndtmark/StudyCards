@@ -23,7 +23,11 @@
             <span class="day-number">{{ cell.displayName }}</span>
             <div class="cell-content">
               @for (item of getItemsForDate(cell.day, cell.isCurrentMonth); track item.label) {
-                <mat-chip class="calendar-chip" appTruncate>{{ item.label }}</mat-chip>
+                <mat-chip class="calendar-chip" 
+                  appTruncate 
+                  [style.background-color]="item.colour">
+                    {{ item.label }}
+                </mat-chip>
               }
             </div>
           </div>
