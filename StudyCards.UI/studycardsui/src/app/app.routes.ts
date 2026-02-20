@@ -33,8 +33,8 @@ export const routes: Routes = [
             },
             {
                 path: 'statistics',
-                loadChildren: () => import('./features/statistics/statistics.routes')
-                    .then(m => m.STATISTICS_ROUTES)
+                loadChildren: () => import('./features/statistic/statistic.routes')
+                    .then(m => m.STATISTIC_ROUTES)
             }
         ]
     },

@@ -10,11 +10,6 @@ public class StatisticRepository(DataBaseContext dbContext, IHttpContextAccessor
 {
     public async Task<IEnumerable<T>> Get<T>(Guid userId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken = default) where T : Statistic
     {
-        if (dateFrom.Kind != DateTimeKind.Utc || dateTo.Kind != DateTimeKind.Utc)
-        {
-            throw new ArgumentException("Date parameters must be in UTC to query Cosmos DB accurately.");
-        }
-
         return await DbContext
             .Set<T>()
             .WithPartitionKey(userId)

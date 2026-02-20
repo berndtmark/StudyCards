@@ -15,7 +15,7 @@ public class StatisticController(ICQRSDispatcher dispatcher, StatisticMapper sta
 {
     [HttpGet]
     [Route("studystatistics", Name = nameof(GetStudyStatistics))]
-    [ProducesResponseType(typeof(StudyStatisticResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<StudyStatisticResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetStudyStatistics([FromQuery] DateTime from, [FromQuery] DateTime to, CancellationToken cancellationToken)
     {
         var userId = httpContextAccessor.GetUserId();
