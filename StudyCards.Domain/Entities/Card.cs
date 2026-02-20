@@ -30,7 +30,7 @@ public record Card : EntityBase
             }
         };
 
-        Raise(new CardReviewedDomainEvent(Id, CardReviewStatus.CurrentPhase, result.CardReviewStatus));
+        result.Raise(new CardReviewedDomainEvent(Id, CardReviewStatus.CurrentPhase, result.CardReviewStatus));
         return result;
     }
 }

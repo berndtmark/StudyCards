@@ -8,6 +8,7 @@ public class DataBaseContext(DbContextOptions options) : DbContext(options)
     public DbSet<Deck> Deck { get; set; }
     public DbSet<Card> Card { get; set; }
     public DbSet<User> User { get; set; }
+    public DbSet<User> Statistic { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,5 +30,15 @@ public class DataBaseContext(DbContextOptions options) : DbContext(options)
             .HasNoDiscriminator()
             .HasPartitionKey(x => x.UserEmail)
             .HasKey(x => x.Id);
+
+        modelBuilder.Entity<Statistic>(builder =>
+        {
+            builder.ToContainer("Statistic");
+            builder.HasKey(x => x.Id);
+            builder.HasPartitionKey(x => x.UserId);
+
+            builder.HasDiscriminator<string>("Type")
+                   .HasValue<StudyStatistic>("Study");
+        });
     }
 }

@@ -13,6 +13,7 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
     private ICardRepository? _cardRepository;
     private IDeckRepository? _deckRepository;
     private IUserRepository? _userRepository;
+    private IStatisticRepository? _statisticsRepository;
     private bool _disposed;
 
     public ICardRepository CardRepository
@@ -39,6 +40,15 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
         {
             _userRepository ??= new UserRepository(context, httpContextAccessor);
             return _userRepository;
+        }
+    }
+
+    public IStatisticRepository StatisticRepository
+    {
+        get
+        {
+            _statisticsRepository ??= new StatisticRepository(context, httpContextAccessor);
+            return _statisticsRepository;
         }
     }
 
