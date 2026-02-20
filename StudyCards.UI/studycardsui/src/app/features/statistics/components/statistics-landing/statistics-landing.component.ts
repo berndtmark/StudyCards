@@ -17,5 +17,8 @@ export class StatisticsLandingComponent {
     { date: new Date(2026, 1, 16), label: 'Doctor Appt' },
     { date: new Date(2026, 1, 20), label: 'Flags: 14' },
     { date: new Date(2026, 1, 20), label: 'Countries: 10' },
+    { date: new Date(2026, 1, 20), label: 'Flag: 10' },
+    { date: new Date(2026, 1, 20), label: 'Flag: 10' },
+    { date: new Date(2026, 1, 20), label: 'Flag: 10' },
   ];
 }

@@ -66,7 +66,6 @@
   justify-content: flex-start;
   padding: 8px;
   border: 1px solid colour.$white-100;
-  cursor: pointer;
   font-size: 16px;
   transition: background-color 0.2s ease;
   overflow: hidden;
@@ -104,21 +103,25 @@
 @include responsive.responsive('tablet') {
   .calendar {
     min-width: unset;
-    padding: 10px;
+    padding: clamp(10px, 2vw, 20px);
+  }
+
+  .calendar-header h3 {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+  }
+
+  .weekday-header {
+    font-size: clamp(12px, 2vw, 14px);
   }
 
   .calendar-cell {
-    height: 60px;
-    padding: 4px;
-    font-size: 14px;
+    height: clamp(80px, 12vw, 120px);
+    padding: clamp(4px, 1vw, 8px);
+    font-size: clamp(14px, 2vw, 16px);
   }
 
   .calendar-chip {
-    font-size: 9px;
-    padding: 1px 4px;
-  }
-
-  :host {
-    padding: 10px;
+    font-size: clamp(9px, 1.5vw, 11px);
+    padding: clamp(1px, 0.5vw, 2px) clamp(4px, 1vw, 8px);
   }
 }
