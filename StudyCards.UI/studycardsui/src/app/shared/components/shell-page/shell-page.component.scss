@@ -1,15 +1,6 @@
 @use '../../../theming/colour' as colour;
 @use '../../../theming/_responsive.scss' as responsive;
 
-$top-header-height: 60px;
-
 .shell-page-content {  
-    .side-nav {
-        top: $top-header-height;
-        position: fixed;
-    }
-
-    .content {
-        height: calc(100dvh - $top-header-height);
-    }
+    height: 100dvh;
 }
