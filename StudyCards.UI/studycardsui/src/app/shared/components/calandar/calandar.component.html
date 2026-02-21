@@ -24,7 +24,7 @@
             <div class="cell-content">
               @for (item of getItemsForDate(cell.day, cell.isCurrentMonth); track item.label) {
                 <mat-chip class="calendar-chip" 
-                  appTruncate 
+                  [appTruncate]="'.mdc-evolution-chip__text-label'" 
                   [style.background-color]="item.colour">
                     {{ item.label }}
                 </mat-chip>

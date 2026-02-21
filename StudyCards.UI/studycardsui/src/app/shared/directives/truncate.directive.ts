@@ -1,24 +1,30 @@
-import { Directive, ElementRef, inject } from '@angular/core';
+import { Directive, ElementRef, inject, input, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatTooltip } from '@angular/material/tooltip';
 
 @Directive({
   selector: '[appTruncate]',
   hostDirectives: [{ directive: MatTooltip }]
 })
-export class TruncateDirective {
+export class TruncateDirective implements AfterViewInit, OnDestroy {
+  targetClass = input<string | undefined>(undefined, { alias: 'appTruncate' });
+
   private el = inject(ElementRef);
   private tooltip = inject(MatTooltip);
   private resizeObserver?: ResizeObserver;
-  private textLabel?: HTMLElement;
+  private textElement?: HTMLElement;
 
   ngAfterViewInit(): void {
-    const element = this.el.nativeElement;
-    element.style.maxWidth = '100%';
-   
-    // Find and style the text label inside mat-chip
-    this.textLabel = element.querySelector('.mdc-evolution-chip__text-label');
-    if (this.textLabel) {
-      Object.assign(this.textLabel.style, {
+    const host = this.el.nativeElement;
+    host.style.maxWidth = '100%';
+
+    const targetSelector = this.targetClass();
+
+    this.textElement = targetSelector 
+      ? host.querySelector(targetSelector) as HTMLElement 
+      : host;
+
+    if (this.textElement) {
+      Object.assign(this.textElement.style, {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
@@ -28,7 +34,7 @@ export class TruncateDirective {
    
     // Observe size changes and check overflow
     this.resizeObserver = new ResizeObserver(() => this.checkOverflow());
-    this.resizeObserver.observe(element);
+    this.resizeObserver.observe(host);
     this.checkOverflow();
   }
 
@@ -37,8 +43,9 @@ export class TruncateDirective {
   }
 
   private checkOverflow(): void {
-    const target = this.textLabel || this.el.nativeElement;
-    const isOverflowing = target.scrollWidth > target.clientWidth;
+    if (!this.textElement) return;
+
+    const isOverflowing = this.textElement.scrollWidth > this.textElement.clientWidth;
    
     this.tooltip.disabled = !isOverflowing;
     if (isOverflowing) {
