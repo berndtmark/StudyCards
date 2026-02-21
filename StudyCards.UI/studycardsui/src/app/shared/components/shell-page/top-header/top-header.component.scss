@@ -1,8 +1,6 @@
 @use '../../../../theming/colour' as colour;
 @use '../../../../theming/_responsive.scss' as responsive;
 
-$top-header-height: 60px;
-
 .header {
     display: flex;
     justify-content: space-between;
