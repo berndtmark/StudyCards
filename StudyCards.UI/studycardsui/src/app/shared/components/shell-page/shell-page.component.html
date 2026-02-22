@@ -1,5 +1,5 @@
 <mat-sidenav-container class="shell-page-content">
-  <mat-sidenav class="side-nav" #sideNav mode="over" [autoFocus]="false">
+  <mat-sidenav class="side-nav" #sideNav mode="over" [autoFocus]="false" fixedInViewport="true">
     <app-side-nav (menuSelected)="sideNav.close()"></app-side-nav>
   </mat-sidenav>
 
