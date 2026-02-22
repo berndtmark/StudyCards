@@ -1,4 +1,5 @@
-﻿using StudyCards.Domain.Extensions;
+﻿using StudyCards.Domain.DomainEvents;
+using StudyCards.Domain.Extensions;
 
 namespace StudyCards.Domain.Entities;
 
@@ -22,6 +23,23 @@ public record Deck : EntityBase
                     maxReviews;
 
         }
+    }
+
+    public Deck StudyCompleted(int cardReviewCount)
+    {
+        var isFirstReviewToday = !DeckReviewStatus.LastReview.Date.IsSameDay();
+
+        var result = this with
+        {
+            DeckReviewStatus = new DeckReviewStatus
+            {
+                LastReview = DateTime.UtcNow,
+                ReviewCount = isFirstReviewToday ? cardReviewCount : DeckReviewStatus.ReviewCount + cardReviewCount,
+            }
+        };
+
+        result.Raise(new StudyCompletedDomainEvent(result.Id, result.DeckName, cardReviewCount));
+        return result;
     }
 }
 

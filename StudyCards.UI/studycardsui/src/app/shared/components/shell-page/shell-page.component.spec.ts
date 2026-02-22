@@ -4,6 +4,7 @@ import { ShellPageComponent } from './shell-page.component';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RootStore } from '../../store/root.store';
+import { provideRouter } from '@angular/router';
 
 describe('ShellPageComponent', () => {
   let component: ShellPageComponent;
@@ -15,7 +16,8 @@ describe('ShellPageComponent', () => {
       providers: [
         RootStore,
         provideHttpClient(),
-        provideHttpClientTesting()
+        provideHttpClientTesting(),
+        provideRouter([])
       ]
     })
     .compileComponents();

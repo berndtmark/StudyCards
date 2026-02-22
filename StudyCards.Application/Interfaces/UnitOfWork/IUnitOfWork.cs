@@ -7,5 +7,6 @@ public interface IUnitOfWork : IDisposable
     ICardRepository CardRepository { get; }
     IDeckRepository DeckRepository { get; }
     IUserRepository UserRepository { get; }
+    IStatisticRepository StatisticRepository { get; }
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

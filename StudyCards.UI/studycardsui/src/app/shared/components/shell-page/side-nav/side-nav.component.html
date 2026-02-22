@@ -1,0 +1,13 @@
+<div class="top">
+    <img src="favicon.ico" class="favicon">
+    <app-my-button buttonType="icon" icon="close" (action)="menuSelected.emit()"></app-my-button>
+</div>
+
+<mat-nav-list class="list">
+    @for (item of navMenu.navMenu(); track item.name) {
+        <a mat-list-item [routerLink]="item.route" routerLinkActive="active-link" (click)="menuSelected.emit()">
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <span matListItemTitle>{{ item.name }}</span>
+        </a>
+    }
+</mat-nav-list>

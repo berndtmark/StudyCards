@@ -4,16 +4,16 @@ using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
-namespace StudyCards.Application.UseCases.Admin.Commands;
+namespace StudyCards.Application.UseCases.UserManagement.Commands;
 
-public class UserLoginCommand : ICommand<bool>
+public class UserLoginCommand : ICommand<User>
 {
     public string UserEmail { get; set; } = string.Empty;
 }
 
-public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCommandHandler> logger) : ICommandHandler<UserLoginCommand, bool>
+public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCommandHandler> logger) : ICommandHandler<UserLoginCommand, User>
 {
-    public async Task<Result<bool>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<User>> Handle(UserLoginCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -25,10 +25,10 @@ public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCo
             if (user == null)
             {
                 // Create new user
-                var newUser = User.CreateUser(request.UserEmail)
+                user = User.CreateUser(request.UserEmail)
                     .UserLogin();
 
-                await unitOfWork.UserRepository.Add(newUser, cancellationToken);
+                await unitOfWork.UserRepository.Add(user, cancellationToken);
             }
             else
             {
@@ -37,7 +37,7 @@ public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCo
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            return true;
+            return user;
         }
         catch (Exception ex)
         { 

@@ -1,7 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using StudyCards.Api.Configuration.Claims;
 using StudyCards.Api.Configuration.ClaimTransforms;
 using StudyCards.Api.Configuration.Options;
+using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.CQRS;
+using StudyCards.Application.UseCases.UserManagement.Commands;
+using System.Security.Claims;
 
 namespace StudyCards.Api.Configuration;
 
@@ -30,10 +36,31 @@ public static class SecurityConfiguration
             options.ClientId = googleAuthConfig.ClientId;
             options.ClientSecret = googleAuthConfig.ClientSecret;
             options.AccessDeniedPath = "/todo";
+
+            options.Events = new AuthEvents();
         });
 
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
+        services.AddScoped<ICurrentUser, CurrentUser>();
 
         return services;
+    }
+}
+
+public class AuthEvents : OAuthEvents
+{
+    public override async Task CreatingTicket(OAuthCreatingTicketContext context)
+    {
+        var email = context.Principal?.FindFirstValue(ClaimTypes.Email);
+
+        if (string.IsNullOrEmpty(email)) return;
+
+        var dispatcher = context.HttpContext.RequestServices.GetRequiredService<ICQRSDispatcher>();
+        var user = await dispatcher.Send(new UserLoginCommand { UserEmail = email });
+
+        if (context.Principal?.Identity is ClaimsIdentity identity)
+        {
+            identity.AddClaim(new Claim("sub", user.Data?.Id.ToString() ?? throw new ApplicationException($"User Id Missing for {email}")));
+        }
     }
 }

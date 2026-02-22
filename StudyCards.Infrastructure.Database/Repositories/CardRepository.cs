@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StudyCards.Application.Common;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class CardRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Card>(dbContext, httpContextAccessor), ICardRepository
+public class CardRepository(DataBaseContext dbContext, ICurrentUser currentUser) : BaseRepository<Card>(dbContext, currentUser), ICardRepository
 {
     public async Task<Card?> Get(Guid id, Guid deckId, CancellationToken cancellationToken = default)
     {

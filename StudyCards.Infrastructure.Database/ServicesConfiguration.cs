@@ -33,6 +33,7 @@ public static class ServicesConfiguration
         services.AddScoped<ICardRepository, CardRepository>();
         services.AddScoped<IDeckRepository, DeckRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IStatisticRepository, StatisticRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
         return services;
