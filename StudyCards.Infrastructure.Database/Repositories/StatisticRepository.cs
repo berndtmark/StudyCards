@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class StatisticRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<Statistic>(dbContext, httpContextAccessor), IStatisticRepository
+public class StatisticRepository(DataBaseContext dbContext, ICurrentUser currentUser) : BaseRepository<Statistic>(dbContext, currentUser), IStatisticRepository
 {
     public async Task<IEnumerable<T>> Get<T>(Guid userId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken = default) where T : Statistic
     {

@@ -4,7 +4,7 @@ using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
 
-namespace StudyCards.Application.UseCases.Admin.Commands;
+namespace StudyCards.Application.UseCases.UserManagement.Commands;
 
 public class UserLoginCommand : ICommand<User>
 {

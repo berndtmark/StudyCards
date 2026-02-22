@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -8,7 +8,7 @@ using StudyCards.Infrastructure.Database.Repositories;
 
 namespace StudyCards.Infrastructure.Database.UnitOfWork;
 
-public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContextAccessor, IDomainEventsDispatcher domainEventsDispatcher) : IUnitOfWork
+public class UnitOfWork(DataBaseContext context, ICurrentUser currentUser, IDomainEventsDispatcher domainEventsDispatcher) : IUnitOfWork
 {
     private ICardRepository? _cardRepository;
     private IDeckRepository? _deckRepository;
@@ -20,7 +20,7 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
     {
         get
         {
-            _cardRepository ??= new CardRepository(context, httpContextAccessor);
+            _cardRepository ??= new CardRepository(context, currentUser);
             return _cardRepository;
         }
     }
@@ -29,7 +29,7 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
     {
         get
         {
-            _deckRepository ??= new DeckRepository(context, httpContextAccessor);
+            _deckRepository ??= new DeckRepository(context, currentUser);
             return _deckRepository;
         }
     }
@@ -38,7 +38,7 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
     {
         get
         {
-            _userRepository ??= new UserRepository(context, httpContextAccessor);
+            _userRepository ??= new UserRepository(context, currentUser);
             return _userRepository;
         }
     }
@@ -47,7 +47,7 @@ public class UnitOfWork(DataBaseContext context, IHttpContextAccessor httpContex
     {
         get
         {
-            _statisticsRepository ??= new StatisticRepository(context, httpContextAccessor);
+            _statisticsRepository ??= new StatisticRepository(context, currentUser);
             return _statisticsRepository;
         }
     }

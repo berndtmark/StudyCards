@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
-using StudyCards.Application.Extensions;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.DeckManagement.Commands;
 using StudyCards.Application.UseCases.DeckManagement.Queries;
@@ -13,14 +13,14 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(IHttpContextAccessor httpContextAccessor, ICQRSDispatcher dispatcher, DeckMapper deckMapper) : ControllerBase
+public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher, DeckMapper deckMapper) : ControllerBase
 {
     [HttpGet]
     [Route("getdecks")]
     [ProducesResponseType(typeof(IEnumerable<DeckResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
-        var email = httpContextAccessor.GetEmail();
+        var email = currentUser.Email;
 
         var query = new GetDeckQuery
         {
@@ -37,7 +37,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, ICQRSDispa
     [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Add(AddDeckRequest request, CancellationToken cancellationToken)
     {
-        var email = httpContextAccessor.GetEmail();
+        var email = currentUser.Email;
 
         var result = await dispatcher.Send(new AddDeckCommand
         {
@@ -57,7 +57,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, ICQRSDispa
     [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(UpdateDeckRequest request, CancellationToken cancellationToken)
     {
-        var email = httpContextAccessor.GetEmail();
+        var email = currentUser.Email;
 
         var result = await dispatcher.Send(new UpdateDeckCommand
         {
@@ -78,7 +78,7 @@ public class DeckController(IHttpContextAccessor httpContextAccessor, ICQRSDispa
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remove(string deckId, CancellationToken cancellationToken)
     {
-        var email = httpContextAccessor.GetEmail();
+        var email = currentUser.Email;
 
         var result = await dispatcher.Send(new RemoveDeckCommand 
         { 

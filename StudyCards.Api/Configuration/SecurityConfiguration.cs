@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using StudyCards.Api.Configuration.Claims;
 using StudyCards.Api.Configuration.ClaimTransforms;
 using StudyCards.Api.Configuration.Options;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
-using StudyCards.Application.UseCases.Admin.Commands;
+using StudyCards.Application.UseCases.UserManagement.Commands;
 using System.Security.Claims;
 
 namespace StudyCards.Api.Configuration;
@@ -39,6 +41,7 @@ public static class SecurityConfiguration
         });
 
         services.AddTransient<IClaimsTransformation, CustomClaimsTransformation>();
+        services.AddScoped<ICurrentUser, CurrentUser>();
 
         return services;
     }
