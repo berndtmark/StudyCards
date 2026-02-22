@@ -14,9 +14,14 @@ export class MyButtonComponent {
   icon = input<string>();
   disabled = input<boolean>();
   noResponsive = input<boolean>();
-  buttonType = input<'elevated' | 'filled' | 'tonal' | 'outlined'>("elevated");
+  buttonType = input<'elevated' | 'filled' | 'tonal' | 'outlined' | 'icon'>("elevated");
 
   action = output<void>();
 
   responsiveIcon = computed(() => this.icon() && !this.noResponsive());
+
+  matButtonType = computed(() => {
+    const type = this.buttonType();
+    return type === 'icon' ? 'elevated' : type; // Default to 'elevated' if it's an icon. Allow compiler to be happy as icon is not a [matButton] type
+  });
 }

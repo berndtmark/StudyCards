@@ -13,17 +13,23 @@ export class ErrorHandlerService {
   private dialogService = inject(DialogService);
   private snackBar = inject(SnackbarService);
 
-  handleStoreError(store: any, action: string) {
+  // legacy - tapResponse if the newer method
+  handleRxJSStoreError(store: any, errorMessage: string) {
     return (err: any) => {
-      if (!this.handleValidationError(err)) {
-        patchState(store, { loadingState: LoadingState.Error });
-        this.snackBar.open(action);
-      } else {
-        patchState(store, { loadingState: LoadingState.Success }); // Its a validation result, let the app continue as normal
-      }
-
+      this.handleTapError(store, errorMessage, err);
       return of(null);
     };
+  }
+
+  handleTapError(store: any, errorMessage: string, err: HttpErrorResponse | any): void {
+    if (!this.handleValidationError(err)) {
+      // Not a validation error: Show snackbar and set store to Error
+      patchState(store, { loadingState: LoadingState.Error });
+      this.snackBar.open(errorMessage);
+    } else {
+      // It's a validation result, let the app continue as normal
+      patchState(store, { loadingState: LoadingState.Success }); 
+    }
   }
 
   private handleValidationError(err: HttpErrorResponse): boolean {

@@ -1,0 +1,38 @@
+<div class="calendar">
+  <div class="calendar-header">
+    <button mat-icon-button (click)="prevMonth()" [disabled]="!canGoPrev()" aria-label="Previous month">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <h3>{{ monthYearLabel() }}</h3>
+    <button mat-icon-button (click)="nextMonth()" [disabled]="!canGoNext()" aria-label="Next month">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+ 
+  <div class="calendar-grid">
+    <div class="weekday-row">
+      @for (day of weekdays; track day) {
+        <div class="weekday-header">{{ day }}</div>
+      }
+    </div>
+   
+    @for (week of calendar(); track $index) {
+      <div class="calendar-week">
+        @for (cell of week; track cell.day) {
+          <div class="calendar-cell" [class.other-month]="!cell.isCurrentMonth">
+            <span class="day-number">{{ cell.displayName }}</span>
+            <div class="cell-content">
+              @for (item of getItemsForDate(cell.day, cell.isCurrentMonth); track item.label) {
+                <mat-chip class="calendar-chip" 
+                  [appTruncate]="'.mdc-evolution-chip__text-label'" 
+                  [style.background-color]="item.colour">
+                    {{ item.label }}
+                </mat-chip>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

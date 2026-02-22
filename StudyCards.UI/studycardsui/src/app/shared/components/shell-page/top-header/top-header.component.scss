@@ -1,0 +1,37 @@
+@use '../../../../theming/colour' as colour;
+@use '../../../../theming/_responsive.scss' as responsive;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background-color: colour.$blue-100;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 10;
+
+    .header-left {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .welcome {
+        font-size: 15px;
+        font-weight: 200;
+        margin-right: 15px;
+        white-space: nowrap;
+    }
+
+    @include responsive.responsive('mobile') {
+        .welcome {
+            display: none;
+        }
+    }
+}

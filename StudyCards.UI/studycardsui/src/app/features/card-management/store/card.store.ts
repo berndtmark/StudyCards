@@ -64,7 +64,7 @@ export const CardStore = signalStore(
                                         searchTerm
                                     });
                                 }),
-                                catchError(errorHandler.handleStoreError(store, "Failed to load cards"))
+                                catchError(errorHandler.handleRxJSStoreError(store, "Failed to load cards"))
                             );
                     })
                 )
@@ -83,7 +83,7 @@ export const CardStore = signalStore(
                                         searchTerm
                                     });
                                 }),
-                                catchError(errorHandler.handleStoreError(store, "Failed to find card"))
+                                catchError(errorHandler.handleRxJSStoreError(store, "Failed to find card"))
                             )
                     )
                 )
@@ -104,7 +104,7 @@ export const CardStore = signalStore(
                             snackBar.open("Card added successfully");
                             router.navigate(['/cards', store.deckId()]);
                         }),
-                        catchError(errorHandler.handleStoreError(store, "Failed to add card"))
+                        catchError(errorHandler.handleRxJSStoreError(store, "Failed to add card"))
                     ))
                 )
             ),
@@ -122,7 +122,7 @@ export const CardStore = signalStore(
                             snackBar.open("Card updated successfully");
                             router.navigate(['/cards', store.deckId()]);
                         }),
-                        catchError(errorHandler.handleStoreError(store, "Failed to update card"))
+                        catchError(errorHandler.handleRxJSStoreError(store, "Failed to update card"))
                     ))
                 )
             ),
@@ -142,7 +142,7 @@ export const CardStore = signalStore(
                             snackBar.open("Card removed successfully");
                             router.navigate(['/cards', store.deckId()]);
                         }),
-                        catchError(errorHandler.handleStoreError(store, "Failed to remove card"))
+                        catchError(errorHandler.handleRxJSStoreError(store, "Failed to remove card"))
                     ))
                 )
             ),
@@ -189,7 +189,7 @@ export const CardStore = signalStore(
                                     });
                                     snackBar.open("Cards import ran successfully");
                                 }),
-                                catchError(errorHandler.handleStoreError(store, "Failed to import cards"))
+                                catchError(errorHandler.handleRxJSStoreError(store, "Failed to import cards"))
                         )}
                     )
                 )
@@ -208,7 +208,7 @@ export const CardStore = signalStore(
                                         dialogService.info("Warning", `Too many cards to export. First ${maxExportCardNo} exported.`);
                                     }
                             }),
-                            catchError(errorHandler.handleStoreError(store, "Failed to export cards")))
+                            catchError(errorHandler.handleRxJSStoreError(store, "Failed to export cards")))
                     })
                 )
             )

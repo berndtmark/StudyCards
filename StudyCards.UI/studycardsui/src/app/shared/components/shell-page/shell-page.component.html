@@ -1,18 +1,10 @@
-<div class="shell-page-header">
-  <h2>Study Cards</h2>
+<mat-sidenav-container class="shell-page-content">
+  <mat-sidenav class="side-nav" #sideNav mode="over" [autoFocus]="false" fixedInViewport="true">
+    <app-side-nav (menuSelected)="sideNav.close()"></app-side-nav>
+  </mat-sidenav>
 
-  <div class="right-hand-content">
-    @if (store.userName()) {
-      <span class="welcome">Welcome {{ store.userName() }}</span>
-    }
-
-    <button mat-raised-button (click)="logout()">
-      <mat-icon>login</mat-icon>
-      Logout
-    </button>
-  </div>
-</div>
-
-<div class="shell-page-content">
-  <router-outlet></router-outlet>
-</div>
+  <mat-sidenav-content class="content">
+    <app-top-header [userName]="store.userName()" (logout)="logout()" (menuSelected)="sideNav.toggle()"></app-top-header>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

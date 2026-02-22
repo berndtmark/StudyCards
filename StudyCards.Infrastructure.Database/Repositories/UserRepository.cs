@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
 using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public class UserRepository(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) : BaseRepository<User>(dbContext, httpContextAccessor), IUserRepository
+public class UserRepository(DataBaseContext dbContext, ICurrentUser currentUser) : BaseRepository<User>(dbContext, currentUser), IUserRepository
 {
     public async Task<User> Add(User user, CancellationToken cancellationToken)
     {

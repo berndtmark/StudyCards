@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using StudyCards.Application.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
+using StudyCards.Application.Interfaces;
 using StudyCards.Domain.Entities;
 using StudyCards.Infrastructure.Database.Context;
 
 namespace StudyCards.Infrastructure.Database.Repositories;
 
-public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, IHttpContextAccessor httpContextAccessor) where TEntity : EntityBase
+public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, ICurrentUser currentUser) where TEntity : EntityBase
 {
     protected virtual string EmailAddress
     {
-        get => field ?? httpContextAccessor.GetEmail();
+        get => field ?? currentUser.Email;
         set => field = value;
     }
 

@@ -1,0 +1,14 @@
+<div class="header">
+    <div class="header-left">
+        <app-my-button buttonType="icon" icon="menu" (action)="menuSelected.emit()"></app-my-button>
+        <h2>Study Cards</h2>
+    </div>
+
+    <div class="header-right">
+        @if (userName()) {
+            <span class="welcome">Welcome {{ userName() }}</span>
+        }
+
+        <app-my-button icon="login" title="Logout" [noResponsive]="true" (action)="logout.emit()"></app-my-button>
+    </div>
+</div>

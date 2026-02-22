@@ -9,6 +9,7 @@ public static class MappingConfiguration
         services.AddSingleton<CardMapper>();
         services.AddSingleton<AdminMapper>();
         services.AddSingleton<DeckMapper>();
+        services.AddSingleton<StatisticMapper>();
 
         return services;
     }

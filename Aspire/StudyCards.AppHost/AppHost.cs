@@ -12,6 +12,7 @@ var studyCards = cosmos.AddCosmosDatabase("StudyCards");
 var deck = studyCards.AddContainer("Deck", "/UserEmail");
 var card = studyCards.AddContainer("Card", "/DeckId");
 var user = studyCards.AddContainer("User", "/UserEmail");
+var statistic = studyCards.AddContainer("Statistic", "/UserId");
 
 builder.AddProject<Projects.StudyCards_Api>("studycards-api")
     .WithReference(cosmos)

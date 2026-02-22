@@ -1,0 +1,23 @@
+@use '../../../../theming/colour' as colour;
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    margin-left: 18px;
+    align-items: center;
+
+    .favicon {
+        width: 30px; 
+        height: 30px;
+    }
+}
+
+.active-link {
+    background-color: colour.$blue-100;
+}
+
+.list {
+    margin-right: 5px;
+    margin-left: 5px;
+}
