@@ -1,12 +1,15 @@
-@if(buttonType() == 'icon') {
-    <button matIconButton type="button" (click)="action.emit()" [disabled]="disabled()">
-        <mat-icon>{{ icon() }}</mat-icon>
+@switch (buttonType()) {
+  @case ('icon') {
+    <button mat-icon-button type="button" (click)="action.emit()" [disabled]="disabled()">
+      <mat-icon>{{ icon() }}</mat-icon>
     </button>
-} @else {
+  }
+  @default {
     <button class="button" type="button" [class.icon-responsive]="responsiveIcon()" [matButton]="matButtonType()" (click)="action.emit()" [disabled]="disabled()">
-        @if(icon()) {
-            <mat-icon>{{icon()}}</mat-icon>
-        }
-        <span class="text">{{title()}}</span>
+      @if (icon()) {
+        <mat-icon>{{ icon() }}</mat-icon>
+      }
+      <span class="text">{{ title() }}</span>
     </button>
+  }
 }

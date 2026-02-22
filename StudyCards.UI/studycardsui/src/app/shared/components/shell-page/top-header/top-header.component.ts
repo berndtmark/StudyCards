@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatRippleModule } from '@angular/material/core';
-import { MatIcon } from "@angular/material/icon";
+import { MyButtonComponent } from "../../my-button/my-button.component";
 
 @Component({
   selector: 'app-top-header',
-  imports: [MatIcon, MatRippleModule, MatButtonModule, MatIcon],
+  imports: [MyButtonComponent],
   templateUrl: './top-header.component.html',
   styleUrl: './top-header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

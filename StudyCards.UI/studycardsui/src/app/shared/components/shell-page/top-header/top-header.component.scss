@@ -15,15 +15,6 @@
         display: flex;
         gap: 10px;
         align-items: center;
-
-        .menu {
-            transition: color 0.25s ease-in-out;
-
-            &:hover {
-                color: colour.$gray-200;
-                cursor: pointer;
-            }
-        }
     }
 
     .header-right {

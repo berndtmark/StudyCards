@@ -1,11 +1,6 @@
 <div class="header">
     <div class="header-left">
-        <mat-icon 
-            matRipple [matRippleCentered]="true" [matRippleUnbounded]="true" [matRippleRadius]="20" 
-            class="menu" (click)="menuSelected.emit()">
-            menu
-        </mat-icon>
-
+        <app-my-button buttonType="icon" icon="menu" (action)="menuSelected.emit()"></app-my-button>
         <h2>Study Cards</h2>
     </div>
 
@@ -14,9 +9,6 @@
             <span class="welcome">Welcome {{ userName() }}</span>
         }
 
-        <button mat-raised-button (click)="logout.emit()">
-            <mat-icon>login</mat-icon>
-            Logout
-        </button>
+        <app-my-button icon="login" title="Logout" [noResponsive]="true" (action)="logout.emit()"></app-my-button>
     </div>
 </div>
