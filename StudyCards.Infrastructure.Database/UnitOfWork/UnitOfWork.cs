@@ -8,13 +8,12 @@ using StudyCards.Infrastructure.Database.Repositories;
 
 namespace StudyCards.Infrastructure.Database.UnitOfWork;
 
-public class UnitOfWork(DataBaseContext context, ICurrentUser currentUser, IDomainEventsDispatcher domainEventsDispatcher) : IUnitOfWork
+public sealed class UnitOfWork(DataBaseContext context, ICurrentUser currentUser, IDomainEventsDispatcher domainEventsDispatcher) : IUnitOfWork, IDisposable
 {
     private ICardRepository? _cardRepository;
     private IDeckRepository? _deckRepository;
     private IUserRepository? _userRepository;
     private IStatisticRepository? _statisticsRepository;
-    private bool _disposed;
 
     public ICardRepository CardRepository
     {
@@ -75,21 +74,8 @@ public class UnitOfWork(DataBaseContext context, ICurrentUser currentUser, IDoma
         }
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                context.Dispose();
-            }
-        }
-        _disposed = true;
-    }
-
     public void Dispose()
     {
-        Dispose(true);
-        GC.SuppressFinalize(this);
+        context?.Dispose();
     }
 }
