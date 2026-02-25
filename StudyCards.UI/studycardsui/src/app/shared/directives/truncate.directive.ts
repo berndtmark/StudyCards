@@ -35,7 +35,7 @@ export class TruncateDirective implements AfterViewInit, OnDestroy {
     // Observe size changes and check overflow
     this.resizeObserver = new ResizeObserver(() => this.checkOverflow());
     this.resizeObserver.observe(host);
-    this.checkOverflow();
+    setTimeout(() => this.checkOverflow(), 0);
   }
 
   ngOnDestroy(): void {
