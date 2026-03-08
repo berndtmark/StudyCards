@@ -22,7 +22,7 @@ public class StatisticController(ICQRSDispatcher dispatcher, StatisticMapper sta
 
         var query = new GetStudyStatisticsQuery
         {
-            UserId = new Guid(userId),
+            UserId = userId,
             From = from,
             To = to,
         };

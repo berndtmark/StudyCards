@@ -13,18 +13,6 @@ namespace StudyCards.Api.Controllers;
 public class AdminController(ICQRSDispatcher dispatcher, AdminMapper adminMapper) : ControllerBase
 {
     [HttpGet]
-    [Route("getdeckusage")]
-    public async Task<IActionResult> GetDeckUsage(CancellationToken cancellationToken)
-    {
-        var query = new GetAllUsersDeckUsageQuery
-        {
-        };
-        var result = await dispatcher.Send(query, cancellationToken);
-
-        return Ok(result.Data);
-    }
-
-    [HttpGet]
     [Route("getuserdetails")]
     public async Task<IActionResult> GetUserDetails(CancellationToken cancellationToken)
     {

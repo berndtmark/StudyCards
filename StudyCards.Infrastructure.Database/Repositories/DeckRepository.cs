@@ -8,11 +8,11 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public class DeckRepository(DataBaseContext dbContext, ICurrentUser currentUser) : BaseRepository<Deck>(dbContext, currentUser), IDeckRepository
 {
-    public async Task<Deck?> Get(Guid id, string emailAddress, CancellationToken cancellationToken = default)
+    public async Task<Deck?> Get(Guid id, Guid userId, CancellationToken cancellationToken = default)
     {
         return await DbContext
             .Deck
-            .WithPartitionKey(emailAddress)
+            .WithPartitionKey(userId)
             .AsNoTracking()
             .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
@@ -21,25 +21,16 @@ public class DeckRepository(DataBaseContext dbContext, ICurrentUser currentUser)
     {
         return await DbContext
             .Deck
-            .WithPartitionKey(EmailAddress)
+            .WithPartitionKey(UserId)
             .AsNoTracking()
             .SingleOrDefaultAsync(d => d.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Deck>> GetByEmail(string emailAddress, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Deck>> GetByUser(Guid userId, CancellationToken cancellationToken = default)
     {
         return await DbContext.Deck
             .AsNoTracking()
-            .Where(c => c.UserEmail == emailAddress)
-            .ToListAsync(cancellationToken);
-    }
-
-    // WARNING: This method returns all Decks, including those that do not belong to the current user.
-    public async Task<IEnumerable<Deck>> GetDecksForAllUsers(CancellationToken cancellationToken = default)
-    {
-        return await DbContext
-            .Deck
-            .AsNoTracking()
+            .Where(c => c.UserId == userId)
             .ToListAsync(cancellationToken);
     }
 
@@ -55,8 +46,8 @@ public class DeckRepository(DataBaseContext dbContext, ICurrentUser currentUser)
         return entity;
     }
 
-    public async Task Remove(Guid deckId, string emailAddress)
+    public async Task Remove(Guid deckId, Guid userId)
     {
-        await RemoveEntity(deckId, emailAddress);
+        await RemoveEntity(deckId, userId);
     }
 }

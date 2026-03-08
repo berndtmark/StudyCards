@@ -9,7 +9,7 @@ var cosmos = builder.AddAzureCosmosDB("cosmos-db")
     });
 
 var studyCards = cosmos.AddCosmosDatabase("StudyCards");
-var deck = studyCards.AddContainer("Deck", "/UserEmail");
+var deck = studyCards.AddContainer("Deck", "/UserId");
 var card = studyCards.AddContainer("Card", "/DeckId");
 var user = studyCards.AddContainer("User", "/UserEmail");
 var statistic = studyCards.AddContainer("Statistic", "/UserId");
