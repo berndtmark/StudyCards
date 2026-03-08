@@ -10,7 +10,7 @@ public class UserRepository(DataBaseContext dbContext, ICurrentUser currentUser)
 {
     public async Task<User> Add(User user, CancellationToken cancellationToken)
     {
-        EmailAddress = user.UserEmail;
+        UserId = user.Id; // This action is performed before the claim is set, during the login process
         var entity = await AddEntity(user, cancellationToken);
         return entity;
     }
@@ -31,7 +31,7 @@ public class UserRepository(DataBaseContext dbContext, ICurrentUser currentUser)
 
     public User Update(User user)
     {
-        EmailAddress = user.UserEmail;
+        UserId = user.Id; // This action is performed before the claim is set, during the login process
         var entity = UpdateEntity(user);
         return entity;
     }
