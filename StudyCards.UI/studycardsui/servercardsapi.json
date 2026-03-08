@@ -5,18 +5,6 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Admin/getdeckusage": {
-      "get": {
-        "tags": [
-          "Admin"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Admin/getuserdetails": {
       "get": {
         "tags": [
@@ -937,9 +925,6 @@
               "null",
               "string"
             ]
-          },
-          "userEmail": {
-            "type": "string"
           },
           "cardCount": {
             "pattern": "^-?(?:0|[1-9]\\d*)$",
