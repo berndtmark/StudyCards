@@ -7,6 +7,12 @@ namespace StudyCards.Infrastructure.Database.Repositories;
 
 public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, ICurrentUser currentUser) where TEntity : EntityBase
 {
+    protected virtual Guid UserId
+    {
+        get => field != Guid.Empty ? field : currentUser.UserId;
+        set => field = value;
+    }
+
     protected virtual string EmailAddress
     {
         get => field ?? currentUser.Email;
@@ -21,7 +27,7 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, ICurren
         var updateEntity = entity with
         {
             UpdatedDate = DateTime.UtcNow,
-            UpdatedBy = EmailAddress
+            UpdatedBy = UserId.ToString(),
         };
 
         dbContext.Update<TEntity>(updateEntity);
@@ -32,7 +38,7 @@ public abstract class BaseRepository<TEntity>(DataBaseContext dbContext, ICurren
     {
         var newEntity = entity with
         {
-            CreatedBy = EmailAddress
+            CreatedBy = UserId.ToString(),
         };
 
         await dbContext.AddAsync(newEntity, cancellationToken);

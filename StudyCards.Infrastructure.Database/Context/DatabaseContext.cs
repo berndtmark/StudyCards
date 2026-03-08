@@ -22,7 +22,7 @@ public class DataBaseContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<Deck>()
             .ToContainer("Deck")
             .HasNoDiscriminator()
-            .HasPartitionKey(x => x.UserEmail)
+            .HasPartitionKey(x => x.UserId)
             .HasKey(x => x.Id);
 
         modelBuilder.Entity<User>()

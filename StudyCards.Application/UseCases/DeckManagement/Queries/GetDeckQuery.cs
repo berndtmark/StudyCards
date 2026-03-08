@@ -7,14 +7,14 @@ namespace StudyCards.Application.UseCases.DeckManagement.Queries;
 
 public class GetDeckQuery : IQuery<IEnumerable<Deck>>
 {
-    public string EmailAddress { get; set; } = string.Empty;
+    public Guid UserId { get; set; }
 }
 
 public class GetDeckQueryHandler(IDeckRepository deckRepository) : IQueryHandler<GetDeckQuery, IEnumerable<Deck>>
 {
     public async Task<Result<IEnumerable<Deck>>> Handle(GetDeckQuery request, CancellationToken cancellationToken)
     {
-        var result = await deckRepository.GetByEmail(request.EmailAddress, cancellationToken);
+        var result = await deckRepository.GetByUser(request.UserId, cancellationToken);
         return Result<IEnumerable<Deck>>.Success(result);
     }
 }

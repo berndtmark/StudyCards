@@ -20,11 +20,11 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
     [ProducesResponseType(typeof(IEnumerable<DeckResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
-        var email = currentUser.Email;
+        var userId = currentUser.UserId;
 
         var query = new GetDeckQuery
         {
-            EmailAddress = email
+            UserId = userId,
         };
         var result = await dispatcher.Send(query, cancellationToken);
 
@@ -37,11 +37,11 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
     [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Add(AddDeckRequest request, CancellationToken cancellationToken)
     {
-        var email = currentUser.Email;
+        var userId = currentUser.UserId;
 
         var result = await dispatcher.Send(new AddDeckCommand
         {
-            EmailAddress = email,
+            UserId = userId,
             DeckName = request.DeckName,
             Description = request.Description,
             ReviewsPerDay = request.ReviewsPerDay,
@@ -57,16 +57,16 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
     [ProducesResponseType(typeof(DeckResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(UpdateDeckRequest request, CancellationToken cancellationToken)
     {
-        var email = currentUser.Email;
+        var userId = currentUser.UserId;
 
         var result = await dispatcher.Send(new UpdateDeckCommand
         {
             DeckId = request.DeckId,
+            UserId = userId,
             DeckName = request.DeckName,
             Description = request.Description,
             ReviewsPerDay = request.ReviewsPerDay,
             NewCardsPerDay = request.NewCardsPerDay,
-            EmailAddress = email
         }, cancellationToken);
 
         var response = deckMapper.Map(result.Data!);
@@ -78,12 +78,12 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
     [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     public async Task<IActionResult> Remove(string deckId, CancellationToken cancellationToken)
     {
-        var email = currentUser.Email;
+        var userId = currentUser.UserId;
 
         var result = await dispatcher.Send(new RemoveDeckCommand 
         { 
             DeckId = new Guid(deckId),
-            EmailAddress = email
+            UserId = userId,
         }, cancellationToken);
 
         return Ok(result.Data);
