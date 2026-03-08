@@ -5,9 +5,9 @@ namespace StudyCards.Domain.Entities;
 
 public record Deck : EntityBase
 {
+    public Guid UserId { get; set; }
     public string DeckName { get; init; } = string.Empty;
     public string? Description { get; init; } = string.Empty;
-    public string UserEmail { get; init; } = string.Empty;
     public int? CardCount { get; init; }
     public DeckSettings DeckSettings { get; init; } = new();
     public DeckReviewStatus DeckReviewStatus { get; init; } = new();
@@ -38,7 +38,7 @@ public record Deck : EntityBase
             }
         };
 
-        result.Raise(new StudyCompletedDomainEvent(result.Id, result.DeckName, cardReviewCount));
+        result.Raise(new StudyCompletedDomainEvent(result.Id, result.UserId, result.DeckName, cardReviewCount));
         return result;
     }
 }

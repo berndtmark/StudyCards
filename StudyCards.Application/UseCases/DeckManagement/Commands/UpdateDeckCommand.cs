@@ -9,8 +9,8 @@ namespace StudyCards.Application.UseCases.DeckManagement.Commands;
 public class UpdateDeckCommand : ICommand<Deck>
 {
     public Guid DeckId { get; set; }
+    public Guid UserId { get; set; }
     public string DeckName { get; set; } = string.Empty;
-    public string EmailAddress { get; set; } = string.Empty;
     public string? Description { get; set; } = string.Empty;
     public int ReviewsPerDay { get; set; }
     public int NewCardsPerDay { get; set; }
@@ -20,13 +20,12 @@ public class UpdateDeckCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<
 {
     public async Task<Result<Deck>> Handle(UpdateDeckCommand request, CancellationToken cancellationToken)
     {
-        var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.EmailAddress, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
+        var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.UserId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
 
         var newDeck = currentDeck with
         {
             DeckName = request.DeckName,
             Description = request.Description,
-            UserEmail = request.EmailAddress,
             DeckSettings = currentDeck.DeckSettings with
             {
                 NewCardsPerDay = request.NewCardsPerDay,

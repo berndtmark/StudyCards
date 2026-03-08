@@ -5,7 +5,6 @@ public class DeckResponse
     public Guid Id { get; init; }
     public string DeckName { get; init; } = string.Empty;
     public string? Description { get; init; } = string.Empty;
-    public string UserEmail { get; init; } = string.Empty;
     public int? CardCount { get; init; }
     public DeckSettingsResponse DeckSettings { get; init; } = new();
     public DeckReviewStatusResponse DeckReviewStatus { get; init; } = new();
