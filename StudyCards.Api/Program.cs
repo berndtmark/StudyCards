@@ -55,19 +55,7 @@ app.MapDefaultEndpoints();
 app.UseExceptionHandler();
 
 app.UseDefaultFiles();
-var spaStaticFileOptions = new StaticFileOptions
-{
-    OnPrepareResponse = ctx =>
-    {
-        if (ctx.File.Name.Equals("index.html", StringComparison.OrdinalIgnoreCase))
-        {
-            ctx.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
-            ctx.Context.Response.Headers.Append("Pragma", "no-cache");
-            ctx.Context.Response.Headers.Append("Expires", "-1");
-        }
-    }
-};
-app.UseStaticFiles(spaStaticFileOptions);
+app.UseStaticFiles(StaticFileConfiguration.StaticFileOptions);
 
 if (app.Environment.IsDevelopment())
 {
@@ -81,7 +69,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapFallbackToFile("/index.html", spaStaticFileOptions);
+app.MapFallbackToFile("/index.html", StaticFileConfiguration.StaticFileOptions);
 
 app.MapHub<ChatHub>("/hub/chat-hub");    
 
