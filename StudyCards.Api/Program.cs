@@ -68,7 +68,6 @@ var spaStaticFileOptions = new StaticFileOptions
     }
 };
 app.UseStaticFiles(spaStaticFileOptions);
-app.MapStaticAssets();
 
 if (app.Environment.IsDevelopment())
 {
