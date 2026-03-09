@@ -59,8 +59,7 @@ app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
     {
-        var path = ctx.Context.Request.Path.Value?.ToLower();
-        if (path == "/index.html" || path == "/")
+        if (ctx.File.Name.Equals("index.html", StringComparison.OrdinalIgnoreCase))
         {
             ctx.Context.Response.Headers.Append("Cache-Control", "no-cache, no-store");
             ctx.Context.Response.Headers.Append("Pragma", "no-cache");
