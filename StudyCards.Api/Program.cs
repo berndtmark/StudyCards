@@ -55,7 +55,7 @@ app.MapDefaultEndpoints();
 app.UseExceptionHandler();
 
 app.UseDefaultFiles();
-app.UseStaticFiles(new StaticFileOptions
+var spaStaticFileOptions = new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
     {
@@ -66,7 +66,8 @@ app.UseStaticFiles(new StaticFileOptions
             ctx.Context.Response.Headers.Append("Expires", "-1");
         }
     }
-});
+};
+app.UseStaticFiles(spaStaticFileOptions);
 app.MapStaticAssets();
 
 if (app.Environment.IsDevelopment())
@@ -81,7 +82,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapFallbackToFile("/index.html");
+app.MapFallbackToFile("/index.html", spaStaticFileOptions);
 
 app.MapHub<ChatHub>("/hub/chat-hub");    
 
