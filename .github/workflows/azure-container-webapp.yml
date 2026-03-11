@@ -29,6 +29,7 @@ name: Build and deploy a container to an Azure Web App
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*" ] # Adds a listener for tags (v1.0, etc)
   workflow_dispatch:
 
 permissions:
@@ -70,6 +71,7 @@ jobs:
           min-versions-to-keep: 10
 
   deploy:
+    if: startsWith(github.ref, 'refs/tags/') # Only deploy on tags
     permissions:
       contents: none
     runs-on: ubuntu-latest
