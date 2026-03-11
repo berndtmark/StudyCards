@@ -11,7 +11,6 @@ public static class ServicesConfiguration
     public static IServiceCollection ConfigureInfrastructureSharedServices(this IServiceCollection services)
     {
         // DOMAIN EVENTS
-        services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
         services.Scan(scan => scan.FromAssembliesOf(typeof(Application.ServicesConfiguration))
             .AddClasses(classes => classes.AssignableTo(typeof(IDomainEventHandler<>)), publicOnly: false)
             .AsImplementedInterfaces()
@@ -25,7 +24,11 @@ public static class ServicesConfiguration
             .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<,>)), publicOnly: false)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
-        services.AddScoped<ICQRSDispatcher, CQRSDispatcher>();
+
+        services.AddScoped<SystemDispatcher>();
+        services.AddScoped<ICQRSDispatcher>(p => p.GetRequiredService<SystemDispatcher>());
+        services.AddScoped<IDomainEventsDispatcher>(p => p.GetRequiredService<SystemDispatcher>());
+
         services.Decorate(typeof(IQueryHandler<,>), typeof(LoggingDecorator.QueryHandler<,>));
         services.Decorate(typeof(ICommandHandler<,>), typeof(LoggingDecorator.CommandHandler<,>));
 
