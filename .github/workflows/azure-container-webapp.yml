@@ -28,8 +28,8 @@ name: Build and deploy a container to an Azure Web App
 
 on:
   push:
-    branches: [ "main" ]
-    tags: [ "v*" ] # Adds a listener for tags (v1.0, etc)
+    tags: 
+      - 'v*'
   workflow_dispatch:
 
 permissions:
@@ -42,6 +42,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag is on main branch
+        # We skip this check if you click the manual 'workflow_dispatch' button
+        if: github.event_name != 'workflow_dispatch' 
+        run: |
+          if ! git branch -r --contains ${{ github.sha }} | grep -E -q 'origin/main$'; then
+            echo "Security Error: You can only deploy tags that are on the main branch. Aborting."
+            exit 1
+          fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -71,8 +82,6 @@ jobs:
           min-versions-to-keep: 10
 
   deploy:
-    # Deploy if a tag is pushed OR if someone clicks the manual "Run workflow" button
-    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     permissions:
       contents: none
     runs-on: ubuntu-latest
