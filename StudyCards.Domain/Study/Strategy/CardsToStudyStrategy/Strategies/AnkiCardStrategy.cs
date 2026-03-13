@@ -1,10 +1,13 @@
 ﻿using StudyCards.Domain.Entities;
+using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
 
 namespace StudyCards.Domain.Study.Strategy.CardsToStudyStrategy.Strategies;
 
 public class AnkiCardStrategy : ICardsToStudyStrategy
 {
+    public CardStudyMethodology CardStudyMethodology => CardStudyMethodology.Anki;
+
     public IEnumerable<Card> GetCards(IEnumerable<Card> cards, int noCardsToSelect, int noNewCardsToSelect)
     {
         var now = DateTime.UtcNow;
