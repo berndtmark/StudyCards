@@ -1,10 +1,13 @@
 ﻿using StudyCards.Domain.Entities;
+using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
 
 namespace StudyCards.Domain.Study.Strategy.CardsToStudyStrategy.Strategies;
 
 public class RandomCardStrategy : ICardsToStudyStrategy
 {
+    public CardStudyMethodology CardStudyMethodology => CardStudyMethodology.Random;
+
     public IEnumerable<Card> GetCards(IEnumerable<Card> cards, int noCardsToSelect, int noNewCardsToSelect)
     {
         Random random = new();
