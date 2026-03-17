@@ -17,6 +17,8 @@ mat-progress-bar {
   left: 0;
   right: 0;
   z-index: 3;
+  // css trick to make the progress bar not jump on screen. It is itself 4px thick.
+  margin-bottom: -4px; 
 }
 
 mat-error {

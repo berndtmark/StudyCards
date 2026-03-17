@@ -10,6 +10,6 @@ export class StatisticService {
   private statisticServiceApi = inject(StatisticServiceApi)
 
   getStudyStatistics(from: Date, to: Date): Observable<StudyStatisticResponse[]> {
-    return this.statisticServiceApi.getStudyStatistics$Json({ from: from.toDateString(), to: to.toDateString()});
+    return this.statisticServiceApi.getStudyStatistics$Json({ from: from.toISOString(), to: to.toISOString()});
   }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, output, input, signal, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
@@ -31,6 +31,7 @@ export class Calandar {
   readonly items = input<CalendarItem[]>([]);
   readonly minDate = input<Date>();
   readonly maxDate = input<Date>();
+  monthChange = output<Date>();
  
   readonly viewMonth: WritableSignal<Date> = signal(new Date());
   readonly weekdays = DAY_NAMES;
@@ -109,14 +110,20 @@ export class Calandar {
     if (!this.canGoNext()) return;
    
     const current = this.viewMonth();
-    this.viewMonth.set(new Date(current.getFullYear(), current.getMonth() + 1, 1));
+    const next = new Date(current.getFullYear(), current.getMonth() + 1, 1);
+    this.viewMonth.set(next);
+
+    this.monthChange.emit(next);
   }
 
   prevMonth(): void {
     if (!this.canGoPrev()) return;
    
     const current = this.viewMonth();
-    this.viewMonth.set(new Date(current.getFullYear(), current.getMonth() - 1, 1));
+    const prev = new Date(current.getFullYear(), current.getMonth() - 1, 1);
+    this.viewMonth.set(prev);
+
+    this.monthChange.emit(prev);
   }
 
   getItemsForDate(day: number, isCurrentMonth: boolean): CalendarItem[] {

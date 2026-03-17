@@ -16,11 +16,14 @@ export class StatisticsLandingComponent implements OnInit {
   readonly store = inject(StatisticStore);
 
   ngOnInit(): void {
-    this.store.loadStudyStatistics();
+    const from = DateFuctions.firstDayOfMonth(DateFuctions.today());
+    const to = DateFuctions.tomorrow();
+
+    this.store.loadStudyStatistics({ from, to });
   }
   
   protected readonly maxDate = signal(DateFuctions.today());
-  protected readonly minDate = signal(DateFuctions.oneYearAgo());
+  protected readonly minDate = signal(DateFuctions.sinceInception());
   loadingState = LoadingState;
 
   calendarItems = computed<CalendarItem[]>(() => {
@@ -30,4 +33,10 @@ export class StatisticsLandingComponent implements OnInit {
           colour: "#f0f4c3"
       }));
   });
+
+  calandarChange(date: Date): void {
+    const from = DateFuctions.firstDayOfMonth(date);
+    const to = DateFuctions.lastDayOfMonth(date);
+    this.store.loadStudyStatistics({ from, to });
+  }
 }

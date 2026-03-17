@@ -2,4 +2,4 @@
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 }
 
-<app-calandar [items]="calendarItems()" [minDate]="minDate()" [maxDate]="maxDate()"></app-calandar>
+<app-calandar [items]="calendarItems()" [minDate]="minDate()" [maxDate]="maxDate()" (monthChange)="calandarChange($event)"></app-calandar>

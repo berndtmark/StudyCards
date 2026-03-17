@@ -7,7 +7,6 @@ import { pipe, switchMap, tap } from "rxjs";
 import { ErrorHandlerService } from "../../../shared/services/error-handler.service";
 import { tapResponse } from '@ngrx/operators';
 import { StudyStatisticResponse } from "../../../@api/models/study-statistic-response";
-import { DateFuctions } from "../../../shared/functions/date-functions";
 
 type StatisticState = {
     loadingState: LoadingState;
@@ -24,10 +23,10 @@ export const StatisticStore = signalStore(
     withMethods((store,
         statisticService = inject(StatisticService),
         errorHandler = inject(ErrorHandlerService)) => ({
-            loadStudyStatistics: rxMethod<void>(
+            loadStudyStatistics: rxMethod<{ from: Date, to: Date }>(
                 pipe(
                     tap(() => patchState(store, { loadingState: LoadingState.Loading })),
-                    switchMap(() => statisticService.getStudyStatistics(DateFuctions.oneYearAgo(), DateFuctions.tomorrow()).pipe(
+                    switchMap(s => statisticService.getStudyStatistics(s.from, s.to).pipe(
                         tapResponse({
                             next: (stats) => {        
                                 patchState(store, { 
