@@ -22,4 +22,21 @@ export class DateFuctions {
     const now = new Date();
     return new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
   }
+
+  static sinceInception(): Date {
+    return new Date(2026, 0, 1);
+  }
+
+  static firstDayOfMonth(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  }
+
+  static lastDayOfMonth(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
+  }
+
+  static uniqueMonthKey(date: Date): string {
+    return `${date.getFullYear()}-${date.getMonth()}`;
+  }
+
 }

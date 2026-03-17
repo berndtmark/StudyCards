@@ -13,7 +13,7 @@ public class StatisticRepository(DataBaseContext dbContext, ICurrentUser current
         return await DbContext
             .Set<T>()
             .WithPartitionKey(userId)
-            .Where(s => s.DateRecorded >= dateFrom && s.DateRecorded < dateTo)
+            .Where(s => s.DateRecorded >= dateFrom && s.DateRecorded <= dateTo)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
