@@ -34,4 +34,9 @@ export class DateFuctions {
   static lastDayOfMonth(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59, 999);
   }
+
+  static uniqueMonthKey(date: Date): string {
+    return `${date.getFullYear()}-${date.getMonth()}`;
+  }
+
 }

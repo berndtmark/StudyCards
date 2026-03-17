@@ -16,10 +16,7 @@ export class StatisticsLandingComponent implements OnInit {
   readonly store = inject(StatisticStore);
 
   ngOnInit(): void {
-    const from = DateFuctions.firstDayOfMonth(DateFuctions.today());
-    const to = DateFuctions.tomorrow();
-
-    this.store.loadStudyStatistics({ from, to });
+    this.store.loadStudyStatisticsForMonth({ date: DateFuctions.today() });
   }
   
   protected readonly maxDate = signal(DateFuctions.today());
@@ -35,8 +32,6 @@ export class StatisticsLandingComponent implements OnInit {
   });
 
   calandarChange(date: Date): void {
-    const from = DateFuctions.firstDayOfMonth(date);
-    const to = DateFuctions.lastDayOfMonth(date);
-    this.store.loadStudyStatistics({ from, to });
+    this.store.loadStudyStatisticsForMonth({ date });
   }
 }
