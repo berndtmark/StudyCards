@@ -11,7 +11,7 @@ public class LoggingEnrichmentMiddleware(RequestDelegate next)
 
         if (!string.IsNullOrWhiteSpace(userId))
         {
-            using (LogContext.PushProperty("userId", userId))
+            using (LogContext.PushProperty("UserId", userId))
             {
                 await next(context);
             }
