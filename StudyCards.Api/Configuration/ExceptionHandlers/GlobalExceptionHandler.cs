@@ -5,13 +5,15 @@ using StudyCards.Application.Exceptions;
 namespace StudyCards.Api.Configuration.ExceptionHandlers;
 
 internal sealed class GlobalExceptionHandler(
-    IProblemDetailsService problemDetailsService) : IExceptionHandler
+    IProblemDetailsService problemDetailsService, ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
     {
+        logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
+
         httpContext.Response.StatusCode = exception switch
         {
             EntityNotFoundException => StatusCodes.Status404NotFound,

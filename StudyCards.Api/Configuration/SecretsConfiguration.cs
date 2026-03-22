@@ -44,17 +44,33 @@ public class SecretConfigurationProvider(ISecretsManager secretsManager, IConfig
     {
         var secrets = _secretsManager.GetSecrets(
             Secrets.CosmosDbConnectionString,
-            Secrets.GoogleAuthOptions
+            Secrets.GoogleAuthOptions,
+            Secrets.OpenTelemetryOptions
         );
 
+        // COSMOSDB
         Data["ConnectionStrings:cosmos-db"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["cosmos-db"], secrets[Secrets.CosmosDbConnectionString]);
 
+        // GOOGLE AUTH
         var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(
             secrets[Secrets.GoogleAuthOptions]
         )!;
 
         Data["GoogleAuth:ClientId"] = googleAuthOptions.ClientId;
         Data["GoogleAuth:ClientSecret"] = googleAuthOptions.ClientSecret;
+
+        // OPENTELEMETRY
+        if (secrets.TryGetValue(Secrets.OpenTelemetryOptions, out var telemetryJson))
+        {
+            var openTelemetryOptions = JsonSerializer.Deserialize<OpenTelemetryOptions>(telemetryJson);
+
+            if (openTelemetryOptions != null)
+            {
+                Data["OTEL_EXPORTER_OTLP_ENDPOINT"] = openTelemetryOptions.Endpoint;
+                Data["OTEL_EXPORTER_OTLP_HEADERS"] = openTelemetryOptions.Headers;
+                Data["OTEL_SERVICE_NAME"] = openTelemetryOptions.ServiceName;
+            }
+        }
     }
 
     private static string GetFirstNonNull(string? currentValue, string newValue) => string.IsNullOrEmpty(currentValue) ? newValue : currentValue;

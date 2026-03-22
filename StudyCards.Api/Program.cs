@@ -8,6 +8,10 @@ using StudyCards.Infrastructure.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// SECRETS (FOR CONFIGURATION)
+builder.AddSecretsConfiguration();
+
+// PART OF ASPIRE BOILERPLATE - HEALTH CHECKS, OPENTELEMETRY, ETC
 builder.AddServiceDefaults();
 
 // LOGGING
@@ -16,9 +20,6 @@ builder.Host.ConfigureLogging();
 // EXCEPTION HANDLING
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-
-// SECRETS (FOR CONFIGURATION)
-builder.AddSecretsConfiguration();
 
 // CONTROLLERS
 builder.Services.AddControllers();
