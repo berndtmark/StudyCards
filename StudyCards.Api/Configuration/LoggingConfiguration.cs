@@ -37,11 +37,6 @@ public static class LoggingConfiguration
                             parts => parts[1].Trim()  // The Value
                         );
                 }
-
-                options.ResourceAttributes = new Dictionary<string, object>
-                {
-                    ["service.name"] = "OTEL_SERVICE_NAME" ?? string.Empty,
-                };
             });
         }
     }
