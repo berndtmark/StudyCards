@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using StudyCards.Api.Configuration;
 using StudyCards.Api.Configuration.ExceptionHandlers;
+using StudyCards.Api.Configuration.Middleware;
 using StudyCards.Api.Hubs;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
@@ -71,6 +72,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html", StaticFileConfiguration.StaticFileOptions);
+
+app.UseMiddleware<LoggingEnrichmentMiddleware>();
 
 app.MapHub<ChatHub>("/hub/chat-hub");    
 
