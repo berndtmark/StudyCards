@@ -6,4 +6,5 @@ public static class Secrets
     public const string CosmosDbConnectionString = "CosmosDbConnectionString";
     public const string GoogleAuthOptions = "GoogleAuthOptions";
     public const string Admins = "Admins";
+    public const string OpenTelemetryOptions = "OpenTelemetryOptions";
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using StudyCards.Api.Configuration;
 using StudyCards.Api.Configuration.ExceptionHandlers;
+using StudyCards.Api.Configuration.Middleware;
 using StudyCards.Api.Hubs;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;
@@ -8,6 +9,10 @@ using StudyCards.Infrastructure.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// SECRETS (FOR CONFIGURATION)
+builder.AddSecretsConfiguration();
+
+// PART OF ASPIRE BOILERPLATE - HEALTH CHECKS, OPENTELEMETRY, ETC
 builder.AddServiceDefaults();
 
 // LOGGING
@@ -16,9 +21,6 @@ builder.Host.ConfigureLogging();
 // EXCEPTION HANDLING
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-
-// SECRETS (FOR CONFIGURATION)
-builder.AddSecretsConfiguration();
 
 // CONTROLLERS
 builder.Services.AddControllers();
@@ -70,6 +72,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html", StaticFileConfiguration.StaticFileOptions);
+
+app.UseMiddleware<LoggingEnrichmentMiddleware>();
 
 app.MapHub<ChatHub>("/hub/chat-hub");    
 
