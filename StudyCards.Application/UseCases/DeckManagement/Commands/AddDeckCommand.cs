@@ -19,19 +19,13 @@ public class AddDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<AddDeckComman
 {
     public async Task<Result<Deck>> Handle(AddDeckCommand request, CancellationToken cancellationToken)
     {
-        var deck = new Deck
+        var deckSettings = new DeckSettings
         {
-            Id = Guid.NewGuid(),
-            UserId = request.UserId,
-            DeckName = request.DeckName,
-            Description = request.Description,
-            DeckSettings = new DeckSettings
-            {
-                NewCardsPerDay = request.NewCardsPerDay,
-                ReviewsPerDay = request.ReviewsPerDay,
-            },
-            CardCount = 0
+            NewCardsPerDay = request.NewCardsPerDay,
+            ReviewsPerDay = request.ReviewsPerDay,
         };
+
+        var deck = Deck.Create(request.UserId, request.DeckName, request.Description, deckSettings);
 
         try
         {

@@ -1,5 +1,6 @@
 ﻿using StudyCards.Application.Common;
 using StudyCards.Application.Exceptions;
+using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -18,12 +19,10 @@ public class UpdataCardCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<
 {
     public async Task<Result<Card>> Handle(UpdateCardCommand request, CancellationToken cancellationToken)
     {
+        await unitOfWork.DeckRepository.EnsureOwnership(request.DeckId, cancellationToken);
+
         var currentCard = await unitOfWork.CardRepository.Get(request.CardId, request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Card), request.CardId);
-        var newCard = currentCard with
-        {
-            CardFront = request.CardFront,
-            CardBack = request.CardBack
-        };
+        var newCard = currentCard.Update(request.CardFront, request.CardBack);
 
         var result = unitOfWork.CardRepository.Update(newCard);
         await unitOfWork.SaveChangesAsync(cancellationToken);

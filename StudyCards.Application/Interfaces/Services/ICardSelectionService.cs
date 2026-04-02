@@ -1,7 +1,7 @@
 ﻿using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 
-namespace StudyCards.Application.Interfaces;
+namespace StudyCards.Application.Interfaces.Services;
 
 public interface ICardSelectionService
 {

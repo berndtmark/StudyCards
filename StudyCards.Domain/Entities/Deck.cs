@@ -25,6 +25,30 @@ public record Deck : EntityBase
         }
     }
 
+    #region Behaviours
+    public static Deck Create(Guid userId, string deckName, string? description, DeckSettings deckSettings)
+    {
+        return new Deck
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            DeckName = deckName,
+            Description = description,
+            DeckSettings = deckSettings,
+            CardCount = 0
+        };
+    }
+
+    public Deck Update(string deckName, string? description, DeckSettings deckSettings)
+    {
+        return this with
+        {
+            DeckName = deckName,
+            Description = description,
+            DeckSettings = deckSettings
+        };
+    }
+
     public Deck StudyCompleted(int cardReviewCount)
     {
         var isFirstReviewToday = !DeckReviewStatus.LastReview.Date.IsSameDay();
@@ -41,6 +65,15 @@ public record Deck : EntityBase
         result.Raise(new StudyCompletedDomainEvent(result.Id, result.UserId, result.DeckName, cardReviewCount));
         return result;
     }
+
+    public Deck UpdateCardCount(int cardCount)
+    {
+        return this with
+        {
+            CardCount = cardCount
+        };
+    }
+    #endregion Behaviours
 }
 
 public record DeckSettings

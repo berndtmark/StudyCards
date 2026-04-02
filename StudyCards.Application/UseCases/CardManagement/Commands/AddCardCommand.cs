@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Common;
-using StudyCards.Application.Interfaces;
+using StudyCards.Application.Exceptions;
+using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -14,17 +15,13 @@ public class AddCardCommand : ICommand<Card>
     public string CardBack { get; set; } = string.Empty;
 }
 
-public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardCommand> logger, IDeckCardCountService deckCardCount) : ICommandHandler<AddCardCommand, Card>
+public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardCommand> logger) : ICommandHandler<AddCardCommand, Card>
 {
     public async Task<Result<Card>> Handle(AddCardCommand request, CancellationToken cancellationToken)
     {
-        var card = new Card
-        {
-            Id = Guid.NewGuid(),
-            DeckId = request.DeckId,
-            CardFront = request.CardFront,
-            CardBack = request.CardBack
-        };
+        var deck = await unitOfWork.DeckRepository.Get(request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
+
+        var card = Card.Create(request.DeckId, request.CardFront, request.CardBack);
 
         try
         {
@@ -35,7 +32,9 @@ public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardComman
 
             // Add the card to the repository
             var result = await unitOfWork.CardRepository.Add(card);
-            await deckCardCount.UpdateDeckCardCount(request.DeckId, unitOfWork, 1, cancellationToken);
+
+            // update deck card count
+            await deck.SyncCardCount(unitOfWork, 1, cancellationToken);
 
             // Save and return the result
             await unitOfWork.SaveChangesAsync(cancellationToken);

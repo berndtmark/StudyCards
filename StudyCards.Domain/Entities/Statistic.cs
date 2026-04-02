@@ -12,6 +12,7 @@ public record class StudyStatistic : Statistic
     public string Name { get; init; } = string.Empty;
     public int CardsStudied { get; init; }
 
+    #region Behaviours
     public static StudyStatistic Create(Guid userId, Guid deckId, string name, int cardsStudied)
     {
         return new StudyStatistic
@@ -30,4 +31,5 @@ public record class StudyStatistic : Statistic
             CardsStudied = CardsStudied + cardsStudied,
         };
     }
+    #endregion Behaviours
 }

@@ -11,6 +11,7 @@ public record Card : EntityBase
     public ICollection<CardReview> CardReviews { get; init; } = [];
     public CardReviewStatus CardReviewStatus { get; init; } = new();
 
+    #region Behaviours
     public Card AddReview(CardReview newReview, int maxReviewsToKeep = 10)
     {
         return this with
@@ -33,14 +34,45 @@ public record Card : EntityBase
         result.Raise(new CardReviewedDomainEvent(Id, CardReviewStatus.CurrentPhase, result.CardReviewStatus));
         return result;
     }
+
+    public static Card Create(Guid Deck, string cardFront, string cardBack)
+    {
+        return new Card 
+        { 
+            Id = Guid.NewGuid(), 
+            DeckId = Deck, 
+            CardFront = cardFront, 
+            CardBack = cardBack 
+        };
+    }
+
+    public Card Update(string cardFront, string cardBack)
+    {
+        return this with
+        {
+            CardFront = cardFront,
+            CardBack = cardBack
+        };
+    }
+    #endregion Behaviours
 }
 
+// todo - consider moving to value object - not fully sure yet
 public record CardReview
 {
-    public Guid CardReviewId { get; init; }
     public CardDifficulty CardDifficulty { get; init; }
     public int? RepeatCount { get; init; }
     public DateTime ReviewDate { get; init; }
+
+    public static CardReview Create(CardDifficulty cardDifficulty, int? repeatCount = 0)
+    {
+        return new CardReview
+        {
+            CardDifficulty = cardDifficulty,
+            RepeatCount = repeatCount,
+            ReviewDate = DateTime.UtcNow
+        };
+    }
 }
 
 public record CardReviewStatus

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using StudyCards.Application.Interfaces;
+using StudyCards.Application.Interfaces.Services;
 using StudyCards.Application.Services;
 using StudyCards.Domain.Interfaces;
 using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy;
@@ -16,7 +16,6 @@ public static class ServicesConfiguration
         services.AddTransient<ICardsToStudyStrategy, RandomCardStrategy>();
 
         services.AddTransient<ICardScheduleStrategyContext, CardScheduleStrategyContext>();
-        services.AddTransient<IDeckCardCountService, DeckCardCountService>();
 
         return services;
     }

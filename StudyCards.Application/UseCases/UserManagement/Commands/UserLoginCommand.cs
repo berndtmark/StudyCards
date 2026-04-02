@@ -25,7 +25,7 @@ public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCo
             if (user == null)
             {
                 // Create new user
-                user = User.CreateUser(request.UserEmail)
+                user = User.Create(request.UserEmail)
                     .UserLogin();
 
                 await unitOfWork.UserRepository.Add(user, cancellationToken);
