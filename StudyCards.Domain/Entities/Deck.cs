@@ -1,5 +1,6 @@
 ﻿using StudyCards.Domain.DomainEvents;
 using StudyCards.Domain.Extensions;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Domain.Entities;
 
@@ -74,16 +75,4 @@ public record Deck : EntityBase
         };
     }
     #endregion Behaviours
-}
-
-public record DeckSettings
-{
-    public int ReviewsPerDay { get; init; }
-    public int NewCardsPerDay { get; init; }
-}
-
-public record DeckReviewStatus
-{
-    public DateTime LastReview { get; init; }
-    public int ReviewCount { get; init; }
 }

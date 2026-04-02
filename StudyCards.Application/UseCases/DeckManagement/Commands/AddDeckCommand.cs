@@ -3,6 +3,7 @@ using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Application.UseCases.DeckManagement.Commands;
 

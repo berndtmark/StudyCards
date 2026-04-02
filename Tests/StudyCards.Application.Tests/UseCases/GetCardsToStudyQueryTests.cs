@@ -4,6 +4,7 @@ using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.UseCases.CardStudy.Queries;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCardy.Application.Tests.UseCases;
 

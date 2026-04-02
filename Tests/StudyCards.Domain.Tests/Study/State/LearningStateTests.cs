@@ -1,7 +1,7 @@
-﻿using StudyCards.Domain.Entities;
-using StudyCards.Domain.Enums;
-using StudyCards.Domain.Study.State.AnkiState.States;
+﻿using StudyCards.Domain.Enums;
 using StudyCards.Domain.Study.State.AnkiState;
+using StudyCards.Domain.Study.State.AnkiState.States;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Domain.Tests.Study.State;
 

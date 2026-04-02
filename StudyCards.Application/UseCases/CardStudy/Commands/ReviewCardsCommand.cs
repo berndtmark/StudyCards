@@ -8,6 +8,7 @@ using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
 using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy;
 using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy.Strategies;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Application.UseCases.CardStudy.Commands;
 
