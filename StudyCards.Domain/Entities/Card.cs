@@ -6,11 +6,11 @@ namespace StudyCards.Domain.Entities;
 
 public record Card : EntityBase
 {
-    public Guid DeckId { get; init; }
-    public string CardFront { get; init; } = string.Empty;
-    public string CardBack { get; init; } = string.Empty;
-    public ICollection<CardReview> CardReviews { get; init; } = [];
-    public CardReviewStatus CardReviewStatus { get; init; } = new();
+    public Guid DeckId { get; internal init; }
+    public string CardFront { get; internal init; } = string.Empty;
+    public string CardBack { get; internal init; } = string.Empty;
+    public ICollection<CardReview> CardReviews { get; internal init; } = [];
+    public CardReviewStatus CardReviewStatus { get; internal init; } = new();
 
     #region Behaviours
     public static Card Create(Guid Deck, string cardFront, string cardBack)

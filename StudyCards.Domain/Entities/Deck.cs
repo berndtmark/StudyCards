@@ -6,12 +6,12 @@ namespace StudyCards.Domain.Entities;
 
 public record Deck : EntityBase
 {
-    public Guid UserId { get; set; }
-    public string DeckName { get; init; } = string.Empty;
-    public string? Description { get; init; } = string.Empty;
-    public int? CardCount { get; init; }
-    public DeckSettings DeckSettings { get; init; } = new();
-    public DeckReviewStatus DeckReviewStatus { get; init; } = new();
+    public Guid UserId { get; internal init; }
+    public string DeckName { get; internal init; } = string.Empty;
+    public string? Description { get; internal init; } = string.Empty;
+    public int? CardCount { get; internal init; }
+    public DeckSettings DeckSettings { get; internal init; } = new();
+    public DeckReviewStatus DeckReviewStatus { get; internal init; } = new();
 
     public int CardNoToReview
     {

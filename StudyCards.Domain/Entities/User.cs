@@ -2,9 +2,9 @@
 
 public record User : EntityBase
 {
-    public string UserEmail { get; init; } = string.Empty;
-    public DateTime LastLogin { get; init; }
-    public int LoginCount { get; init; } = 0;
+    public string UserEmail { get; internal init; } = string.Empty;
+    public DateTime LastLogin { get; internal init; }
+    public int LoginCount { get; internal init; } = 0;
 
     #region Behaviours
     public User UserLogin()
