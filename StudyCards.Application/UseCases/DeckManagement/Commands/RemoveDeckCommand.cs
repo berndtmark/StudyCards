@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Common;
+using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
+using StudyCards.Domain.Entities;
 
 namespace StudyCards.Application.UseCases.DeckManagement.Commands;
 
@@ -17,13 +19,15 @@ public class RemoveDeckCommandHandler(IUnitOfWork unitOfWork, ILogger<RemoveDeck
     {
         try
         {
+            var deck = await unitOfWork.DeckRepository.Get(request.DeckId, request.UserId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
+
             var cards = await unitOfWork.CardRepository.GetByDeck(request.DeckId, cancellationToken);
             if (cards.Any())
             {
                 unitOfWork.CardRepository.RemoveRange([.. cards]);
             }
 
-            await unitOfWork.DeckRepository.Remove(request.DeckId, request.UserId);
+            unitOfWork.DeckRepository.Remove(deck);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return true;

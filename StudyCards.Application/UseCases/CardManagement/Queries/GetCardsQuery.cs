@@ -1,4 +1,5 @@
 ﻿using StudyCards.Application.Common;
+using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
@@ -13,10 +14,11 @@ public class GetCardsQuery : IQuery<PagedResult<Card>>
     public string? SearchTerm { get; set; }
 }
 
-public class GetCardsQueryHandler(ICardRepository cardRepository) : IQueryHandler<GetCardsQuery, PagedResult<Card>>
+public class GetCardsQueryHandler(ICardRepository cardRepository, IDeckRepository deckRepository) : IQueryHandler<GetCardsQuery, PagedResult<Card>>
 {
     public async Task<Result<PagedResult<Card>>> Handle(GetCardsQuery request, CancellationToken cancellationToken)
     {
+        await deckRepository.EnsureOwnership(request.DeckId, cancellationToken);
         return await cardRepository.GetByDeck(request.DeckId, request.PageNumber, request.PageSize, request.SearchTerm, cancellationToken);
     }
 }

@@ -1,4 +1,4 @@
-﻿using StudyCards.Application.Interfaces;
+﻿using StudyCards.Application.Interfaces.Services;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;

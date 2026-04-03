@@ -16,7 +16,7 @@ export class StatisticsLandingComponent implements OnInit {
   readonly store = inject(StatisticStore);
 
   ngOnInit(): void {
-    this.store.loadStudyStatisticsForMonth({ date: DateFuctions.today() });
+    this.store.init({ date: DateFuctions.today() });
   }
   
   protected readonly maxDate = signal(DateFuctions.today());

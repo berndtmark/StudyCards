@@ -34,6 +34,17 @@ public class DeckRepository(DataBaseContext dbContext, ICurrentUser currentUser)
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<bool> IsOwner(Guid deckId, CancellationToken cancellationToken = default)
+    {
+        var count = await DbContext.Deck
+            .WithPartitionKey(UserId)
+            .AsNoTracking()
+            .Where(d => d.Id == deckId)
+            .CountAsync(cancellationToken);
+
+        return count > 0;
+    }
+
     public async Task<Deck> Add(Deck deck)
     {
         var entity = await AddEntity(deck);
@@ -46,8 +57,8 @@ public class DeckRepository(DataBaseContext dbContext, ICurrentUser currentUser)
         return entity;
     }
 
-    public async Task Remove(Guid deckId, Guid userId)
+    public void Remove(Deck deck)
     {
-        await RemoveEntity(deckId, userId);
+        RemoveEntity(deck);
     }
 }

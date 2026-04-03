@@ -2,16 +2,17 @@
 
 public abstract record class Statistic : EntityBase
 {
-    public Guid UserId { get; init; }
-    public Guid DeckId { get; init; }
-    public DateTime DateRecorded { get; init; } = DateTime.UtcNow;
+    public Guid UserId { get; internal init; }
+    public Guid DeckId { get; internal init; }
+    public DateTime DateRecorded { get; internal init; } = DateTime.UtcNow;
 }
 
 public record class StudyStatistic : Statistic
 {
-    public string Name { get; init; } = string.Empty;
-    public int CardsStudied { get; init; }
+    public string Name { get; internal init; } = string.Empty;
+    public int CardsStudied { get; internal init; }
 
+    #region Behaviours
     public static StudyStatistic Create(Guid userId, Guid deckId, string name, int cardsStudied)
     {
         return new StudyStatistic
@@ -30,4 +31,5 @@ public record class StudyStatistic : Statistic
             CardsStudied = CardsStudied + cardsStudied,
         };
     }
+    #endregion Behaviours
 }

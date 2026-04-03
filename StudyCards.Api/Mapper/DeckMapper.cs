@@ -1,6 +1,7 @@
 ﻿using Riok.Mapperly.Abstractions;
 using StudyCards.Api.Models.Response;
 using StudyCards.Domain.Entities;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Api.Mapper;
 

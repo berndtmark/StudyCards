@@ -8,6 +8,7 @@ using StudyCards.Domain.Enums;
 using StudyCards.Domain.Interfaces;
 using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy;
 using StudyCards.Domain.Study.Strategy.CardScheduleReviewStrategy.Strategies;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Application.UseCases.CardStudy.Commands;
 
@@ -28,13 +29,15 @@ public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStra
 {
     public async Task<Result<IList<Card>>> Handle(ReviewCardsCommand request, CancellationToken cancellationToken)
     {
+        var deck = await unitOfWork.DeckRepository.Get(request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
+
         var response = new List<Card>();
 
         var reviewedCardIds = request.CardReviews.Select(cr => cr.CardId).ToArray();
         var reviewMap = request.CardReviews.ToDictionary(r => r.CardId);
 
         var cards = await unitOfWork.CardRepository.Get(reviewedCardIds, request.DeckId, cancellationToken)
-            ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
+            ?? throw new EntityNotFoundException(nameof(Card), string.Join(", ", reviewedCardIds));
 
         // schedule cards next review
         var scheduledCards = ScheduleCards(cardScheduleStrategy, cards, reviewMap);
@@ -43,13 +46,7 @@ public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStra
         {
             var review = reviewMap[card.Id];
 
-            var cardReview = new CardReview
-            {
-                CardReviewId = Guid.NewGuid(),
-                CardDifficulty = review.CardDifficulty,
-                RepeatCount = review.RepeatCount ?? 0,
-                ReviewDate = DateTime.UtcNow
-            };
+            var cardReview = CardReview.Create(review.CardDifficulty, review.RepeatCount);
 
             var updatedCard = card.AddReview(cardReview);
             var result = unitOfWork.CardRepository.Update(updatedCard);
@@ -59,17 +56,15 @@ public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStra
         }
 
         // update deck last review status
-        await UpdateDeck(unitOfWork, request.DeckId, request.CardReviews.Count, cancellationToken);
+        await UpdateDeck(deck, request.CardReviews.Count, cancellationToken);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return response;
     }
 
-    private async Task UpdateDeck(IUnitOfWork unitOfWork, Guid deckId, int cardReviewCount, CancellationToken cancellationToken)
+    private async Task UpdateDeck(Deck deck, int cardReviewCount, CancellationToken cancellationToken)
     {
-        var deck = await unitOfWork.DeckRepository.Get(deckId, cancellationToken);
         var updatedDeck = deck!.StudyCompleted(cardReviewCount);
-
         unitOfWork.DeckRepository.Update(updatedDeck);
     }
 

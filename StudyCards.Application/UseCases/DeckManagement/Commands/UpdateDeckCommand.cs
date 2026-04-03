@@ -3,6 +3,7 @@ using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Application.UseCases.DeckManagement.Commands;
 
@@ -22,16 +23,13 @@ public class UpdateDeckCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<
     {
         var currentDeck = await unitOfWork.DeckRepository.Get(request.DeckId, request.UserId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
 
-        var newDeck = currentDeck with
+        var deckSettings = new DeckSettings
         {
-            DeckName = request.DeckName,
-            Description = request.Description,
-            DeckSettings = currentDeck.DeckSettings with
-            {
-                NewCardsPerDay = request.NewCardsPerDay,
-                ReviewsPerDay = request.ReviewsPerDay,
-            }
+            NewCardsPerDay = request.NewCardsPerDay,
+            ReviewsPerDay = request.ReviewsPerDay
         };
+
+        var newDeck = currentDeck.Update(request.DeckName, request.Description, deckSettings);
 
         var result = unitOfWork.DeckRepository.Update(newDeck);
         await unitOfWork.SaveChangesAsync(cancellationToken);

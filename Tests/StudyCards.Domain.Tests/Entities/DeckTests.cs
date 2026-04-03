@@ -1,6 +1,7 @@
 ﻿using StudyCards.Domain.Entities;
+using StudyCards.Domain.ValueObjects;
 
-namespace StudyCard.Domain.Tests.Entities;
+namespace StudyCards.Domain.Tests.Entities;
 
 [TestClass]
 public class DeckTests

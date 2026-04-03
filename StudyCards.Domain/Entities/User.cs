@@ -2,10 +2,11 @@
 
 public record User : EntityBase
 {
-    public string UserEmail { get; init; } = string.Empty;
-    public DateTime LastLogin { get; init; }
-    public int LoginCount { get; init; } = 0;
+    public string UserEmail { get; internal init; } = string.Empty;
+    public DateTime LastLogin { get; internal init; }
+    public int LoginCount { get; internal init; } = 0;
 
+    #region Behaviours
     public User UserLogin()
     {
         return this with
@@ -15,7 +16,7 @@ public record User : EntityBase
         };
     }
 
-    public static User CreateUser(string userEmail)
+    public static User Create(string userEmail)
     {
         return new User
         {
@@ -23,4 +24,5 @@ public record User : EntityBase
             UserEmail = userEmail,
         };
     }
+    #endregion Behaviours
 }

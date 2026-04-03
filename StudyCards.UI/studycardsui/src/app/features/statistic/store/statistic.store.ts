@@ -26,6 +26,31 @@ export const StatisticStore = signalStore(
     withMethods((store,
         statisticService = inject(StatisticService),
         errorHandler = inject(ErrorHandlerService)) => ({
+            init: rxMethod<{ date: Date }>(
+                pipe(
+                    tap(() => patchState(store, { loadingState: LoadingState.Loading })),
+                    switchMap(s => { 
+                        const startOfMonth = DateFuctions.firstDayOfMonth(s.date);
+                        const endOfMonth = DateFuctions.lastDayOfMonth(s.date);
+                        const monthYearKey = DateFuctions.uniqueMonthKey(s.date);
+
+                        return statisticService.getStudyStatistics(startOfMonth, endOfMonth).pipe(
+                            tapResponse({
+                                next: (stats) => {        
+                                    patchState(store, { 
+                                        loadingState: LoadingState.Success, 
+                                        studyStatistics: [ ...stats],
+                                        monthYearLoaded: [ monthYearKey]
+                                    });
+                                },
+                                error: (error) => {
+                                    errorHandler.handleTapError(store, "Failed to load study statistics", error);
+                                }
+                            })
+                        )
+                    })
+                )
+            ),
             loadStudyStatisticsForMonth: rxMethod<{ date: Date }>(
                 pipe(
                     filter(s => {

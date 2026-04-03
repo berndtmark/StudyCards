@@ -1,16 +1,17 @@
 ﻿using StudyCards.Domain.DomainEvents;
 using StudyCards.Domain.Extensions;
+using StudyCards.Domain.ValueObjects;
 
 namespace StudyCards.Domain.Entities;
 
 public record Deck : EntityBase
 {
-    public Guid UserId { get; set; }
-    public string DeckName { get; init; } = string.Empty;
-    public string? Description { get; init; } = string.Empty;
-    public int? CardCount { get; init; }
-    public DeckSettings DeckSettings { get; init; } = new();
-    public DeckReviewStatus DeckReviewStatus { get; init; } = new();
+    public Guid UserId { get; internal init; }
+    public string DeckName { get; internal init; } = string.Empty;
+    public string? Description { get; internal init; } = string.Empty;
+    public int? CardCount { get; internal init; }
+    public DeckSettings DeckSettings { get; internal init; } = new();
+    public DeckReviewStatus DeckReviewStatus { get; internal init; } = new();
 
     public int CardNoToReview
     {
@@ -23,6 +24,30 @@ public record Deck : EntityBase
                     maxReviews;
 
         }
+    }
+
+    #region Behaviours
+    public static Deck Create(Guid userId, string deckName, string? description, DeckSettings deckSettings)
+    {
+        return new Deck
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            DeckName = deckName,
+            Description = description,
+            DeckSettings = deckSettings,
+            CardCount = 0
+        };
+    }
+
+    public Deck Update(string deckName, string? description, DeckSettings deckSettings)
+    {
+        return this with
+        {
+            DeckName = deckName,
+            Description = description,
+            DeckSettings = deckSettings
+        };
     }
 
     public Deck StudyCompleted(int cardReviewCount)
@@ -41,16 +66,13 @@ public record Deck : EntityBase
         result.Raise(new StudyCompletedDomainEvent(result.Id, result.UserId, result.DeckName, cardReviewCount));
         return result;
     }
-}
 
-public record DeckSettings
-{
-    public int ReviewsPerDay { get; init; }
-    public int NewCardsPerDay { get; init; }
-}
-
-public record DeckReviewStatus
-{
-    public DateTime LastReview { get; init; }
-    public int ReviewCount { get; init; }
+    public Deck UpdateCardCount(int cardCount)
+    {
+        return this with
+        {
+            CardCount = cardCount
+        };
+    }
+    #endregion Behaviours
 }

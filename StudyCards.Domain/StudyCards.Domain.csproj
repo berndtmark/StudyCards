@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="StudyCards.Domain.Tests" />
+    <InternalsVisibleTo Include="StudyCards.Application.Tests" />
+  </ItemGroup>
+
 </Project>

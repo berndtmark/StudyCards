@@ -10,8 +10,9 @@ public interface ICardRepository
     Task<IEnumerable<Card>> GetByDeck(Guid deckId, CancellationToken cancellationToken = default);
     Task<PagedResult<Card>> GetByDeck(Guid deckId, int pageNumber = 1, int pageSize = 10, string? searchTerm = null, CancellationToken cancellationToken = default);
     Task<Card> Add(Card card);
+    Task<IEnumerable<Card>> Add(IEnumerable<Card> cards);
     Card Update(Card card);
-    Task Remove(Guid id, Guid deckId);
+    Task Remove(Guid deckId, Guid cardId);
     void RemoveRange(Card[] cards);
     Task<int> CountByDeck(Guid deckId, CancellationToken cancellationToken = default);
     Task<IEnumerable<Card>?> Search(Guid deckId, string searchTerm, CancellationToken cancellationToken = default);

@@ -67,20 +67,27 @@ public class CardRepository(DataBaseContext dbContext, ICurrentUser currentUser)
         return entity;
     }
 
+    public async Task<IEnumerable<Card>> Add(IEnumerable<Card> cards)
+    {
+        var entity = await AddEntities(cards);
+
+        return entity;
+    }
+
     public Card Update(Card card)
     {
         var entity = UpdateEntity(card);       
         return entity;
     }
 
-    public async Task Remove(Guid id, Guid deckId)
+    public async Task Remove(Guid deckId, Guid cardId)
     {
-        await RemoveEntity(id, deckId);
+        await RemoveEntity(cardId, deckId);
     }
 
     public void RemoveRange(Card[] cards)
     {
-        DbContext.Card.RemoveRange(cards);
+        RemoveEntity(cards);
     }
 
     public async Task<int> CountByDeck(Guid deckId, CancellationToken cancellationToken = default)
