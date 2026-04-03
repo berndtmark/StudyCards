@@ -22,6 +22,11 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
     {
         var userId = currentUser.UserId;
 
+        // todo: remove
+        var test = currentUser.TimeZone;
+        var destination = TimeZoneInfo.FindSystemTimeZoneById("America/Sitka");
+        var userLocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, destination);
+
         var query = new GetDeckQuery
         {
             UserId = userId,
