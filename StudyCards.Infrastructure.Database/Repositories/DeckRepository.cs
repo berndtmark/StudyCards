@@ -38,6 +38,7 @@ public class DeckRepository(DataBaseContext dbContext, ICurrentUser currentUser)
     {
         var count = await DbContext.Deck
             .WithPartitionKey(UserId)
+            .AsNoTracking()
             .Where(d => d.Id == deckId)
             .CountAsync(cancellationToken);
 
