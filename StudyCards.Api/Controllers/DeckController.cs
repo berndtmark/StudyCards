@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
+using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.DeckManagement.Commands;
@@ -23,7 +24,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
         var userId = currentUser.UserId;
 
         // todo: remove
-        var test = currentUser.TimeZone;
+        var test = currentUser.TimeZoneId.GetTimeZone();
         var destination = TimeZoneInfo.FindSystemTimeZoneById("America/Sitka");
         var userLocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, destination);
 

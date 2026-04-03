@@ -4,5 +4,5 @@ public interface ICurrentUser
 {
     Guid UserId { get; }
     string Email { get; }
-    TimeZoneInfo TimeZone { get; }
+    string TimeZoneId { get; }
 }

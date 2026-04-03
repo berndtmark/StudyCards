@@ -12,18 +12,5 @@ public class CurrentUser(IHttpContextAccessor httpContextAccessor) : ICurrentUse
 
     public string Email => httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
 
-    private string TimeZoneId => httpContextAccessor.HttpContext?.Request.Headers["X-Timezone"].FirstOrDefault() ?? "UTC";
-    public TimeZoneInfo TimeZone => field ??= GetTimeZone();
-
-    private TimeZoneInfo GetTimeZone()
-    {
-        try
-        {
-            return TimeZoneInfo.FindSystemTimeZoneById(TimeZoneId);
-        }
-        catch (TimeZoneNotFoundException)
-        {
-            return TimeZoneInfo.Utc;
-        }
-    }
+    public string TimeZoneId => httpContextAccessor.HttpContext?.Request.Headers["X-Timezone"].FirstOrDefault() ?? "UTC";
 }
