@@ -19,7 +19,7 @@ public static class DeckExtensions
     {
         var cardCount = await unitOfWork.CardRepository.CountByDeck(deck.Id, cancellationToken);
 
-        deck.UpdateCardCount(cardCount + incrementValue);
-        unitOfWork.DeckRepository.Update(deck);
+        var updatedDeck = deck.UpdateCardCount(cardCount + incrementValue);
+        unitOfWork.DeckRepository.Update(updatedDeck);
     }
 }

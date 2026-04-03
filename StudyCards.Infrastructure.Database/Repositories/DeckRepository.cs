@@ -36,9 +36,12 @@ public class DeckRepository(DataBaseContext dbContext, ICurrentUser currentUser)
 
     public async Task<bool> IsOwner(Guid deckId, CancellationToken cancellationToken = default)
     {
-        return await DbContext.Deck
+        var count = await DbContext.Deck
             .WithPartitionKey(UserId)
-            .AnyAsync(d => d.Id == deckId, cancellationToken);
+            .Where(d => d.Id == deckId)
+            .CountAsync(cancellationToken);
+
+        return count > 0;
     }
 
     public async Task<Deck> Add(Deck deck)

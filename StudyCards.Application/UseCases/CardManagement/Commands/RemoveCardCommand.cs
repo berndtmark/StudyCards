@@ -22,7 +22,7 @@ public class RemoveCardCommandHandler(IUnitOfWork unitOfWork, ILogger<RemoveCard
         {
             var deck = await unitOfWork.DeckRepository.Get(request.DeckId, cancellationToken) ?? throw new EntityNotFoundException(nameof(Deck), request.DeckId);
 
-            await unitOfWork.CardRepository.Remove(request.CardId, request.DeckId);
+            await unitOfWork.CardRepository.Remove(request.DeckId, request.CardId);
             await deck.SyncCardCount(unitOfWork, -1, cancellationToken);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);

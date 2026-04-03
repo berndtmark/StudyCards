@@ -47,8 +47,8 @@ public class AddCardsCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardsComm
                 await unitOfWork.CardRepository.Add(cardsToAdd);
 
                 // update check card count
-                deck.UpdateCardCount(currentCardsInDeck.Count() + cardsToAdd.Count);
-                unitOfWork.DeckRepository.Update(deck);
+                var updatedDeck = deck.UpdateCardCount(currentCardsInDeck.Count() + cardsToAdd.Count);
+                unitOfWork.DeckRepository.Update(updatedDeck);
 
                 await unitOfWork.SaveChangesAsync(cancellationToken);
             }            
