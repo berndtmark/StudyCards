@@ -2,8 +2,11 @@
 
 public static class DateTimeExtensions
 {
-    public static bool IsSameDay(this DateTime dateTime)
+    public static bool IsSameDay(this DateTime utcDateTime, TimeZoneInfo userTimeZone)
     {
-        return dateTime.Date == DateTime.UtcNow.Date;
+        var userLocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, userTimeZone);
+        var userLocalTargetDate = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, userTimeZone);
+
+        return userLocalNow.Date == userLocalTargetDate.Date;
     }
 }

@@ -11,4 +11,6 @@ public class CurrentUser(IHttpContextAccessor httpContextAccessor) : ICurrentUse
             : Guid.Empty;
 
     public string Email => httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
+
+    public string TimeZoneId => httpContextAccessor.HttpContext?.Request.Headers["X-Timezone"].FirstOrDefault() ?? "UTC";
 }

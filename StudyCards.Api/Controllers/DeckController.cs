@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
 using StudyCards.Api.Models.Response;
+using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.DeckManagement.Commands;
@@ -28,7 +29,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
         };
         var result = await dispatcher.Send(query, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!);
+        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
         return Ok(response);
     }
 
@@ -48,7 +49,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!);
+        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
         return Ok(response);
     }
 
@@ -69,7 +70,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!);
+        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
         return Ok(response);
     }
 

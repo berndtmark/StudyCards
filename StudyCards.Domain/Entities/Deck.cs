@@ -13,18 +13,16 @@ public record Deck : EntityBase
     public DeckSettings DeckSettings { get; internal init; } = new();
     public DeckReviewStatus DeckReviewStatus { get; internal init; } = new();
 
-    public int CardNoToReview
+    #region Queries
+    public int CardNoToReview(TimeZoneInfo timeZone)
     {
-        get
-        {
-            var maxReviews = Math.Min(DeckSettings.ReviewsPerDay, CardCount ?? DeckSettings.ReviewsPerDay);
+        var maxReviews = Math.Min(DeckSettings.ReviewsPerDay, CardCount ?? DeckSettings.ReviewsPerDay);
 
-            return DeckReviewStatus.LastReview.IsSameDay() ?
-                    Math.Max(maxReviews - DeckReviewStatus.ReviewCount, 0) :
-                    maxReviews;
-
-        }
+        return DeckReviewStatus.LastReview.IsSameDay(timeZone) ?
+                Math.Max(maxReviews - DeckReviewStatus.ReviewCount, 0) :
+                maxReviews;
     }
+    #endregion Queries
 
     #region Behaviours
     public static Deck Create(Guid userId, string deckName, string? description, DeckSettings deckSettings)
@@ -50,9 +48,9 @@ public record Deck : EntityBase
         };
     }
 
-    public Deck StudyCompleted(int cardReviewCount)
+    public Deck StudyCompleted(int cardReviewCount, TimeZoneInfo timeZone)
     {
-        var isFirstReviewToday = !DeckReviewStatus.LastReview.Date.IsSameDay();
+        var isFirstReviewToday = !DeckReviewStatus.LastReview.Date.IsSameDay(timeZone);
 
         var result = this with
         {

@@ -6,7 +6,6 @@ var cosmos = builder.AddAzureCosmosDB("cosmos-db")
         emulator.WithLifetime(ContainerLifetime.Persistent);
         emulator.WithDataVolume("cosmos-data");
         emulator.WithGatewayPort(8081);
-        emulator.WithEnvironment("AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE", "true");
     });
 
 var studyCards = cosmos.AddCosmosDatabase("StudyCards");

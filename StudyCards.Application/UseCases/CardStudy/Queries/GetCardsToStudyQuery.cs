@@ -1,5 +1,7 @@
 ﻿using StudyCards.Application.Common;
 using StudyCards.Application.Exceptions;
+using StudyCards.Application.Extensions;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
@@ -13,9 +15,7 @@ public class GetCardsToStudyQuery : IQuery<IEnumerable<Card>>
     public CardStudyMethodology StudyMethodology { get; set; }
 }
 
-public class GetCardsToStudyQueryHandler(
-    IDeckRepository deckRepository, 
-    ICardRepository cardRepository) : IQueryHandler<GetCardsToStudyQuery, IEnumerable<Card>>
+public class GetCardsToStudyQueryHandler(IDeckRepository deckRepository, ICardRepository cardRepository, ICurrentUser currentUser) : IQueryHandler<GetCardsToStudyQuery, IEnumerable<Card>>
 {
     public async Task<Result<IEnumerable<Card>>> Handle(GetCardsToStudyQuery request, CancellationToken cancellationToken)
     {
@@ -24,7 +24,7 @@ public class GetCardsToStudyQueryHandler(
         var (cardsToStudy, fillUnmet) = request.StudyMethodology switch
         {
             CardStudyMethodology.ContinuedReview => (Math.Min(deck.DeckSettings.ReviewsPerDay, deck.CardCount ?? deck.DeckSettings.ReviewsPerDay), false),
-            CardStudyMethodology.Anki => (deck.CardNoToReview, true),
+            CardStudyMethodology.Anki => (deck.CardNoToReview(currentUser.TimeZoneId.GetTimeZone()), true),
             _ => throw new NotImplementedException($"Study methodology {request.StudyMethodology} is not currently supported."),
         };
 

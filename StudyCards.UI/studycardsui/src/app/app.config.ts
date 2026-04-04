@@ -6,9 +6,14 @@ import { SIGNALR_URL } from './shared/services/hub.service';
 import { environment } from '../environments/environment';
 import { GlobalErrorHandler } from './core/global-error-handler';
 import { ApiConfiguration } from './@api/api-configuration';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { timezoneInterceptor } from './core/time-zone-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(
+      withInterceptors([timezoneInterceptor])
+    ),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     {

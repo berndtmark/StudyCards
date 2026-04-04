@@ -1,4 +1,6 @@
 ﻿using StudyCards.Application.Common;
+using StudyCards.Application.Extensions;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -14,12 +16,12 @@ public class AddStudyStatisticCommand : ICommand<StudyStatistic>
     public int CardStudyCount { get; set; }
 }
 
-public class AddStudyStatisticCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<AddStudyStatisticCommand, StudyStatistic>
+public class AddStudyStatisticCommandHandler(IUnitOfWork unitOfWork, ICurrentUser currentUser) : ICommandHandler<AddStudyStatisticCommand, StudyStatistic>
 {
     public async Task<Result<StudyStatistic>> Handle(AddStudyStatisticCommand request, CancellationToken cancellationToken)
     {
         var statistcs = await unitOfWork.StatisticRepository.Get<StudyStatistic>(request.UserId, request.DeckId, cancellationToken);
-        var todaysStatistic = statistcs.FirstOrDefault(s => s.DateRecorded.IsSameDay());
+        var todaysStatistic = statistcs.FirstOrDefault(s => s.DateRecorded.IsSameDay(currentUser.TimeZoneId.GetTimeZone()));
 
         var statistic = todaysStatistic != null ?
             todaysStatistic.Update(request.CardStudyCount) :

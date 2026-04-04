@@ -6,6 +6,8 @@ namespace StudyCards.Domain.Tests.Entities;
 [TestClass]
 public class DeckTests
 {
+    private TimeZoneInfo _utcTimeZone = TimeZoneInfo.Utc;
+
     [TestMethod]
     public void DeckResponse_HasReviewsToday_WithReviewsToday_NotEnoughDone()
     {
@@ -22,7 +24,7 @@ public class DeckTests
         };
 
         // Act
-        var result = deckResponse.CardNoToReview;
+        var result = deckResponse.CardNoToReview(_utcTimeZone);
 
         // Assert
         Assert.AreEqual(2, result);
@@ -44,7 +46,7 @@ public class DeckTests
         };
 
         // Act
-        var result = deckResponse.CardNoToReview;
+        var result = deckResponse.CardNoToReview(_utcTimeZone);
 
         // Assert
         Assert.AreEqual(0, result);
@@ -66,7 +68,7 @@ public class DeckTests
         };
 
         // Act
-        var result = deckResponse.CardNoToReview;
+        var result = deckResponse.CardNoToReview(_utcTimeZone);
 
         // Assert
         Assert.AreEqual(5, result);
@@ -88,7 +90,7 @@ public class DeckTests
         };
 
         // Act
-        var result = deckResponse.CardNoToReview;
+        var result = deckResponse.CardNoToReview(_utcTimeZone);
 
         // Assert
         Assert.AreEqual(2, result);
