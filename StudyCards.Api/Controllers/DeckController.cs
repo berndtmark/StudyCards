@@ -23,18 +23,13 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
     {
         var userId = currentUser.UserId;
 
-        // todo: remove
-        var test = currentUser.TimeZoneId.GetTimeZone();
-        var destination = TimeZoneInfo.FindSystemTimeZoneById("America/Sitka");
-        var userLocalNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, destination);
-
         var query = new GetDeckQuery
         {
             UserId = userId,
         };
         var result = await dispatcher.Send(query, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!);
+        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
         return Ok(response);
     }
 
@@ -54,7 +49,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!);
+        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
         return Ok(response);
     }
 
@@ -75,7 +70,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!);
+        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
         return Ok(response);
     }
 

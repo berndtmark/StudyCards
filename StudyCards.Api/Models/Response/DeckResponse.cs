@@ -10,8 +10,8 @@ public class DeckResponse
     public DeckReviewStatusResponse DeckReviewStatus { get; init; } = new();
     public DateTime CreatedDate { get; init; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; init; } = DateTime.UtcNow;
-    public int CardNoToReview { get; init; }
-
+   
+    public int CardNoToReview { get; set; }
     public bool HasReviewsToday => CardNoToReview > 0;
 }
 

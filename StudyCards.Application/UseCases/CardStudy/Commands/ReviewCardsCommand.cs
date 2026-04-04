@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Common;
 using StudyCards.Application.Exceptions;
+using StudyCards.Application.Extensions;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -25,7 +27,7 @@ public class ReviewCardsCommand : ICommand<IList<Card>>
     }
 }
 
-public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStrategyContext cardScheduleStrategy, ILogger<ReviewCardsCommandHandler> logger) : ICommandHandler<ReviewCardsCommand, IList<Card>>
+public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStrategyContext cardScheduleStrategy, ILogger<ReviewCardsCommandHandler> logger, ICurrentUser currentUser) : ICommandHandler<ReviewCardsCommand, IList<Card>>
 {
     public async Task<Result<IList<Card>>> Handle(ReviewCardsCommand request, CancellationToken cancellationToken)
     {
@@ -64,7 +66,7 @@ public class ReviewCardsCommandHandler(IUnitOfWork unitOfWork, ICardScheduleStra
 
     private async Task UpdateDeck(Deck deck, int cardReviewCount, CancellationToken cancellationToken)
     {
-        var updatedDeck = deck!.StudyCompleted(cardReviewCount);
+        var updatedDeck = deck!.StudyCompleted(cardReviewCount, currentUser.TimeZoneId.GetTimeZone());
         unitOfWork.DeckRepository.Update(updatedDeck);
     }
 
