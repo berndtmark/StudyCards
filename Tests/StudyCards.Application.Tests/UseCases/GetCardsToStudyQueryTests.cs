@@ -1,12 +1,13 @@
 ﻿using Moq;
 using StudyCards.Application.Exceptions;
+using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Application.UseCases.CardStudy.Queries;
 using StudyCards.Domain.Entities;
 using StudyCards.Domain.Enums;
 using StudyCards.Domain.ValueObjects;
 
-namespace StudyCardy.Application.Tests.UseCases;
+namespace StudyCards.Application.Tests.UseCases;
 
 [TestClass]
 public class GetCardsToStudyQueryTests
@@ -23,7 +24,8 @@ public class GetCardsToStudyQueryTests
 
         _useCase = new GetCardsToStudyQueryHandler(
             _deckRepositoryMock.Object,
-            _cardRepositoryMock.Object
+            _cardRepositoryMock.Object,
+            Mock.Of<ICurrentUser>()
         );
     }
 
