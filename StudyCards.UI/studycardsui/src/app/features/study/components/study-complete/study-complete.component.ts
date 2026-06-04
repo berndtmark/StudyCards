@@ -7,11 +7,10 @@ import { MyButtonComponent } from "../../../../shared/components/my-button/my-bu
   selector: 'app-study-complete',
   templateUrl: './study-complete.component.html',
   styleUrls: ['./study-complete.component.scss'],
-  standalone: true,
   imports: [MatIconModule, MyButtonComponent]
 })
 export class StudyCompleteComponent {
-    title = input<string>('All Done for Today!');
-    subtitle = input<string>('Great job! You\'ve completed all your study cards for today.');
-    done = output<void>();
+  title = input<string>('All Done for Today!');
+  subtitle = input<string>('Great job! You\'ve completed all your study cards for today.');
+  done = output<void>();
 }
