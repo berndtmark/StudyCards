@@ -2,7 +2,7 @@
     <form>
         <mat-form-field>
             <mat-label>Name</mat-label>
-            <input matInput [formField]="deckForm.name">      
+            <input matInput [formField]="deckForm.name">
         </mat-form-field>
 
         <mat-form-field>
@@ -15,21 +15,23 @@
                 <mat-label>Max Reviews (per day)</mat-label>
                 <input matInput [formField]="deckForm.maxReviews" type="number">
             </mat-form-field>
+
             <mat-form-field>
                 <mat-label>Max New (per day)</mat-label>
                 <input matInput [formField]="deckForm.maxNew" type="number">
             </mat-form-field>
-            @if(hasMaxNewExceedsReviewsError()) {
-                <mat-error class="max-new-cards-error">Max new cards must be less than or equal to max reviews.</mat-error>
+
+            @if (maxNewExceedsReviewsError(); as error) {
+            <mat-error class="max-new-cards-error">{{ error.message }}</mat-error>
             }
         </div>
 
         <div class="action-buttons">
-            <button mat-raised-button color="primary" type="button" 
-                [disabled]="!deckForm().valid()" (click)="onSubmit()">
+            <button mat-raised-button color="primary" type="button" [disabled]="!deckForm().valid()"
+                (click)="onSubmit()">
                 {{ saveButtonName() }}
             </button>
             <ng-content type="button" select="[button-content]"></ng-content>
         </div>
-    </form>  
-</div>  
+    </form>
+</div>
