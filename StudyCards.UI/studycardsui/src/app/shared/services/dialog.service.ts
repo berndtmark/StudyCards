@@ -1,11 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { GenericDialogComponent } from '../components/generic-dialog/generic-dialog.component';
 import { filter, Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class DialogService {
   dialog = inject(MatDialog);
 

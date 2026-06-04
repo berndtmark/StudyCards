@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { DialogService } from './dialog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SnackbarService } from './snackbar.service';
@@ -6,9 +6,7 @@ import { LoadingState } from '../models/loading-state';
 import { of } from 'rxjs';
 import { patchState } from '@ngrx/signals';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class ErrorHandlerService {
   private dialogService = inject(DialogService);
   private snackBar = inject(SnackbarService);

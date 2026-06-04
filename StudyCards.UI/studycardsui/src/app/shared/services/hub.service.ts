@@ -1,11 +1,8 @@
-import { Inject, Injectable, InjectionToken, signal } from '@angular/core';
+import { inject, Service, InjectionToken, signal } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 
 export const SIGNALR_URL = new InjectionToken<string>('SignalRHubUrl');
 
-@Injectable({
-  providedIn: 'root'
-})
 /* Usage Example
   private hub = inject(HubService)
   message = computed(() => this.hub.messageReceived());
@@ -18,12 +15,12 @@ export const SIGNALR_URL = new InjectionToken<string>('SignalRHubUrl');
     this.hub.sendMessage("test@gmail.com", value);
   }
 */
+@Service()
 export class HubService {
   private hubConnection!: signalR.HubConnection;
   messageReceived = signal<string | null>(null);
 
-  constructor(@Inject(SIGNALR_URL) private hubUrl: string) {
-  }
+  private hubUrl = inject(SIGNALR_URL);
 
   init() {
     this.hubConnection = new signalR.HubConnectionBuilder()

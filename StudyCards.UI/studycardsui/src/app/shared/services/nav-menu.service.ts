@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Service, signal } from '@angular/core';
 
 export interface NavMenu {
   name: string;
@@ -6,9 +6,7 @@ export interface NavMenu {
   route: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Service()
 export class NavMenuService {
   private _navMenu = signal<NavMenu[]>([
     { name: 'Home', icon: 'home', route: '/decks' },

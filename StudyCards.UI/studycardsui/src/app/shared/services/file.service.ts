@@ -1,8 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class FileService {
   async readJsonFile<T>(event: Event): Promise<T> {
     const input = event.target as HTMLInputElement;
