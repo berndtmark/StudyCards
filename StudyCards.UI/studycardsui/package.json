@@ -48,6 +48,6 @@
     "jsdom": "^27.1.0",
     "ng-openapi-gen": "^1.0.5",
     "typescript": "~6.0.3",
-    "vitest": "^4.0.8"
+    "vitest": "^4.1.8"
   }
 }
