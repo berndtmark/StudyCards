@@ -582,6 +582,39 @@
         }
       }
     },
+    "/api/Diagnostics/log-error": {
+      "post": {
+        "tags": [
+          "Diagnostics"
+        ],
+        "operationId": "LogError",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientLogRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientLogRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientLogRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Statistic/studystatistics": {
       "get": {
         "tags": [
@@ -907,6 +940,35 @@
           },
           "cardBack": {
             "type": "string"
+          }
+        }
+      },
+      "ClientLogRequest": {
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "stackTrace": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "source": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "path": {
+            "type": [
+              "null",
+              "string"
+            ]
           }
         }
       },
@@ -1237,6 +1299,9 @@
     },
     {
       "name": "Deck"
+    },
+    {
+      "name": "Diagnostics"
     },
     {
       "name": "Statistic"
