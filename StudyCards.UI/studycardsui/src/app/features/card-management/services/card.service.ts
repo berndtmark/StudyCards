@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CardService as CardServiceApi } from '../../../@api/services';
 import { ImportCard } from '../models/import-card';
@@ -7,9 +7,7 @@ import { AddCardsResponse } from '../../../@api/models/add-cards-response';
 import { CardText } from '../../../@api/models/card-text';
 import { PagedResultOfCardResponse } from '../../../@api/models/paged-result-of-card-response';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class CardService {
   cardServiceApi = inject(CardServiceApi);
 

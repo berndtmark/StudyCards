@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, linkedSignal, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, linkedSignal, output, signal, computed } from '@angular/core';
 import { Deck } from '../../models/deck';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -33,7 +33,7 @@ export class DeckFormComponent {
   deckForm = form(this.deckModel, (schemaPath) => {
     required(schemaPath.name, { message: 'Name is required' }),
     min(schemaPath.maxNew, 1, { message: 'Max New must be at least 1' }),
-    min(schemaPath.maxReviews, 1, { message: 'Max New must be at least 1' }),
+    min(schemaPath.maxReviews, 1, { message: 'Max Reviews must be at least 1' }),
     validate(schemaPath.maxNew, ({value, valueOf}) => {
       const maxNew = value();
       const maxReviews = valueOf(schemaPath.maxReviews);
@@ -58,9 +58,9 @@ export class DeckFormComponent {
       }
   }
 
-  hasMaxNewExceedsReviewsError(): boolean {
-    return this.deckForm.maxNew().errors().some((error: ValidationError) => error.kind === 'maxNewExceedsReviews');
-  }
+  maxNewExceedsReviewsError = computed(() => 
+    this.deckForm.maxNew().errors().find((error: ValidationError) => error.kind === 'maxNewExceedsReviews')
+  );
 
   private formToDeck(): Deck {
       const deckForm = this.deckForm().value();

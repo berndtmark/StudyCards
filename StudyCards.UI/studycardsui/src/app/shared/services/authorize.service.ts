@@ -1,11 +1,9 @@
-import { inject, Injectable, OnDestroy } from '@angular/core';
+import { inject, Service, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { AuthService } from '../../@api/services';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class AuthorizeService implements OnDestroy {
   private authServiceApi = inject(AuthService);
   private router = inject(Router);
