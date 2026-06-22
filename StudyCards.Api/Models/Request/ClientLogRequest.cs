@@ -9,6 +9,6 @@ public class ClientLogRequest
 
     public override string ToString()
     {
-        return $"Client Error: {Message} | Source: {Source} | Path: {Path} | StackTrace: {StackTrace}";
+        return $"ClientError: {Message} | Source: {Source} | Path: {Path} | StackTrace: {StackTrace}";
     }
 }
