@@ -49,5 +49,15 @@
     "ng-openapi-gen": "^1.0.5",
     "typescript": "~6.0.3",
     "vitest": "^4.1.8"
+  },
+  "overrides": {
+    "@ngrx/signals": {
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core"
+    },
+    "@ngrx/operators": {
+      "@angular/common": "$@angular/common",
+      "@angular/core": "$@angular/core"
+    }
   }
 }
