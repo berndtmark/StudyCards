@@ -36,8 +36,8 @@
     "@angular/platform-browser": "^22.0.2",
     "@angular/router": "^22.0.2",
     "@microsoft/signalr": "^10.0.0",
-    "@ngrx/operators": "^21.0.1",
-    "@ngrx/signals": "^21.0.1",
+    "@ngrx/operators": "^21.1.1",
+    "@ngrx/signals": "^21.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
