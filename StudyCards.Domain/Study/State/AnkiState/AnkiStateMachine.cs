@@ -7,15 +7,16 @@ namespace StudyCards.Domain.Study.State.AnkiState;
 
 public class AnkiStateMachine
 {
-    public Card Schedule(Card card, CardDifficulty difficulty, int repeatCount)
+    public Card Schedule(Card card, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
     {
         if (card == null)
             throw new ArgumentNullException(nameof(card));
         if (repeatCount < 0)
             throw new ArgumentException("Repeat count cannot be negative", nameof(repeatCount));
+        if (configuration == null)
+            throw new ArgumentNullException(nameof(configuration));
 
         var currentPhase = card.CardReviewStatus.CurrentPhase ?? InferPhase(card);
-        var configuration = new AnkiScheduleConfiguration();
 
         ICardReviewState state = currentPhase switch
         {
