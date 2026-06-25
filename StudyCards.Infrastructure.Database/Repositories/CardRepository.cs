@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
@@ -53,6 +53,7 @@ public class CardRepository(DataBaseContext dbContext, ICurrentUser currentUser)
         var totalCount = await query.CountAsync(cancellationToken);
 
         var items = await query
+            .OrderBy(c => c.CreatedDate)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
