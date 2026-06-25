@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
@@ -13,7 +13,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class StudyController(CardMapper cardMapper, ICQRSDispatcher dispatcher) : ControllerBase
+public class StudyController(CardMapper cardMapper, ICQRSDispatcher dispatcher) : BaseController
 {
     [HttpGet]
     [Route("getcardstostudy/deck/{deckId}/methodology/{methodology}", Name = "getstudycard")]
@@ -25,8 +25,7 @@ public class StudyController(CardMapper cardMapper, ICQRSDispatcher dispatcher) 
             StudyMethodology = methodology 
         });
 
-        var response = cardMapper.Map(result.Data!);
-        return Ok(response);
+        return HandleResult(result, cardMapper.Map);
     }
 
     [HttpPut]
@@ -45,7 +44,6 @@ public class StudyController(CardMapper cardMapper, ICQRSDispatcher dispatcher) 
             })]
         });
 
-        var response = cardMapper.Map(result.Data!);
-        return Ok(response);
+        return HandleResult(result, cardMapper.Map);
     }
 }

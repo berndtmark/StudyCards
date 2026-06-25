@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
@@ -14,7 +14,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher, DeckMapper deckMapper) : ControllerBase
+public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher, DeckMapper deckMapper) : BaseController
 {
     [HttpGet]
     [Route("getdecks")]
@@ -29,8 +29,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
         };
         var result = await dispatcher.Send(query, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
-        return Ok(response);
+        return HandleResult(result, data => deckMapper.Map(data, currentUser.TimeZoneId.GetTimeZone()));
     }
 
     [HttpPost]
@@ -49,8 +48,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
-        return Ok(response);
+        return HandleResult(result, data => deckMapper.Map(data, currentUser.TimeZoneId.GetTimeZone()));
     }
 
     [HttpPut]
@@ -70,8 +68,7 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
             NewCardsPerDay = request.NewCardsPerDay,
         }, cancellationToken);
 
-        var response = deckMapper.Map(result.Data!, currentUser.TimeZoneId.GetTimeZone());
-        return Ok(response);
+        return HandleResult(result, data => deckMapper.Map(data, currentUser.TimeZoneId.GetTimeZone()));
     }
 
     [HttpDelete]
@@ -87,6 +84,6 @@ public class DeckController(ICurrentUser currentUser, ICQRSDispatcher dispatcher
             UserId = userId,
         }, cancellationToken);
 
-        return Ok(result.Data);
+        return HandleResult(result);
     }
 }

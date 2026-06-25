@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Response;
@@ -28,7 +28,6 @@ public class StatisticController(ICQRSDispatcher dispatcher, StatisticMapper sta
         };
         var result = await dispatcher.Send(query, cancellationToken);
 
-        var response = statisticMapper.Map(result.Data!);
-        return Ok(response);
+        return HandleResult(result, statisticMapper.Map);
     }
 }
