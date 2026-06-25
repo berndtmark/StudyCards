@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Mapper;
 using StudyCards.Api.Models.Request;
@@ -28,8 +28,7 @@ public class CardController(ICQRSDispatcher dispatcher, CardMapper cardMapper) :
             SearchTerm = searchTerm
         });
 
-        var response = cardMapper.Map(result.Data!);
-        return Ok(response);
+        return HandleResult(result, cardMapper.Map);
     }
 
     [HttpPut]
@@ -45,8 +44,7 @@ public class CardController(ICQRSDispatcher dispatcher, CardMapper cardMapper) :
             CardBack = request.CardBack
         });
 
-        var response = cardMapper.Map(result.Data!);
-        return Ok(response);
+        return HandleResult(result, cardMapper.Map);
     }
 
     [HttpPost]
@@ -62,9 +60,7 @@ public class CardController(ICQRSDispatcher dispatcher, CardMapper cardMapper) :
             CardBack = request.CardBack
         });
 
-        return result.IsSuccess
-            ? Ok(cardMapper.Map(result.Data!))
-            : HandleError(result);
+        return HandleResult(result, cardMapper.Map);
     }
 
     [HttpPost]
@@ -78,13 +74,10 @@ public class CardController(ICQRSDispatcher dispatcher, CardMapper cardMapper) :
             Cards = [.. request.Cards.Select(card => (card.CardFront, card.CardBack))]
         });
 
-        var cardsAdded = cardMapper.Map(result.Data!.CardsAdded);
-        var cardsSkipped = cardMapper.Map(result.Data!.CardsSkipped);
-
-        return Ok(new AddCardsResponse
+        return HandleResult(result, data => new AddCardsResponse
         {
-            CardsAdded = cardsAdded,
-            CardsSkipped = cardsSkipped
+            CardsAdded = cardMapper.Map(data.CardsAdded),
+            CardsSkipped = cardMapper.Map(data.CardsSkipped)
         });
     }
 
@@ -98,6 +91,6 @@ public class CardController(ICQRSDispatcher dispatcher, CardMapper cardMapper) :
             DeckId = new Guid(deckId)
         });
 
-        return Ok(result.Data);
+        return HandleResult(result);
     }
 }

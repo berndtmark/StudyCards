@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Api.Configuration.ClaimTransforms;
 using StudyCards.Api.Mapper;
@@ -10,7 +10,7 @@ namespace StudyCards.Api.Controllers;
 [Authorize(Roles = ClaimRole.Admin)]
 [ApiController]
 [Route("api/[controller]")]
-public class AdminController(ICQRSDispatcher dispatcher, AdminMapper adminMapper) : ControllerBase
+public class AdminController(ICQRSDispatcher dispatcher, AdminMapper adminMapper) : BaseController
 {
     [HttpGet]
     [Route("getuserdetails")]
@@ -21,7 +21,6 @@ public class AdminController(ICQRSDispatcher dispatcher, AdminMapper adminMapper
         };
         var response = await dispatcher.Send(query, cancellationToken);
 
-        var result = adminMapper.Map(response.Data!);
-        return Ok(result);
+        return HandleResult(response, adminMapper.Map);
     }
 }

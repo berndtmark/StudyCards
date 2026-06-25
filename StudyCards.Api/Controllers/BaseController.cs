@@ -5,7 +5,21 @@ namespace StudyCards.Api.Controllers;
 
 public abstract class BaseController : ControllerBase
 {
-    public virtual IActionResult HandleError<T>(Result<T> result)
+    public virtual IActionResult HandleResult<T>(Result<T> result)
+    {
+        return result.IsSuccess
+         ? Ok(result.Data)
+         : HandleError(result);
+    }
+
+    public virtual IActionResult HandleResult<TData, TResponse>(Result<TData> result, Func<TData, TResponse> mapper)
+    {
+        return result.IsSuccess
+            ? Ok(mapper(result.Data!))
+            : HandleError(result);
+    }
+
+    private ObjectResult HandleError<T>(Result<T> result)
     {
         var (statusCode, title) = result.ErrorMessageType switch
         {
