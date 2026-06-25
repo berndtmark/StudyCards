@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using StudyCards.Application.Exceptions;
 
@@ -12,14 +12,15 @@ internal sealed class GlobalExceptionHandler(
         Exception exception,
         CancellationToken cancellationToken)
     {
-        logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
-
-        httpContext.Response.StatusCode = exception switch
+        var statusCode = exception switch
         {
             EntityNotFoundException => StatusCodes.Status404NotFound,
-            ApplicationException => StatusCodes.Status400BadRequest,
+            ValidationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
+
+        httpContext.Response.StatusCode = statusCode;
+        Log(statusCode, exception);
 
         return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
@@ -32,5 +33,17 @@ internal sealed class GlobalExceptionHandler(
                 Detail = exception.Message
             }
         });
+    }
+
+    private void Log(int statusCode, Exception exception)
+    {
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+        {
+            logger.LogError(exception, "An unhandled exception occurred: {Message}", exception.Message);
+        }
+        else
+        {
+            logger.LogWarning(exception, "An exception occurred: {Message}", exception.Message);
+        }
     }
 }

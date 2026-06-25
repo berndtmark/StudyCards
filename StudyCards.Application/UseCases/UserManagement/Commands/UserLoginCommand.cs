@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Common;
+using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.UnitOfWork;
 using StudyCards.Domain.Entities;
@@ -18,7 +19,7 @@ public class UserLoginCommandHandler(IUnitOfWork unitOfWork, ILogger<UserLoginCo
         try
         {
             if (request.UserEmail == null)
-                throw new ApplicationException("User Email Not Found!");
+                throw new ValidationException("User Email Not Found!");
 
             var user = await unitOfWork.UserRepository.Get(request.UserEmail, cancellationToken);
             

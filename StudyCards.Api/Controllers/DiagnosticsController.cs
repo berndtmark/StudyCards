@@ -18,6 +18,6 @@ public class DiagnosticsController(ILogger<DiagnosticsController> logger) : Cont
         var sanitizedMessage = Regex.Replace(rawMessage, @"[\r\n\t\0\f\v]+", " ").Trim();
         logger.LogError("{ClientErrorDetails}", sanitizedMessage);
             
-        return Ok();
+        return NoContent();
     }
 }

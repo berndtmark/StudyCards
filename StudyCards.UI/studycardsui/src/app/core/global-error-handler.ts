@@ -7,9 +7,7 @@ export class GlobalErrorHandler implements ErrorHandler {
   private readonly logger = inject(LoggerService);
 
   handleError(error: any) {
-    const errorMessage = error?.message ?? 'unknown';
-
-    this.dialog.info('Error Occured', `An unhandled exception occured: ${errorMessage}`);
+    this.dialog.info('Error Occured', `An unhandled exception has occured. Please contact the site owner for support.`);
     this.logger.error('Unhandled Exception', error, GlobalErrorHandler.name);
   }
 }
