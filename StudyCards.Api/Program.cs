@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.SignalR;
 using StudyCards.Api.Configuration;
 using StudyCards.Api.Configuration.ExceptionHandlers;
 using StudyCards.Api.Configuration.Middleware;
+using StudyCards.Api.Configuration.SecretsConfiguration;
 using StudyCards.Api.Hubs;
 using StudyCards.Application;
 using StudyCards.Infrastructure.Database;

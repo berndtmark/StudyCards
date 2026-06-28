@@ -5,9 +5,9 @@ using StudyCards.Domain.Study.State.AnkiState.States;
 
 namespace StudyCards.Domain.Study.State.AnkiState;
 
-public class AnkiStateMachine
+public class AnkiStateMachine(AnkiScheduleConfiguration configuration)
 {
-    public Card Schedule(Card card, CardDifficulty difficulty, int repeatCount, AnkiScheduleConfiguration configuration)
+    public Card Schedule(Card card, CardDifficulty difficulty, int repeatCount)
     {
         if (card == null)
             throw new ArgumentNullException(nameof(card));
