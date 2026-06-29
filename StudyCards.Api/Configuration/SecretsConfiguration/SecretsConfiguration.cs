@@ -1,13 +1,10 @@
-﻿using StudyCards.Api.Configuration.Options;
 using StudyCards.Application.Configuration;
 using StudyCards.Application.Configuration.Options;
 using StudyCards.Application.Interfaces;
-using StudyCards.Infrastructure.Secrets;
 using StudyCards.Infrastructure.Secrets.Interfaces;
 using StudyCards.Infrastructure.Secrets.SecretsManager;
-using System.Text.Json;
 
-namespace StudyCards.Api.Configuration;
+namespace StudyCards.Api.Configuration.SecretsConfiguration;
 
 public static class SecretsConfiguration
 {
@@ -42,36 +39,8 @@ public class SecretConfigurationProvider(ISecretsManager secretsManager, IConfig
 
     public override void Load()
     {
-        var secrets = _secretsManager.GetSecrets(
-            Secrets.CosmosDbConnectionString,
-            Secrets.GoogleAuthOptions,
-            Secrets.OpenTelemetryOptions
-        );
-
-        // COSMOSDB
-        Data["ConnectionStrings:cosmos-db"] = GetFirstNonNull(configuration.GetSection("ConnectionStrings")["cosmos-db"], secrets[Secrets.CosmosDbConnectionString]);
-
-        // GOOGLE AUTH
-        var googleAuthOptions = JsonSerializer.Deserialize<GoogleAuthOptions>(
-            secrets[Secrets.GoogleAuthOptions]
-        )!;
-
-        Data["GoogleAuth:ClientId"] = googleAuthOptions.ClientId;
-        Data["GoogleAuth:ClientSecret"] = googleAuthOptions.ClientSecret;
-
-        // OPENTELEMETRY
-        if (secrets.TryGetValue(Secrets.OpenTelemetryOptions, out var telemetryJson))
-        {
-            var openTelemetryOptions = JsonSerializer.Deserialize<OpenTelemetryOptions>(telemetryJson);
-
-            if (openTelemetryOptions != null)
-            {
-                Data["OTEL_EXPORTER_OTLP_ENDPOINT"] = openTelemetryOptions.Endpoint;
-                Data["OTEL_EXPORTER_OTLP_HEADERS"] = openTelemetryOptions.Headers;
-                Data["OTEL_SERVICE_NAME"] = openTelemetryOptions.ServiceName;
-            }
-        }
+        var secretsConstructor = new SecretsConstructor(configuration, this);
+        var secretKeys = _secretsManager.GetSecrets(secretsConstructor.SecretsKeys);
+        secretsConstructor.Construct(secretKeys);
     }
-
-    private static string GetFirstNonNull(string? currentValue, string newValue) => string.IsNullOrEmpty(currentValue) ? newValue : currentValue;
 }
