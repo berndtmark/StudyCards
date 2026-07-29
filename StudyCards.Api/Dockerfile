@@ -1,4 +1,5 @@
 ARG DOTNET_VERSION=10.0
+ARG NODE_MAJOR=26
 
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS base
 USER $APP_UID
@@ -7,9 +8,10 @@ EXPOSE 8080
 EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS with-node
+ARG NODE_MAJOR
 RUN apt-get update
 RUN apt-get -y install curl
-RUN curl -sL https://deb.nodesource.com/setup_26.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_MAJOR}.x | bash
 RUN apt-get -y install nodejs
 RUN npm install -g @angular/cli
 
@@ -30,13 +32,12 @@ RUN dotnet publish "./StudyCards.Api.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 
 ## UI ##
 
-FROM with-node AS copyui
-WORKDIR /src
-COPY ["StudyCards.UI/studycardsui", "studycards.client/"]
-
-FROM copyui AS buildui
+FROM with-node AS buildui
 WORKDIR /src/studycards.client/
+COPY ["StudyCards.UI/studycardsui/package*.json", "./"]
 RUN npm install
+COPY ["StudyCards.UI/studycardsui/", "./"]
+COPY --from=build /src/StudyCards.UI/studycardsui/servercardsapi.json ./
 RUN npm run build:prod
 
 ## Final ##
