@@ -18,6 +18,7 @@ interface CalendarCell {
   displayName: string;
   day: number;
   isCurrentMonth: boolean;
+  isToday: boolean;
 }
 
 @Component({
@@ -32,7 +33,7 @@ export class Calandar {
   readonly minDate = input<Date>();
   readonly maxDate = input<Date>();
   monthChange = output<Date>();
- 
+
   readonly viewMonth: WritableSignal<Date> = signal(new Date());
   readonly weekdays = DAY_NAMES;
 
@@ -44,19 +45,19 @@ export class Calandar {
   protected readonly canGoPrev = computed(() => {
     const min = this.minDate();
     if (!min) return true;
-   
+
     const current = this.viewMonth();
     return current.getFullYear() > min.getFullYear() ||
-           (current.getFullYear() === min.getFullYear() && current.getMonth() > min.getMonth());
+      (current.getFullYear() === min.getFullYear() && current.getMonth() > min.getMonth());
   });
 
   protected readonly canGoNext = computed(() => {
     const max = this.maxDate();
     if (!max) return true;
-   
+
     const current = this.viewMonth();
     return current.getFullYear() < max.getFullYear() ||
-           (current.getFullYear() === max.getFullYear() && current.getMonth() < max.getMonth());
+      (current.getFullYear() === max.getFullYear() && current.getMonth() < max.getMonth());
   });
 
   readonly calendar = computed(() => {
@@ -69,6 +70,9 @@ export class Calandar {
     const calendar: CalendarCell[][] = [[]];
     let currentWeek = 0;
 
+    const today = new Date();
+    const todayDate = (year === today.getFullYear() && month === today.getMonth()) ? today.getDate() : -1;
+
     // Add empty cells for days before the first of the month
     for (let i = 0; i < firstDayOfWeek; i++) {
       const prevMonth = new Date(year, month, 0);
@@ -77,6 +81,7 @@ export class Calandar {
         displayName: String(prevMonthDays - firstDayOfWeek + i + 1),
         day: prevMonthDays - firstDayOfWeek + i + 1,
         isCurrentMonth: false,
+        isToday: false
       });
     }
 
@@ -90,6 +95,7 @@ export class Calandar {
         displayName: String(day),
         day,
         isCurrentMonth: true,
+        isToday: day === todayDate
       });
     }
 
@@ -100,6 +106,7 @@ export class Calandar {
         displayName: String(i),
         day: i,
         isCurrentMonth: false,
+        isToday: false
       });
     }
 
@@ -108,7 +115,7 @@ export class Calandar {
 
   nextMonth(): void {
     if (!this.canGoNext()) return;
-   
+
     const current = this.viewMonth();
     const next = new Date(current.getFullYear(), current.getMonth() + 1, 1);
     this.viewMonth.set(next);
@@ -118,7 +125,7 @@ export class Calandar {
 
   prevMonth(): void {
     if (!this.canGoPrev()) return;
-   
+
     const current = this.viewMonth();
     const prev = new Date(current.getFullYear(), current.getMonth() - 1, 1);
     this.viewMonth.set(prev);
@@ -128,15 +135,15 @@ export class Calandar {
 
   getItemsForDate(day: number, isCurrentMonth: boolean): CalendarItem[] {
     if (!isCurrentMonth) return [];
-   
+
     const date = this.viewMonth();
     const targetDate = new Date(date.getFullYear(), date.getMonth(), day);
-   
+
     return this.items().filter(item => {
       const itemDate = new Date(item.date);
       return itemDate.getFullYear() === targetDate.getFullYear() &&
-             itemDate.getMonth() === targetDate.getMonth() &&
-             itemDate.getDate() === targetDate.getDate();
+        itemDate.getMonth() === targetDate.getMonth() &&
+        itemDate.getDate() === targetDate.getDate();
     });
   }
 }

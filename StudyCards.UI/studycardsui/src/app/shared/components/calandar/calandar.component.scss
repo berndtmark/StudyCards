@@ -82,6 +82,12 @@
 .day-number {
   font-weight: 500;
   margin-bottom: 4px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
 }
 
 .cell-content {
@@ -98,6 +104,12 @@
   height: auto;
   padding: 2px 8px;
   max-width: 100%;
+}
+
+.today {
+  background-color: colour.$blue-300;
+  color: colour.$white;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
 }
 
 @include responsive.responsive('tablet') {
