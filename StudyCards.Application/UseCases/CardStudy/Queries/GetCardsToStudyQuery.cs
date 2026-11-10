@@ -1,4 +1,4 @@
-﻿using StudyCards.Application.Common;
+using StudyCards.Application.Common;
 using StudyCards.Application.Exceptions;
 using StudyCards.Application.Extensions;
 using StudyCards.Application.Interfaces;
@@ -30,6 +30,6 @@ public class GetCardsToStudyQueryHandler(IDeckRepository deckRepository, ICardRe
 
         var result = await cardRepository.GetCardsToStudy(request.DeckId, cardsToStudy, deck.DeckSettings.NewCardsPerDay, fillUnmet, cancellationToken);
 
-        return Result<IEnumerable<Card>>.Success(result);
+        return result;
     }
 }

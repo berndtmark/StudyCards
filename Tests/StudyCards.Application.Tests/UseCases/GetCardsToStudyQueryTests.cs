@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using StudyCards.Application.Exceptions;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.Repositories;
@@ -53,7 +53,7 @@ public class GetCardsToStudyQueryTests
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(cards.Count, result.Data!.Count());
+        Assert.IsTrue(result is IEnumerable<Card> data && data.Count() == cards.Count);
     }
 
     [TestMethod]
