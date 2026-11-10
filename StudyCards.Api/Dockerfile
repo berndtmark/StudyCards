@@ -1,4 +1,4 @@
-ARG DOTNET_VERSION=10.0
+ARG DOTNET_VERSION=11.0
 ARG NODE_MAJOR=26
 
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION} AS base
