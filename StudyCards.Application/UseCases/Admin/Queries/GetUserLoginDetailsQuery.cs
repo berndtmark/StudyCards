@@ -1,4 +1,4 @@
-using StudyCards.Application.Common;
+﻿using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
@@ -14,6 +14,6 @@ public class GetUserLoginDetailsQueryHandler(IUserRepository userRepository) : I
     public async Task<Result<IEnumerable<User>>> Handle(GetUserLoginDetailsQuery request, CancellationToken cancellationToken)
     {
         var users = await userRepository.GetAll(cancellationToken);
-        return users;
+        return Result<IEnumerable<User>>.Success(users);
     }
 }

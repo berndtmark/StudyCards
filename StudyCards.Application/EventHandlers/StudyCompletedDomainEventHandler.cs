@@ -1,5 +1,4 @@
-using Microsoft.Extensions.Logging;
-using StudyCards.Application.Common;
+﻿using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.Statistics.Commands;
 using StudyCards.Domain.DomainEvents;
@@ -19,7 +18,7 @@ public class StudyCompletedDomainEventHandler(ILogger<StudyCompletedDomainEventH
             CardStudyCount = domainEvent.CardStudyCount
         });
 
-        if (result is not Failure)
+        if (result.IsSuccess)
             logger.LogInformation("Study completed for deck {DeckName} with {CardStudyCount} cards studied. User: {UserId}", domainEvent.DeckName, domainEvent.CardStudyCount, domainEvent.UserId);
 
         return;

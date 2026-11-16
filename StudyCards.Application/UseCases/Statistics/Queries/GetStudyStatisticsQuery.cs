@@ -1,4 +1,4 @@
-using StudyCards.Application.Common;
+﻿using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.Interfaces.Repositories;
 using StudyCards.Domain.Entities;
@@ -17,6 +17,6 @@ public class GetStudyStatisticsQueryHandler(IStatisticRepository statisticReposi
     public async Task<Result<IEnumerable<StudyStatistic>>> Handle(GetStudyStatisticsQuery query, CancellationToken cancellationToken)
     {
         var statistics = await statisticRepository.Get<StudyStatistic>(query.UserId, query.From, query.To, cancellationToken);
-        return statistics;
+        return Result<IEnumerable<StudyStatistic>>.Success(statistics);
     }
 }
