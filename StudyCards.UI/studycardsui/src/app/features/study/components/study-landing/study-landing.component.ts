@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { StudyMethodology } from '../../../../shared/models/study-methodology';
@@ -7,8 +7,7 @@ import { StudyMethodology } from '../../../../shared/models/study-methodology';
   selector: 'app-study-landing',
   imports: [MatIcon],
   templateUrl: './study-landing.component.html',
-  styleUrl: './study-landing.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './study-landing.component.scss'
 })
 export class StudyLandingComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute)

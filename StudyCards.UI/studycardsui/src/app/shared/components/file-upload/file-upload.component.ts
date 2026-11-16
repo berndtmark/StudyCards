@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MyButtonComponent } from "../my-button/my-button.component";
 
 @Component({
   selector: 'app-file-upload',
   imports: [MyButtonComponent],
   templateUrl: './file-upload.component.html',
-  styleUrl: './file-upload.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './file-upload.component.scss'
 })
 export class FileUploadComponent {
   fileSelected = output<Event>();

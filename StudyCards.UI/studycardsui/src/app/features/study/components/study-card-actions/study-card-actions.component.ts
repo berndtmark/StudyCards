@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { CardDifficulty } from '../../../../shared/models/card-difficulty';
 
@@ -6,8 +6,7 @@ import { CardDifficulty } from '../../../../shared/models/card-difficulty';
   selector: 'app-study-card-actions',
   imports: [MatButton],
   templateUrl: './study-card-actions.component.html',
-  styleUrl: './study-card-actions.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './study-card-actions.component.scss'
 })
 export class StudyCardActionsComponent {
   reviewedCard = output<CardDifficulty>();

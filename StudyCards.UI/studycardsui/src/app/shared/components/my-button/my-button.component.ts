@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -6,8 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-my-button',
   imports: [MatIconModule, MatButtonModule],
   templateUrl: './my-button.component.html',
-  styleUrl: './my-button.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './my-button.component.scss'
 })
 export class MyButtonComponent {
   title = input<string>();

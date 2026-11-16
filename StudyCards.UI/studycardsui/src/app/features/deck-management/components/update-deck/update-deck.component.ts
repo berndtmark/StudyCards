@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { DeckFormComponent } from "../deck-form/deck-form.component";
 import { DeckStore } from '../../store/deck.store';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,8 +12,7 @@ import { DialogService } from '../../../../shared/services/dialog.service';
   selector: 'app-update-deck',
   imports: [DeckFormComponent, MyButtonComponent, MatButtonModule],
   templateUrl: './update-deck.component.html',
-  styleUrl: './update-deck.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './update-deck.component.scss'
 })
 export class UpdateDeckComponent implements OnInit {
   private router = inject(Router);

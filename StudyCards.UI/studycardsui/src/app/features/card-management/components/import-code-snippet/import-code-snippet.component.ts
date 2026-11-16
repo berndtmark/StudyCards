@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-import-code-snippet',
   imports: [],
   templateUrl: './import-code-snippet.component.html',
-  styleUrl: './import-code-snippet.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './import-code-snippet.component.scss'
 })
 export class ImportCodeSnippetComponent {
   codeSnippet = `[

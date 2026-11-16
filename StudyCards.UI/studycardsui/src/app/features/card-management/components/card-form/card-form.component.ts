@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, linkedSignal, OnInit, output, signal } from '@angular/core';
+import { Component, effect, input, linkedSignal, OnInit, output, signal } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CardResponse } from '../../../../@api/models/card-response';
@@ -8,8 +8,7 @@ import { form, required, FormField } from '@angular/forms/signals';
   selector: 'app-card-form',
   imports: [MatInputModule, MatButtonModule, FormField],
   templateUrl: './card-form.component.html',
-  styleUrl: './card-form.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './card-form.component.scss'
 })
 export class CardFormComponent {
   title = input<string>();

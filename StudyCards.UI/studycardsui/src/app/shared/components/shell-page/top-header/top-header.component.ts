@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { MyButtonComponent } from "../../my-button/my-button.component";
 
 @Component({
@@ -6,7 +6,6 @@ import { MyButtonComponent } from "../../my-button/my-button.component";
   imports: [MyButtonComponent],
   templateUrl: './top-header.component.html',
   styleUrl: './top-header.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopHeaderComponent {
   userName = input<string>();

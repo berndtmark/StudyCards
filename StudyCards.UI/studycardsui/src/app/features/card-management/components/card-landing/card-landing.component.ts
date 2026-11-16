@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CardStore } from '../../store/card.store';
 import { CardListComponent } from "../card-list/card-list.component";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,8 +12,7 @@ import { LoadingState } from '../../../../shared/models/loading-state';
   selector: 'app-card-landing',
   imports: [CardListComponent, MatProgressBar, MatButtonModule, MatIconModule, MyButtonComponent],
   templateUrl: './card-landing.component.html',
-  styleUrl: './card-landing.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './card-landing.component.scss'
 })
 export class CardLandingComponent implements OnInit {
   readonly store = inject(CardStore);

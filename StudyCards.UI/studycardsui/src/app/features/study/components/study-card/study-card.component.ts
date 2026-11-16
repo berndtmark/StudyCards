@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { StudyCardActionsComponent } from "../study-card-actions/study-card-actions.component";
 import { CardDifficulty } from '../../../../shared/models/card-difficulty';
 
@@ -7,8 +7,7 @@ import { CardDifficulty } from '../../../../shared/models/card-difficulty';
   selector: 'app-study-card',
   imports: [StudyCardActionsComponent],
   templateUrl: './study-card.component.html',
-  styleUrls: ['./study-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./study-card.component.scss']
 })
 export class StudyCardComponent {
   cardId = input.required<string>();

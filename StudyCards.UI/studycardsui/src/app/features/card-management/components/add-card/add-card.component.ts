@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CardFormComponent } from "../card-form/card-form.component";
 import { CardStore } from '../../store/card.store';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,8 +8,7 @@ import { MyButtonComponent } from "../../../../shared/components/my-button/my-bu
   selector: 'app-add-card',
   imports: [CardFormComponent, MyButtonComponent],
   templateUrl: './add-card.component.html',
-  styleUrl: './add-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './add-card.component.scss'
 })
 export class AddCardComponent implements OnInit {
   readonly store = inject(CardStore);

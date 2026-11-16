@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { StudyStore } from '../../store/study.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatProgressBar } from '@angular/material/progress-bar';
@@ -13,8 +13,7 @@ import { CardDifficulty } from '../../../../shared/models/card-difficulty';
   selector: 'app-study-session',
   imports: [MatProgressBar, CardsToStudyComponent, StudyCompleteComponent, StudySessionActionsComponent],
   templateUrl: './study-session.component.html',
-  styleUrl: './study-session.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './study-session.component.scss'
 })
 export class StudySessionComponent {
   @ViewChild(StudySessionActionsComponent) studySessionActions!: StudySessionActionsComponent;
