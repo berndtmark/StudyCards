@@ -61,9 +61,7 @@ public class AuthEvents : OAuthEvents
         
         if (context.Principal?.Identity is ClaimsIdentity identity)
         {
-            var userId = user is User loggedInUser
-                ? loggedInUser.Id.ToString()
-                : throw new ApplicationException($"User Id Missing for {email}");
+            var userId = user.Data.Id.ToString();
             identity.AddClaim(new Claim("sub", userId));
         }
     }
