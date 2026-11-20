@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.Statistics.Commands;
 using StudyCards.Domain.DomainEvents;

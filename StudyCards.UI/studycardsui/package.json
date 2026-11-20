@@ -12,18 +12,6 @@
     "generate-api": "npx ng-openapi-gen --services true --promises false --input servercardsapi.json --output src/app/@api",
     "start-api": "dotnet run --project ../../StudyCards.Api/StudyCards.Api.csproj --launch-profile https"
   },
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": "*.html",
-        "options": {
-          "parser": "angular"
-        }
-      }
-    ]
-  },
   "private": true,
   "packageManager": "npm@11.6.2",
   "dependencies": {

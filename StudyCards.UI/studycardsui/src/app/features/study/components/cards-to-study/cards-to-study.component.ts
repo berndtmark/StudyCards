@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { StudyCardComponent } from "../study-card/study-card.component";
 import { CardResponse } from '../../../../@api/models/card-response';
 import { CardDifficulty } from '../../../../shared/models/card-difficulty';
@@ -7,8 +7,7 @@ import { CardDifficulty } from '../../../../shared/models/card-difficulty';
   selector: 'app-cards-to-study',
   imports: [StudyCardComponent],
   templateUrl: './cards-to-study.component.html',
-  styleUrl: './cards-to-study.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './cards-to-study.component.scss'
 })
 export class CardsToStudyComponent {
   cardsToStudy = input<CardResponse[]>([]);

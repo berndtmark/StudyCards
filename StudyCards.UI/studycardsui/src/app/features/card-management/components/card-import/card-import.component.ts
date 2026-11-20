@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CardStore } from '../../store/card.store';
 import { CardImportDisplayComponent } from "../card-import-display/card-import-display.component";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,8 +11,7 @@ import { MyButtonComponent } from "../../../../shared/components/my-button/my-bu
   selector: 'app-card-import',
   imports: [CardImportDisplayComponent, ImportCodeSnippetComponent, MatProgressBar, FileUploadComponent, MyButtonComponent],
   templateUrl: './card-import.component.html',
-  styleUrl: './card-import.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './card-import.component.scss'
 })
 export class CardImportComponent implements OnInit {
   readonly store = inject(CardStore);

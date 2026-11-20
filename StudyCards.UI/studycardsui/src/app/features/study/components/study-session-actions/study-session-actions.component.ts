@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, OnDestroy, output } from '@angular/core';
+import { Component, effect, input, OnDestroy, output } from '@angular/core';
 import { DeterminateProgressSpinnerComponent } from "../../../../shared/components/determinate-progress-spinner/determinate-progress-spinner.component";
 import { MatIcon } from '@angular/material/icon';
 import { MatMiniFabButton } from '@angular/material/button';
@@ -9,8 +9,7 @@ import { createAutoEvoke } from '../../../../shared/functions/auto-evoke';
   selector: 'app-study-session-actions',
   imports: [DeterminateProgressSpinnerComponent, MatIcon, MatMiniFabButton, MyButtonComponent],
   templateUrl: './study-session-actions.component.html',
-  styleUrl: './study-session-actions.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './study-session-actions.component.scss'
 })
 export class StudySessionActionsComponent implements OnDestroy {
   autoSaveTimeSeconds = 120;

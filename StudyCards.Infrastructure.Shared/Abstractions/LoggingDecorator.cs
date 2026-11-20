@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using StudyCards.Application.Common;
 using StudyCards.Application.Interfaces.CQRS;
 using System.Diagnostics;
@@ -19,13 +19,13 @@ internal static class LoggingDecorator
             Result<TResponse> result = await innerHandler.Handle(query, cancellationToken);
             stopwatch.Stop();
 
-            if (result.IsSuccess)
+            if (result is Failure failure)
             {
-                logger.LogInformation("Completed query {Query} in {Time}ms", queryName, stopwatch.ElapsedMilliseconds);
+                logger.LogInformation("Completed query {Query} with validation/error {Error} in {Time}ms", queryName, failure.Message, stopwatch.ElapsedMilliseconds);
             }
             else
             {
-                logger.LogInformation("Completed query {Query} with validation/error {Error} in {Time}ms", queryName, result.ErrorMessage, stopwatch.ElapsedMilliseconds);
+                logger.LogInformation("Completed query {Query} in {Time}ms", queryName, stopwatch.ElapsedMilliseconds);
             }
 
             return result;
@@ -44,13 +44,13 @@ internal static class LoggingDecorator
             Result<TResponse> result = await innerHandler.Handle(command, cancellationToken);
             stopwatch.Stop();
 
-            if (result.IsSuccess)
+            if (result is Failure failure)
             {
-                logger.LogInformation("Completed command {Command} in {Time}ms", commandName, stopwatch.ElapsedMilliseconds);
+                logger.LogInformation("Completed command {Command} with validation/error {Error} in {Time}ms", commandName, failure.Message, stopwatch.ElapsedMilliseconds);
             }
             else
             {
-                logger.LogInformation("Completed command {Command} with validation/error {Error} in {Time}ms", commandName, result.ErrorMessage, stopwatch.ElapsedMilliseconds);
+                logger.LogInformation("Completed command {Command} in {Time}ms", commandName, stopwatch.ElapsedMilliseconds);
             }
 
             return result;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { DeckStore } from '../../store/deck.store';
 import { AddDeckButtonComponent } from "../add-deck-button/add-deck-button.component";
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -11,8 +11,7 @@ import { LoadingState } from '../../../../shared/models/loading-state';
   selector: 'app-deck-list',
   imports: [AddDeckButtonComponent, MatProgressBarModule, DeckItemComponent],
   templateUrl: './deck-list.component.html',
-  styleUrl: './deck-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './deck-list.component.scss'
 })
 export class DeckListComponent {
   readonly store = inject(DeckStore);

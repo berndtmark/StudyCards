@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, output, input, signal, WritableSignal } from '@angular/core';
+import { Component, computed, output, input, signal, WritableSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
@@ -26,7 +26,6 @@ interface CalendarCell {
   imports: [MatButtonModule, MatIconModule, MatChipsModule, TruncateDirective],
   templateUrl: './calandar.component.html',
   styleUrl: './calandar.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Calandar {
   readonly items = input<CalendarItem[]>([]);

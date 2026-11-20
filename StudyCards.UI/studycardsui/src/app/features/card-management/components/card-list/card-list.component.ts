@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, output, signal, OnInit } from '@angular/core';
+import { Component, effect, input, output, signal, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -13,8 +13,7 @@ import { CardResponse } from '../../../../@api/models/card-response';
   selector: 'app-card-list',
   imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatIconModule, MatSlideToggleModule, DatePipe, CardListPaginatorComponent, CardListLegendComponent],
   templateUrl: './card-list.component.html',
-  styleUrl: './card-list.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './card-list.component.scss'
 })
 export class CardListComponent implements OnInit {
   searchTerm = input<string>();

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CardStore } from '../../store/card.store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CardFormComponent } from "../card-form/card-form.component";
@@ -10,8 +10,7 @@ import { DialogService } from '../../../../shared/services/dialog.service';
   selector: 'app-update-card',
   imports: [CardFormComponent, MatButtonModule, MyButtonComponent],
   templateUrl: './update-card.component.html',
-  styleUrl: './update-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './update-card.component.scss'
 })
 export class UpdateCardComponent implements OnInit {
   readonly store = inject(CardStore);

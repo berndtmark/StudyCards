@@ -7,6 +7,7 @@ using StudyCards.Api.Configuration.Options;
 using StudyCards.Application.Interfaces;
 using StudyCards.Application.Interfaces.CQRS;
 using StudyCards.Application.UseCases.UserManagement.Commands;
+using StudyCards.Domain.Entities;
 using System.Security.Claims;
 
 namespace StudyCards.Api.Configuration;
@@ -57,10 +58,11 @@ public class AuthEvents : OAuthEvents
 
         var dispatcher = context.HttpContext.RequestServices.GetRequiredService<ICQRSDispatcher>();
         var user = await dispatcher.Send(new UserLoginCommand { UserEmail = email });
-
+        
         if (context.Principal?.Identity is ClaimsIdentity identity)
         {
-            identity.AddClaim(new Claim("sub", user.Data?.Id.ToString() ?? throw new ApplicationException($"User Id Missing for {email}")));
+            var userId = user.Data.Id.ToString();
+            identity.AddClaim(new Claim("sub", userId));
         }
     }
 }

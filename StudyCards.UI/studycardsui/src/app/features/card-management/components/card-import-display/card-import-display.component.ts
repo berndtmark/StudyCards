@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, OnInit, output } from '@angular/core';
+import { Component, effect, input, OnInit, output } from '@angular/core';
 import { ImportCard } from '../../models/import-card';
 import { MatTableModule } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -8,8 +8,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
   selector: 'app-card-import-display',
   imports: [MatTableModule, MatCheckboxModule],
   templateUrl: './card-import-display.component.html',
-  styleUrl: './card-import-display.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './card-import-display.component.scss'
 })
 export class CardImportDisplayComponent implements OnInit {
   cards = input<ImportCard[]>([]);

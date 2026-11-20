@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using StudyCards.Application.Common;
 using StudyCards.Application.Exceptions;
 using StudyCards.Application.Extensions;
@@ -28,7 +28,7 @@ public class AddCardCommandHandler(IUnitOfWork unitOfWork, ILogger<AddCardComman
             // Check if the card already exists in the deck
             var isExisting = await ValidateExisting(card, cancellationToken);
             if (isExisting)
-                return Result<Card>.Failure("Card is already in the Deck", ErrorType.Existing);
+                return new Failure("Card is already in the Deck", ErrorType.Existing);
 
             // Add the card to the repository
             var result = await unitOfWork.CardRepository.Add(card);

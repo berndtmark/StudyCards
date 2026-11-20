@@ -1,24 +1,4 @@
-﻿namespace StudyCards.Application.Common;
-
-public class Result<T>
-{
-    public bool IsSuccess => ErrorMessageType == null;
-    public string? ErrorMessage { get; }
-    public ErrorType? ErrorMessageType { get; }
-    public T? Data { get; }
-
-    protected Result(T? data, string? errorMessage = null, ErrorType? errorType = null)
-    {
-        Data = data;
-        ErrorMessage = errorMessage;
-        ErrorMessageType = errorType;
-    }
-
-    public static Result<T> Success(T data) => new(data);
-    public static Result<T> Failure(string errorMessage) => new(default, errorMessage, ErrorType.Generic);
-    public static Result<T> Failure(string errorMessage, ErrorType errorType) => new(default, errorMessage, errorType);
-    public static implicit operator Result<T>(T data) => new(data);
-}
+namespace StudyCards.Application.Common;
 
 public enum ErrorType
 {
@@ -26,4 +6,18 @@ public enum ErrorType
     NotFound,
     Validation,
     Existing
+}
+
+public sealed record Failure(string Message, ErrorType Type = ErrorType.Generic);
+
+public readonly union Result<T>(T, Failure)
+{
+    // A helper to get the result directly from a usecase without needing a switch
+    public readonly T Data => Value switch
+    {
+        T t => t,
+        Failure f => throw new InvalidOperationException($"Cannot access Data when Result is Failure: {f.Type}: {f.Message}")
+    };
+
+    public readonly bool IsSuccess => Value is T;
 }

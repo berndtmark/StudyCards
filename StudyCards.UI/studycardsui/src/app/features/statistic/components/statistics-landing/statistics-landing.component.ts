@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Calandar, CalendarItem } from "../../../../shared/components/calandar/calandar.component";
 import { StatisticStore } from '../../store/statistic.store';
 import { DateFuctions } from '../../../../shared/functions/date-functions';
@@ -10,7 +10,6 @@ import { LoadingState } from '../../../../shared/models/loading-state';
   imports: [Calandar, MatProgressBar],
   templateUrl: './statistics-landing.component.html',
   styleUrl: './statistics-landing.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StatisticsLandingComponent implements OnInit {
   readonly store = inject(StatisticStore);

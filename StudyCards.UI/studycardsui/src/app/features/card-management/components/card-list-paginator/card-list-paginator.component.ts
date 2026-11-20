@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import { CardStore } from '../../store/card.store';
 
@@ -6,8 +6,7 @@ import { CardStore } from '../../store/card.store';
   selector: 'app-card-list-paginator',
   imports: [MatPaginatorModule],
   templateUrl: './card-list-paginator.component.html',
-  styleUrl: './card-list-paginator.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './card-list-paginator.component.scss'
 })
 export class CardListPaginatorComponent {
   readonly store = inject(CardStore);

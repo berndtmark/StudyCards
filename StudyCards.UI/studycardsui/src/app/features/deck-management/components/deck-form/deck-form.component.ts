@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input, linkedSignal, output, signal, computed } from '@angular/core';
+import { Component, effect, input, linkedSignal, output, signal, computed } from '@angular/core';
 import { Deck } from '../../models/deck';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,8 +9,7 @@ import { form, FormField, min, required, validate, ValidationError } from '@angu
   selector: 'app-deck-form',
   imports: [FormField, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './deck-form.component.html',
-  styleUrl: './deck-form.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './deck-form.component.scss'
 })
 export class DeckFormComponent {  
   saveButtonName = input<string>('Save Deck');

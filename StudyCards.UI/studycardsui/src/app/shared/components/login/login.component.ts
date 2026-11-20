@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import { AuthorizeService } from '../../services/authorize.service';
@@ -7,8 +7,7 @@ import { AuthorizeService } from '../../services/authorize.service';
   selector: 'app-login',
   imports: [MatButtonModule, MatIcon],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   private authService = inject(AuthorizeService);
