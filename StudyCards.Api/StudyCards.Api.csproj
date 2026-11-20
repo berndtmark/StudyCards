@@ -37,7 +37,7 @@
 
   <PropertyGroup>
     <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
-    <OpenApiGenerateDocumentsOptions>--file-name servercardsapi</OpenApiGenerateDocumentsOptions>
+    <OpenApiGenerateDocumentsOptions>--file-name servercardsapi --openapi-version OpenApi3_1</OpenApiGenerateDocumentsOptions>
     <OpenApiDocumentsDirectory>../StudyCards.UI/studycardsui</OpenApiDocumentsDirectory>
   </PropertyGroup>
 
