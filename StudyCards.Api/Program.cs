@@ -27,7 +27,11 @@ builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
 
 // OPENAPI
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    // Pinned to 3.1 because ng-openapi-gen doesn't support 3.2 yet
+    options.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_1;
+});
 
 // CACHE
 builder.Services.AddMemoryCache();
