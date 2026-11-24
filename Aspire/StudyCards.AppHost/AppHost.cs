@@ -14,7 +14,7 @@ var card = studyCards.AddContainer("Card", "/DeckId");
 var user = studyCards.AddContainer("User", "/UserEmail");
 var statistic = studyCards.AddContainer("Statistic", "/UserId");
 
-builder.AddProject<Projects.StudyCards_Api>("studycards-api")
+builder.AddDotnetProject("studycards-api", "../../StudyCards.Api/StudyCards.Api.csproj")
     .WithReference(cosmos)
     .WaitFor(cosmos);
 
